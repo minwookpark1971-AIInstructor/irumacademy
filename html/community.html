@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>강사 커뮤니티 | Irum Academy</title>
+    <meta name="description" content="강사들과 지식을 공유하고 함께 성장하세요">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/animations.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <div id="header-container"></div>
+
+    <!-- Page Hero -->
+    <section class="page-hero" style="background-image: url('../images/backgrounds/community-banner.png'); background-size: cover; background-position: center; background-repeat: no-repeat; background-attachment: scroll; padding-top: 120px; min-height: calc(50vh - 300px); display: flex; align-items: center; justify-content: center; padding-bottom: 3rem; position: relative; transform: translate3d(0, 0, 0); -webkit-transform: translate3d(0, 0, 0); backface-visibility: hidden; -webkit-backface-visibility: hidden;">
+        <div class="page-hero-overlay" style="position: absolute; inset: 0; background: rgba(255, 255, 255, 0.6); z-index: 0;"></div>
+        <div class="container" style="position: relative; z-index: 1; width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 1.5rem;">
+            <div class="page-hero-content reveal-up" style="text-align: center !important; width: 100% !important; margin: 0 auto !important; padding: 0 !important; color: #000000 !important; max-width: 100% !important;">
+                <h1 class="page-hero-title" style="color: #000000 !important; text-shadow: none !important;">강사 커뮤니티</h1>
+                <p style="font-size: 1.125rem; margin-top: 1rem; color: var(--text-muted);">
+                    강사들과 지식을 공유하고 함께 성장하세요
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="main-content" style="background-color: #ffffff; padding-top: 2rem; padding-bottom: 3rem;">
+        <section class="section">
+            <div class="container">
+                <!-- Login Banner -->
+                <div class="card card-elevated reveal-up" id="login-banner" style="background: linear-gradient(135deg, rgba(37, 99, 235, 0.05), rgba(37, 99, 235, 0.1)); border: 1px solid rgba(37, 99, 235, 0.2); margin-bottom: 2rem;">
+                    <div class="card-content" style="display: flex; flex-direction: column; gap: 1rem; align-items: center;">
+                        <div style="display: flex; align-items: center; gap: 0.75rem;">
+                            <span style="font-size: 1.25rem;">🔔</span>
+                            <div>
+                                <p style="font-weight: 500;">로그인하고 커뮤니티에 참여하세요</p>
+                                <p style="font-size: 0.875rem; color: var(--text-muted);">
+                                    게시글 작성, 댓글, 좋아요 기능을 이용하실 수 있습니다
+                                </p>
+                            </div>
+                        </div>
+                        <a href="auth/login.html" class="btn btn-primary">로그인하기</a>
+                    </div>
+                </div>
+
+                <!-- Search Bar -->
+                <div class="search-bar reveal-up" style="margin-bottom: 1.5rem;">
+                    <div style="position: relative; max-width: 500px; margin: 0 auto;">
+                        <input 
+                            type="search" 
+                            id="search-input" 
+                            class="form-input" 
+                            placeholder="게시글 검색..."
+                            style="padding-left: 2.5rem;"
+                        >
+                        <span style="position: absolute; left: 0.75rem; top: 50%; transform: translateY(-50%);">🔍</span>
+                    </div>
+                </div>
+
+                <!-- Tabs -->
+                <div class="tabs-container reveal-up">
+                    <div class="tabs-header" style="display: flex; gap: 0.5rem; border-bottom: 2px solid var(--border); margin-bottom: 1.5rem;">
+                        <button class="tab-button active" data-tab="notice">
+                            <span>🔔</span>
+                            <span class="hidden-sm">공지</span>
+                        </button>
+                        <button class="tab-button" data-tab="materials">
+                            <span>📄</span>
+                            <span class="hidden-sm">강의자료 공유</span>
+                        </button>
+                        <button class="tab-button" data-tab="qna">
+                            <span>❓</span>
+                            <span class="hidden-sm">Q&A</span>
+                        </button>
+                        <button class="tab-button" data-tab="reviews">
+                            <span>⭐</span>
+                            <span class="hidden-sm">후기/사례</span>
+                        </button>
+                    </div>
+
+                    <!-- Tab Contents -->
+                    <div class="tab-content active" id="tab-notice">
+                        <div class="post-list" id="post-list-notice">
+                            <!-- Posts will be loaded here -->
+                        </div>
+                    </div>
+                    <div class="tab-content" id="tab-materials" style="display: none;">
+                        <div class="post-list" id="post-list-materials">
+                            <!-- Posts will be loaded here -->
+                        </div>
+                    </div>
+                    <div class="tab-content" id="tab-qna" style="display: none;">
+                        <div class="post-list" id="post-list-qna">
+                            <!-- Posts will be loaded here -->
+                        </div>
+                    </div>
+                    <div class="tab-content" id="tab-reviews" style="display: none;">
+                        <div class="post-list" id="post-list-reviews">
+                            <!-- Posts will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Post Detail Modal -->
+    <div class="modal-overlay" id="post-modal">
+        <div class="modal-content" style="max-width: 800px;">
+            <button class="modal-close" style="position: absolute; top: 1rem; right: 1rem; background: none; border: none; font-size: 1.5rem; cursor: pointer;">×</button>
+            <div id="post-detail-content">
+                <!-- Post detail will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div id="footer-container"></div>
+
+    <!-- Scripts -->
+    <script src="../js/components.js"></script>
+    <script src="../js/main.js"></script>
+    <script src="../js/animations.js"></script>
+    
+    <script>
+        let currentTab = 'notice';
+        let allPosts = {
+            notice: [],
+            materials: [],
+            qna: [],
+            reviews: []
+        };
+        let filteredPosts = {
+            notice: [],
+            materials: [],
+            qna: [],
+            reviews: []
+        };
+        
+        $(document).ready(function() {
+            // Wait for components to load
+            setTimeout(function() {
+                // Initialize modal
+                if (typeof initModal === 'function') {
+                    initModal();
+                }
+                
+                // Check login status
+                if (typeof checkLoginStatus === 'function') {
+                    checkLoginStatus();
+                }
+                
+                // Load posts
+                if (typeof loadPosts === 'function') {
+                    loadPosts();
+                }
+                
+                // Initialize tabs
+                if (typeof initTabs === 'function') {
+                    initTabs();
+                }
+                
+                // Initialize search
+                if (typeof initSearch === 'function') {
+                    initSearch();
+                }
+                
+                // Initialize animations
+                if (typeof initRevealAnimations === 'function') {
+                    initRevealAnimations();
+                }
+            }, 200);
+        });
+        
+        function checkLoginStatus() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            if (isLoggedIn) {
+                $('#login-banner').hide();
+            }
+        }
+        
+        function loadPosts() {
+            // Dummy data - Replace with API call
+            allPosts = {
+                notice: [
+                    {
+                        id: '1',
+                        title: '[공지] 2024년 3월 강의 일정 안내',
+                        content: '안녕하세요. 2024년 3월 강의 일정을 안내드립니다.\n\n3월 강의는 다음과 같이 진행됩니다:\n- AI 마케팅 실무: 3월 5일 시작\n- AI 기획 실무: 3월 12일 시작\n- AI 개발 실무: 3월 19일 시작\n\n자세한 내용은 각 강의 페이지에서 확인하실 수 있습니다.',
+                        author: '관리자',
+                        authorRole: '운영팀',
+                        views: 245,
+                        likes: 12,
+                        comments: 5,
+                        createdAt: '2024-02-15',
+                        tags: ['공지', '일정']
+                    },
+                    {
+                        id: '2',
+                        title: '[공지] 강사 커뮤니티 이용 안내',
+                        content: '강사 커뮤니티 이용 시 다음 사항을 준수해주세요:\n\n1. 서로를 존중하는 문화를 만들어갑시다.\n2. 유용한 정보와 경험을 공유해주세요.\n3. 질문이 있으면 Q&A 탭을 활용해주세요.\n\n함께 성장하는 커뮤니티가 되도록 노력하겠습니다.',
+                        author: '관리자',
+                        authorRole: '운영팀',
+                        views: 189,
+                        likes: 8,
+                        comments: 3,
+                        createdAt: '2024-02-10',
+                        tags: ['공지', '이용안내']
+                    }
+                ],
+                materials: [
+                    {
+                        id: '3',
+                        title: 'AI 마케팅 실무 강의 자료 공유',
+                        content: 'AI 마케팅 실무 강의에서 사용한 자료를 공유합니다.\n\n포함 내용:\n- 마케팅 전략 템플릿\n- GA4 분석 가이드\n- Make.com 워크플로우 예제\n\n자료는 강의자료 공유 탭에서 다운로드 가능합니다.',
+                        author: '김강사',
+                        authorRole: '마케팅 전문가',
+                        views: 342,
+                        likes: 28,
+                        comments: 12,
+                        createdAt: '2024-02-18',
+                        tags: ['마케팅', '자료', '템플릿']
+                    }
+                ],
+                qna: [
+                    {
+                        id: '4',
+                        title: '강의 자료를 수정하고 싶은데 어떻게 하나요?',
+                        content: '강의 자료 템플릿을 받았는데, 제 강의 스타일에 맞게 수정하고 싶습니다.\n\n어떤 도구를 사용하는 것이 좋을까요? Notion을 사용해도 될까요?',
+                        author: '신규강사',
+                        views: 123,
+                        likes: 5,
+                        comments: 8,
+                        createdAt: '2024-02-20',
+                        tags: ['질문', '자료']
+                    }
+                ],
+                reviews: [
+                    {
+                        id: '5',
+                        title: '강사 성장 프로그램 후기 - 정말 도움이 되었습니다!',
+                        content: '강사 성장 프로그램을 수료하고 첫 강의를 진행했습니다.\n\n프로그램에서 배운 커리큘럼 설계 방법과 실습 운영 기법이 정말 도움이 되었습니다. 특히 피드백 루틴을 적용하니 학습자들의 만족도가 크게 향상되었어요.\n\n다른 강사분들도 꼭 참여해보시길 추천합니다!',
+                        author: '최강사',
+                        authorRole: '디자인 전문가',
+                        views: 289,
+                        likes: 42,
+                        comments: 18,
+                        createdAt: '2024-02-22',
+                        tags: ['후기', '추천']
+                    }
+                ]
+            };
+            
+            filteredPosts = JSON.parse(JSON.stringify(allPosts));
+            renderPosts();
+        }
+        
+        function initTabs() {
+            $('.tab-button').on('click', function() {
+                const tab = $(this).data('tab');
+                switchTab(tab);
+            });
+        }
+        
+        function switchTab(tab) {
+            currentTab = tab;
+            
+            $('.tab-button').removeClass('active');
+            $(`.tab-button[data-tab="${tab}"]`).addClass('active');
+            
+            $('.tab-content').hide().removeClass('active');
+            $(`#tab-${tab}`).show().addClass('active');
+            
+            renderPosts();
+        }
+        
+        function initSearch() {
+            $('#search-input').on('input', debounce(function() {
+                const query = $(this).val().toLowerCase();
+                filterPosts(query);
+            }, 300));
+        }
+        
+        function filterPosts(query) {
+            Object.keys(allPosts).forEach(function(category) {
+                if (query) {
+                    filteredPosts[category] = allPosts[category].filter(function(post) {
+                        return post.title.toLowerCase().includes(query) ||
+                               post.content.toLowerCase().includes(query);
+                    });
+                } else {
+                    filteredPosts[category] = allPosts[category];
+                }
+            });
+            renderPosts();
+        }
+        
+        function renderPosts() {
+            const posts = filteredPosts[currentTab];
+            const $list = $(`#post-list-${currentTab}`);
+            $list.empty();
+            
+            if (posts.length === 0) {
+                $list.html('<p class="text-center" style="padding: 3rem; color: var(--text-muted);">게시글이 없습니다</p>');
+                return;
+            }
+            
+            posts.forEach(function(post, index) {
+                const $post = createPostCard(post, index);
+                $list.append($post);
+            });
+        }
+        
+        function createPostCard(post, index) {
+            const $card = $('<div>')
+                .addClass('card card-elevated reveal-up')
+                .css({
+                    'cursor': 'pointer',
+                    'margin-bottom': '1rem',
+                    'transition-delay': (index * 0.05) + 's'
+                })
+                .on('click', function() {
+                    showPostDetail(post);
+                });
+            
+            const header = $('<div>').addClass('card-header');
+            const title = $('<h3>')
+                .addClass('card-title')
+                .css({
+                    'margin-bottom': '0.5rem',
+                    'display': '-webkit-box',
+                    '-webkit-line-clamp': '2',
+                    '-webkit-box-orient': 'vertical',
+                    'overflow': 'hidden'
+                })
+                .text(post.title);
+            
+            const description = $('<p>')
+                .addClass('card-description')
+                .css({
+                    'display': '-webkit-box',
+                    '-webkit-line-clamp': '2',
+                    '-webkit-box-orient': 'vertical',
+                    'overflow': 'hidden'
+                })
+                .text(post.content);
+            
+            header.append(title, description);
+            
+            const content = $('<div>').addClass('card-content');
+            const meta = $('<div>')
+                .css({
+                    'display': 'flex',
+                    'justify-content': 'space-between',
+                    'align-items': 'center',
+                    'flex-wrap': 'wrap',
+                    'gap': '1rem',
+                    'font-size': '0.875rem',
+                    'color': 'var(--text-muted)'
+                });
+            
+            const authorInfo = $('<div>')
+                .css('display', 'flex')
+                .css('align-items', 'center')
+                .css('gap', '1rem')
+                .html(`
+                    <span>${post.author}</span>
+                    ${post.authorRole ? `<span class="badge">${post.authorRole}</span>` : ''}
+                    <span>${formatDate(post.createdAt)}</span>
+                `);
+            
+            const stats = $('<div>')
+                .css('display', 'flex')
+                .css('gap', '1rem')
+                .html(`
+                    <span>👁 ${post.views}</span>
+                    <span>❤ ${post.likes}</span>
+                    <span>💬 ${post.comments}</span>
+                `);
+            
+            meta.append(authorInfo, stats);
+            content.append(meta);
+            
+            if (post.tags && post.tags.length > 0) {
+                const tags = $('<div>')
+                    .css({
+                        'display': 'flex',
+                        'flex-wrap': 'wrap',
+                        'gap': '0.5rem',
+                        'margin-top': '1rem'
+                    });
+                
+                post.tags.forEach(function(tag) {
+                    tags.append($('<span>')
+                        .addClass('badge')
+                        .css('font-size', '0.75rem')
+                        .text(tag)
+                    );
+                });
+                
+                content.append(tags);
+            }
+            
+            $card.append(header, content);
+            return $card;
+        }
+        
+        function showPostDetail(post) {
+            const $modal = $('#post-modal');
+            const $content = $('#post-detail-content');
+            
+            $content.html(`
+                <div style="padding: 1rem 0;">
+                    <h2 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem;">${post.title}</h2>
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; font-size: 0.875rem; color: var(--text-muted);">
+                        <span>${post.author}</span>
+                        ${post.authorRole ? `<span class="badge">${post.authorRole}</span>` : ''}
+                        <span>${formatDate(post.createdAt)}</span>
+                    </div>
+                    ${post.tags && post.tags.length > 0 ? `
+                    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.5rem;">
+                        ${post.tags.map(tag => `<span class="badge">${tag}</span>`).join('')}
+                    </div>
+                    ` : ''}
+                    <div style="line-height: 1.8; white-space: pre-line; margin-bottom: 2rem;">${post.content}</div>
+                    <div style="display: flex; gap: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border); font-size: 0.875rem; color: var(--text-muted);">
+                        <span>👁 ${post.views}</span>
+                        <span>❤ ${post.likes}</span>
+                        <span>💬 ${post.comments}</span>
+                    </div>
+                </div>
+            `);
+            
+            $modal.addClass('active');
+        }
+        
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('ko-KR', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+        }
+    </script>
+    
+    <style>
+        .tabs-header {
+            overflow-x: auto;
+        }
+        .tab-button {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: none;
+            border: none;
+            border-bottom: 2px solid transparent;
+            cursor: pointer;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+        .tab-button:hover {
+            color: var(--text);
+        }
+        .tab-button.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+        .post-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background-color: var(--secondary);
+            color: var(--secondary-foreground);
+            border-radius: var(--radius-full);
+            font-size: var(--font-size-xs);
+            font-weight: 500;
+        }
+        @media (min-width: 640px) {
+            .tabs-header {
+                flex-wrap: nowrap;
+            }
+        }
+    </style>
+</body>
+</html>
+

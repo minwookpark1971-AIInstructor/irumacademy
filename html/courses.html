@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>강의코스 | Irum Academy</title>
+    <meta name="description" content="직무별 AI 실무역량 + 취업전략">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/animations.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <div id="header-container"></div>
+
+    <!-- Page Hero -->
+    <section class="page-hero" style="background-image: url('../images/backgrounds/courses-banner.png'); background-size: cover; background-position: center; background-repeat: no-repeat; background-attachment: scroll; padding-top: 120px; min-height: calc(50vh - 300px); display: flex; align-items: center; justify-content: center; padding-bottom: 3rem; position: relative; transform: translate3d(0, 0, 0); -webkit-transform: translate3d(0, 0, 0); backface-visibility: hidden; -webkit-backface-visibility: hidden;">
+        <div class="page-hero-overlay" style="position: absolute; inset: 0; background: rgba(255, 255, 255, 0.6); z-index: 0;"></div>
+        <div class="container" style="position: relative; z-index: 1; width: 100%;">
+            <div class="page-hero-content reveal-up" style="text-align: center; width: 100%; margin: 0 auto; margin-bottom: 0; padding-bottom: 0;">
+                <h1 class="page-hero-title" style="color: #000000; text-align: center; white-space: nowrap; margin: 0; padding: 0; line-height: 1.2; margin-bottom: 0;">
+                    <span style="color: #000000;">직무별 AI 실무역량 + 취업전략</span>
+                </h1>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="main-content" style="background-color: #ffffff; padding-top: 2rem; padding-bottom: 3rem;">
+        <!-- Hero Section -->
+        <section class="section" style="padding-top: 0; margin-top: 0;">
+            <div class="container">
+                <div class="text-center reveal-up" style="margin-top: 0; padding-top: 0;">
+                    <p class="section-description" style="line-height: 1.8; margin-bottom: 2rem; white-space: nowrap; margin-top: 0; padding-top: 0;">
+                        AI 도구를 활용한 실무 역량 강화부터 취업 전략까지, 성공적인 커리어를 위한 종합 교육 프로그램
+                    </p>
+                    <div class="hero-actions" style="margin-top: 2rem;">
+                        <a href="#course-list" class="btn btn-primary btn-lg btn-animated" onclick="event.preventDefault(); smoothScrollToCourseList(); return false;">
+                            강의코스 보기
+                            <span style="margin-left: 0.5rem;">→</span>
+                        </a>
+                        <a href="apply.html" class="btn btn-outline btn-lg btn-animated">
+                            강의신청하기
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 직무별 커리큘럼 Section -->
+        <section class="section">
+            <div class="container">
+                <div class="text-center reveal-up">
+                    <h2 class="section-title" style="margin-bottom: 0.5rem;">직무별 커리큘럼</h2>
+                    <p class="section-description" style="margin-top: 0;">
+                        실무에 바로 적용 가능한 AI 역량 강화 프로그램
+                    </p>
+                </div>
+
+                <div id="course-list" class="course-list-container stagger-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-top: 200px; text-align: left;">
+                    <!-- Courses will be loaded dynamically -->
+                    <p style="text-align: center; width: 100%; color: var(--text-muted); padding: 2rem; grid-column: 1 / -1;">강의 목록을 불러오는 중...</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 취업특강 강조 Section -->
+        <section class="section">
+            <div class="container">
+                <div class="card card-elevated reveal-up" id="bootcamp-card">
+                    <!-- Bootcamp course will be loaded here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- 왜 이 프로그램인가 Section -->
+        <section class="section" style="padding-bottom: calc(var(--spacing-16) * 0.5);">
+            <div class="container">
+                <div class="text-center reveal-up">
+                    <h2 class="section-title">왜 이 프로그램인가</h2>
+                    <p class="section-description">
+                        실무 중심의 체계적인 교육으로 즉시 적용 가능한 역량을 제공합니다
+                    </p>
+                </div>
+
+                <!-- 프로그램 요약 텍스트 -->
+                <div class="program-summary reveal-up" style="background-color: #ffffff; padding: 2rem; margin-top: 2rem; margin-bottom: 2rem; border-radius: 0.5rem; text-align: center;">
+                    <p style="font-size: 1.125rem; line-height: 1.8; color: #171717; margin: 0;">
+                        마케팅, 기획, 개발, 디자인, 영업, 인사행정 등 6개 직무별 맞춤형 AI 실무 교육으로 각 분야의 핵심 역량을 강화합니다.<br>
+                        ChatGPT, Claude, Make.com 등 최신 AI 도구를 직접 활용한 실습 중심 커리큘럼으로 이론을 넘어 실제 업무에 바로 적용 가능한 스킬을 습득합니다.<br>
+                        취업 전략 특강과 포트폴리오 연계를 통해 학습 과정에서 완성하는 실무 산출물로 취업 경쟁력을 동시에 강화합니다.
+                    </p>
+                </div>
+
+                <div class="feature-grid stagger-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-top: 3rem;">
+                    <div class="card stagger-item">
+                        <div class="card-header text-center">
+                            <div class="feature-icon" style="font-size: 2rem; margin-bottom: 1rem;">🎯</div>
+                            <h3 class="card-title">실무 100% 실습</h3>
+                        </div>
+                        <p class="card-description text-center">
+                            이론 중심이 아닌 실제 업무에 바로 적용 가능한 실습 중심 교육
+                        </p>
+                    </div>
+                    <div class="card stagger-item">
+                        <div class="card-header text-center">
+                            <div class="feature-icon" style="font-size: 2rem; margin-bottom: 1rem;">👥</div>
+                            <h3 class="card-title">직무맞춤</h3>
+                        </div>
+                        <p class="card-description text-center">
+                            6개 직무별 맞춤 커리큘럼으로 본인의 업무에 최적화된 학습
+                        </p>
+                    </div>
+                    <div class="card stagger-item">
+                        <div class="card-header text-center">
+                            <div class="feature-icon" style="font-size: 2rem; margin-bottom: 1rem;">⚡</div>
+                            <h3 class="card-title">최신 도구</h3>
+                        </div>
+                        <p class="card-description text-center">
+                            ChatGPT, Claude, Make.com 등 최신 AI 도구를 직접 활용
+                        </p>
+                    </div>
+                    <div class="card stagger-item">
+                        <div class="card-header text-center">
+                            <div class="feature-icon" style="font-size: 2rem; margin-bottom: 1rem;">💼</div>
+                            <h3 class="card-title">포트폴리오 연계</h3>
+                        </div>
+                        <p class="card-description text-center">
+                            학습 과정에서 완성하는 포트폴리오로 취업 경쟁력 강화
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 수강생 후기 Section -->
+        <section class="section" style="padding-top: calc(var(--spacing-16) * 0.5); display: block; visibility: visible; opacity: 1;">
+            <div class="container">
+                <div class="text-center reveal-up">
+                    <h2 class="section-title">수강생 후기</h2>
+                    <p class="section-description">
+                        실제 수강생들의 생생한 후기와 성과를 확인하세요
+                    </p>
+                </div>
+
+                <div class="testimonial-grid stagger-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-top: 3rem; visibility: visible; opacity: 1;">
+                    <div class="card stagger-item" style="background-color: #ffffff; border: 1px solid var(--border); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                        <div class="card-header" style="padding-bottom: 1rem;">
+                            <div class="testimonial-rating" style="margin-bottom: 1rem;">
+                                <span style="color: #fbbf24; font-size: 1.25rem;">★★★★★</span>
+                            </div>
+                            <p class="card-description" style="font-style: italic; line-height: 1.8; color: #171717; margin: 0;">
+                                "AI 도구 활용법을 체계적으로 배울 수 있어서 업무 효율이 크게 향상되었습니다. 특히 Make.com 자동화는 바로 실무에 적용했습니다."
+                            </p>
+                        </div>
+                        <div class="card-content">
+                            <div class="testimonial-author" style="display: flex; align-items: center; padding-top: 1rem; border-top: 1px solid var(--border);">
+                                <div class="author-avatar" style="width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(135deg, #2563eb, #3b82f6); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; margin-right: 0.75rem; flex-shrink: 0;">김</div>
+                                <div>
+                                    <div style="font-weight: 700; color: #171717;">김○○</div>
+                                    <div style="font-size: 0.875rem; color: var(--text-muted);">마케팅 담당자</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card stagger-item" style="background-color: #ffffff; border: 1px solid var(--border); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                        <div class="card-header" style="padding-bottom: 1rem;">
+                            <div class="testimonial-rating" style="margin-bottom: 1rem;">
+                                <span style="color: #fbbf24; font-size: 1.25rem;">★★★★★</span>
+                            </div>
+                            <p class="card-description" style="font-style: italic; line-height: 1.8; color: #171717; margin: 0;">
+                                "기획 프로세스와 AI 도구를 결합하는 방법을 배워서 프로젝트 진행 속도가 빨라졌어요. 실무 프로젝트가 특히 도움이 됐습니다."
+                            </p>
+                        </div>
+                        <div class="card-content">
+                            <div class="testimonial-author" style="display: flex; align-items: center; padding-top: 1rem; border-top: 1px solid var(--border);">
+                                <div class="author-avatar" style="width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(135deg, #10b981, #34d399); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; margin-right: 0.75rem; flex-shrink: 0;">이</div>
+                                <div>
+                                    <div style="font-weight: 700; color: #171717;">이○○</div>
+                                    <div style="font-size: 0.875rem; color: var(--text-muted);">기획자</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card stagger-item" style="background-color: #ffffff; border: 1px solid var(--border); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                        <div class="card-header" style="padding-bottom: 1rem;">
+                            <div class="testimonial-rating" style="margin-bottom: 1rem;">
+                                <span style="color: #fbbf24; font-size: 1.25rem;">★★★★★</span>
+                            </div>
+                            <p class="card-description" style="font-style: italic; line-height: 1.8; color: #171717; margin: 0;">
+                                "이력서 작성부터 면접 준비까지 체계적으로 배울 수 있어서 취업에 성공했습니다. STAR 기법이 특히 유용했어요."
+                            </p>
+                        </div>
+                        <div class="card-content">
+                            <div class="testimonial-author" style="display: flex; align-items: center; padding-top: 1rem; border-top: 1px solid var(--border);">
+                                <div class="author-avatar" style="width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(135deg, #8b5cf6, #a78bfa); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; margin-right: 0.75rem; flex-shrink: 0;">박</div>
+                                <div>
+                                    <div style="font-weight: 700; color: #171717;">박○○</div>
+                                    <div style="font-size: 0.875rem; color: var(--text-muted);">취업 준비생</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card stagger-item" style="background-color: #ffffff; border: 1px solid var(--border); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                        <div class="card-header" style="padding-bottom: 1rem;">
+                            <div class="testimonial-rating" style="margin-bottom: 1rem;">
+                                <span style="color: #fbbf24; font-size: 1.25rem;">★★★★★</span>
+                            </div>
+                            <p class="card-description" style="font-style: italic; line-height: 1.8; color: #171717; margin: 0;">
+                                "AI 개발 도구를 활용한 코드 생성과 자동화를 배워서 개발 시간이 절반으로 줄었어요. GitHub Copilot과 Cursor 활용법이 정말 실무에 도움이 됐습니다."
+                            </p>
+                        </div>
+                        <div class="card-content">
+                            <div class="testimonial-author" style="display: flex; align-items: center; padding-top: 1rem; border-top: 1px solid var(--border);">
+                                <div class="author-avatar" style="width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(135deg, #f59e0b, #fbbf24); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; margin-right: 0.75rem; flex-shrink: 0;">최</div>
+                                <div>
+                                    <div style="font-weight: 700; color: #171717;">최○○</div>
+                                    <div style="font-size: 0.875rem; color: var(--text-muted);">개발자</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card stagger-item" style="background-color: #ffffff; border: 1px solid var(--border); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                        <div class="card-header" style="padding-bottom: 1rem;">
+                            <div class="testimonial-rating" style="margin-bottom: 1rem;">
+                                <span style="color: #fbbf24; font-size: 1.25rem;">★★★★★</span>
+                            </div>
+                            <p class="card-description" style="font-style: italic; line-height: 1.8; color: #171717; margin: 0;">
+                                "Midjourney와 DALL-E 같은 AI 디자인 도구를 배워서 창의적인 작업 시간이 크게 단축되었어요. 포트폴리오 품질도 훨씬 좋아졌습니다."
+                            </p>
+                        </div>
+                        <div class="card-content">
+                            <div class="testimonial-author" style="display: flex; align-items: center; padding-top: 1rem; border-top: 1px solid var(--border);">
+                                <div class="author-avatar" style="width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(135deg, #ec4899, #f472b6); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; margin-right: 0.75rem; flex-shrink: 0;">정</div>
+                                <div>
+                                    <div style="font-weight: 700; color: #171717;">정○○</div>
+                                    <div style="font-size: 0.875rem; color: var(--text-muted);">디자이너</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card stagger-item" style="background-color: #ffffff; border: 1px solid var(--border); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                        <div class="card-header" style="padding-bottom: 1rem;">
+                            <div class="testimonial-rating" style="margin-bottom: 1rem;">
+                                <span style="color: #fbbf24; font-size: 1.25rem;">★★★★★</span>
+                            </div>
+                            <p class="card-description" style="font-style: italic; line-height: 1.8; color: #171717; margin: 0;">
+                                "AI를 활용한 고객 관리와 영업 프로세스 자동화를 배워서 영업 성과가 30% 이상 향상되었습니다. CRM 연동과 자동화 워크플로우가 특히 효과적이었어요."
+                            </p>
+                        </div>
+                        <div class="card-content">
+                            <div class="testimonial-author" style="display: flex; align-items: center; padding-top: 1rem; border-top: 1px solid var(--border);">
+                                <div class="author-avatar" style="width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(135deg, #06b6d4, #22d3ee); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; margin-right: 0.75rem; flex-shrink: 0;">한</div>
+                                <div>
+                                    <div style="font-weight: 700; color: #171717;">한○○</div>
+                                    <div style="font-size: 0.875rem; color: var(--text-muted);">영업 담당자</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <div id="footer-container"></div>
+
+    <!-- Scripts -->
+    <script src="../js/courses-data.js"></script>
+    <script src="../js/components.js"></script>
+    <script src="../js/main.js"></script>
+    <script src="../js/animations.js"></script>
+    <script src="../js/courses.js"></script>
+    
+    <script>
+        // Smooth scroll to course list section
+        function smoothScrollToCourseList() {
+            const courseListSection = $('#course-list');
+            if (courseListSection.length) {
+                $('html, body').animate({
+                    scrollTop: courseListSection.offset().top - 100
+                }, 600, 'swing');
+            }
+        }
+        
+        $(document).ready(function() {
+            // Wait for components to load
+            setTimeout(function() {
+                // Check URL parameter for specific course
+                const urlParams = new URLSearchParams(window.location.search);
+                const courseParam = urlParams.get('course');
+                
+                // Ensure courses data is loaded
+                function tryLoadCourses() {
+                    const courses = typeof COURSES_DATA !== 'undefined' ? COURSES_DATA : [];
+                    console.log('COURSES_DATA available:', courses.length > 0);
+                    
+                    if (courses.length > 0) {
+                        const first8Courses = courses.slice(0, 8);
+                        console.log('Loading first 8 courses:', first8Courses.length);
+                        if (typeof loadCoursesPage === 'function') {
+                            loadCoursesPage(courseParam);
+                        } else {
+                            renderCoursesManually(first8Courses, courseParam);
+                        }
+                    } else {
+                        console.warn('COURSES_DATA not loaded, retrying...');
+                        setTimeout(tryLoadCourses, 200);
+                    }
+                }
+                
+                tryLoadCourses();
+                
+                // If course parameter exists, scroll to that course
+                if (courseParam) {
+                    setTimeout(function() {
+                        const courseCard = $('.course-list-container .card').filter(function() {
+                            return $(this).find('.card-title').text().includes(courseParam) || 
+                                   $(this).data('slug') === courseParam;
+                        });
+                        if (courseCard.length) {
+                            $('html, body').animate({
+                                scrollTop: courseCard.first().offset().top - 100
+                            }, 500);
+                            courseCard.first().css({
+                                'border': '3px solid var(--primary)',
+                                'box-shadow': '0 0 20px rgba(37, 99, 235, 0.3)'
+                            });
+                        }
+                    }, 1000);
+                }
+                
+                // Initialize animations
+                if (typeof initRevealAnimations === 'function') {
+                    initRevealAnimations();
+                }
+                if (typeof initStaggerAnimations === 'function') {
+                    initStaggerAnimations();
+                }
+            }, 200);
+        });
+        
+        function loadCoursesPage(selectedSlug) {
+            // Use embedded data instead of AJAX
+            const courses = typeof COURSES_DATA !== 'undefined' ? COURSES_DATA : [];
+            
+            console.log('Loading courses, count:', courses.length);
+            
+            if (courses.length === 0) {
+                console.warn('No courses data found, trying AJAX fallback');
+                // Fallback: try AJAX
+                $.getJSON('../data/courses.json', function(courses) {
+                    console.log('Loaded courses from JSON:', courses.length);
+                    // Show first 8 courses (including bootcamp if it's in first 8)
+                    const first8Courses = courses.slice(0, 8);
+                    console.log('First 8 courses to render:', first8Courses.length);
+                    // Always use manual rendering to ensure it works
+                    renderCoursesManually(first8Courses, selectedSlug);
+                    
+                    // Render bootcamp card separately only if it's not in first 8
+                    const bootcampCourse = courses.find(c => c.slug === 'job-bootcamp');
+                    const bootcampInFirst8 = first8Courses.some(c => c.slug === 'job-bootcamp');
+                    if (bootcampCourse && !bootcampInFirst8) {
+                        renderBootcampCard(bootcampCourse);
+                    }
+                }).fail(function() {
+                    console.error('Failed to load courses from JSON');
+                    $('.course-list-container').html('<p style="text-align: center; padding: 2rem; color: var(--text-muted);">강의 정보를 불러올 수 없습니다.</p>');
+                });
+            } else {
+                console.log('Using embedded courses data');
+                // Use embedded data - Show first 8 courses (including bootcamp if it's in first 8)
+                const first8Courses = courses.slice(0, 8);
+                console.log('First 8 courses to render:', first8Courses.length);
+                // Always use manual rendering to ensure it works
+                renderCoursesManually(first8Courses, selectedSlug);
+                
+                // Render bootcamp card separately only if it's not in first 8
+                const bootcampCourse = courses.find(c => c.slug === 'job-bootcamp');
+                const bootcampInFirst8 = first8Courses.some(c => c.slug === 'job-bootcamp');
+                if (bootcampCourse && !bootcampInFirst8) {
+                    renderBootcampCard(bootcampCourse);
+                }
+            }
+        }
+        
+        function renderCoursesManually(courses, selectedSlug) {
+            const container = $('.course-list-container');
+            if (!container.length) {
+                console.error('Course list container not found');
+                // Try to find container with different selector
+                const altContainer = $('#course-list-container, .stagger-container');
+                if (altContainer.length) {
+                    console.log('Found alternative container');
+                    altContainer.each(function() {
+                        renderToContainer($(this), courses, selectedSlug);
+                    });
+                }
+                return;
+            }
+            
+            renderToContainer(container, courses, selectedSlug);
+        }
+        
+        function renderToContainer(container, courses, selectedSlug) {
+            // Remove loading message
+            container.find('p').remove();
+            container.empty();
+            
+            console.log('Rendering', courses.length, 'courses to container', container.length);
+            console.log('Container selector:', container.selector || 'jQuery object');
+            
+            if (courses.length === 0) {
+                container.html('<p style="text-align: center; padding: 2rem; color: var(--text-muted); grid-column: 1 / -1;">표시할 강의가 없습니다.</p>');
+                return;
+            }
+            
+            courses.forEach(function(course, index) {
+                const isSelected = selectedSlug && course.slug === selectedSlug;
+                const card = $('<div>')
+                    .addClass('card reveal-up')
+                    .attr('data-slug', course.slug)
+                    .css({
+                        'cursor': 'pointer',
+                        'color': '#000000',
+                        'text-align': 'left',
+                        'border': isSelected ? '3px solid #2563eb' : '1px solid #e5e5e5',
+                        'box-shadow': isSelected ? '0 0 20px rgba(37, 99, 235, 0.3)' : '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+                        'background-color': '#ffffff',
+                        'padding': '1.5rem',
+                        'border-radius': '0.5rem',
+                        'display': 'block',
+                        'visibility': 'visible',
+                        'opacity': '1'
+                    })
+                    .on('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        
+                        // Navigate to course detail page
+                        const currentPath = window.location.pathname;
+                        const href = window.location.href;
+                        const isInHtml = currentPath.includes('/html/') || href.includes('/html/') || currentPath.includes('courses.html');
+                        
+                        let courseUrl;
+                        if (isInHtml) {
+                            // If we're in html folder, courses detail pages should be in html/courses/ or just courses/
+                            courseUrl = 'courses/' + course.slug + '.html';
+                        } else {
+                            courseUrl = 'html/courses/' + course.slug + '.html';
+                        }
+                        
+                        console.log('Navigating to course:', courseUrl, 'from:', currentPath, 'href:', href);
+                        window.location.href = courseUrl;
+                        return false;
+                    });
+                
+                const header = $('<div>').addClass('card-header').css('margin-bottom', '1rem');
+                const badge = $('<span>')
+                    .addClass('badge')
+                    .css({
+                        'display': 'inline-block',
+                        'padding': '0.25rem 0.75rem',
+                        'background-color': '#f5f5f5',
+                        'color': '#171717',
+                        'border-radius': '9999px',
+                        'font-size': '0.75rem',
+                        'font-weight': '500',
+                        'margin-bottom': '0.5rem'
+                    })
+                    .text(course.category);
+                const title = $('<h3>')
+                    .addClass('card-title')
+                    .css({
+                        'color': '#000000',
+                        'font-size': '1.25rem',
+                        'font-weight': '700',
+                        'margin-bottom': '0.5rem',
+                        'margin-top': '0'
+                    })
+                    .text(course.title);
+                const description = $('<p>')
+                    .addClass('card-description')
+                    .css({
+                        'color': '#000000',
+                        'font-size': '1rem',
+                        'line-height': '1.6',
+                        'margin-bottom': '1rem',
+                        'margin-top': '0'
+                    })
+                    .text(course.shortDescription);
+                
+                header.append(badge, title, description);
+                
+                const content = $('<div>').addClass('card-content');
+                const meta = $('<div>')
+                    .addClass('course-meta')
+                    .css({
+                        'color': '#000000',
+                        'font-size': '0.875rem',
+                        'display': 'flex',
+                        'gap': '0.5rem',
+                        'align-items': 'center'
+                    })
+                    .html('<span>' + course.durationLabel + '</span><span>•</span><span>' + course.formatLabel + '</span>');
+                
+                content.append(meta);
+                card.append(header, content);
+                container.append(card);
+                
+                console.log('Rendered course', index + 1, ':', course.title);
+            });
+            
+            console.log('Total cards rendered:', container.find('.card').length);
+            console.log('Container children count:', container.children().length);
+            
+            // Force visibility
+            container.css({
+                'display': 'grid',
+                'visibility': 'visible',
+                'opacity': '1'
+            });
+            
+            // Re-initialize animations
+            setTimeout(function() {
+                if (typeof initRevealAnimations === 'function') {
+                    initRevealAnimations();
+                }
+            }, 100);
+        }
+        
+        function renderBootcampCard(course) {
+            const $card = $('#bootcamp-card');
+            if (!$card.length) return;
+            
+            $card.html(`
+                <div class="card-header text-center">
+                    <span class="badge">${course.category}</span>
+                    <h2 class="card-title" style="font-size: 2rem; margin-top: 1rem; text-align: center;">${course.title}</h2>
+                    <p class="card-description" style="text-align: center;">${course.shortDescription}</p>
+                </div>
+                <div class="card-content" style="text-align: center;">
+                    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; justify-content: center;">
+                        <span class="badge">ATS 최적화</span>
+                        <span class="badge">STAR 기법</span>
+                        <span class="badge">NCS 기반</span>
+                        <span class="badge">면접 준비</span>
+                        <span class="badge">포트폴리오</span>
+                    </div>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; max-width: 600px; margin-left: auto; margin-right: auto;">
+                        <div style="display: flex; align-items: center; gap: 0.5rem; justify-content: center;">
+                            <span style="color: var(--primary);">✓</span>
+                            <span>이력서 최적화</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 0.5rem; justify-content: center;">
+                            <span style="color: var(--primary);">✓</span>
+                            <span>면접 전략</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 0.5rem; justify-content: center;">
+                            <span style="color: var(--primary);">✓</span>
+                            <span>네트워킹</span>
+                        </div>
+                    </div>
+                    <a href="courses/${course.slug}.html" class="btn btn-primary btn-lg" onclick="event.preventDefault(); const currentPath = window.location.pathname; const href = window.location.href; const isInHtml = currentPath.includes('/html/') || href.includes('/html/'); const courseUrl = isInHtml ? 'courses/${course.slug}.html' : 'html/courses/${course.slug}.html'; window.location.href = courseUrl; return false;">
+                        자세히 보기 →
+                    </a>
+                </div>
+            `);
+        }
+    </script>
+    
+    <style>
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background-color: var(--secondary);
+            color: var(--secondary-foreground);
+            border-radius: var(--radius-full);
+            font-size: var(--font-size-xs);
+            font-weight: 500;
+        }
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+        }
+        .testimonial-grid .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+        }
+        /* 수강생 후기 섹션 표시 보장 */
+        section:has(.testimonial-grid) {
+            display: block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+        }
+        .testimonial-grid {
+            display: grid !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+        }
+        .testimonial-grid .card {
+            display: block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+        }
+        .course-list-container .card {
+            color: #000000;
+            transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+            transform: translateY(0);
+        }
+        .course-list-container .card:hover {
+            background-color: #f5f5f5 !important;
+            transform: translateY(-8px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15) !important;
+        }
+        .course-list-container .card-title {
+            color: #000000;
+        }
+        .course-list-container .card-description {
+            color: #000000;
+        }
+        .course-list-container .course-meta {
+            color: #000000;
+        }
+    </style>
+</body>
+</html>
+

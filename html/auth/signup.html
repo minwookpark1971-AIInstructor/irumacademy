@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원가입 | Irum Academy</title>
+    <meta name="description" content="Irum Academy 회원가입">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/main.css">
+    <link rel="stylesheet" href="../../css/animations.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+    
+    <!-- jQuery Validation -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <div id="header-container"></div>
+
+    <!-- Main Content -->
+    <main class="main-content" style="padding-top: 120px; padding-bottom: 3rem;">
+        <section class="section">
+            <div class="container" style="max-width: 500px;">
+                <div class="card reveal-up">
+                    <div class="card-header text-center">
+                        <h1 class="card-title" style="font-size: 2rem; margin-bottom: 0.5rem;">회원가입</h1>
+                        <p class="card-description">새로운 계정을 만들어 시작하세요</p>
+                    </div>
+                    <div class="card-content">
+                        <form id="signup-form" class="auth-form">
+                            <!-- Error Message -->
+                            <div class="error-message alert alert-error" style="display: none; margin-bottom: 1rem; padding: 0.75rem; background-color: #fee2e2; color: #dc2626; border-radius: var(--radius-lg);"></div>
+                            
+                            <!-- Email -->
+                            <div class="form-group">
+                                <label for="email" class="form-label">이메일</label>
+                                <div style="position: relative;">
+                                    <input 
+                                        type="email" 
+                                        id="email" 
+                                        name="email" 
+                                        class="form-input" 
+                                        placeholder="example@email.com"
+                                        required
+                                        style="padding-left: 2.5rem;"
+                                    >
+                                    <span style="position: absolute; left: 0.75rem; top: 50%; transform: translateY(-50%);">✉</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Password -->
+                            <div class="form-group">
+                                <label for="password" class="form-label">비밀번호</label>
+                                <div style="position: relative;">
+                                    <input 
+                                        type="password" 
+                                        id="password" 
+                                        name="password" 
+                                        class="form-input" 
+                                        placeholder="비밀번호를 입력하세요"
+                                        required
+                                        style="padding-left: 2.5rem; padding-right: 2.5rem;"
+                                    >
+                                    <span style="position: absolute; left: 0.75rem; top: 50%; transform: translateY(-50%);">🔒</span>
+                                    <button 
+                                        type="button" 
+                                        class="toggle-password" 
+                                        style="position: absolute; right: 0.75rem; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer;"
+                                    >
+                                        👁
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <!-- Confirm Password -->
+                            <div class="form-group">
+                                <label for="confirmPassword" class="form-label">비밀번호 확인</label>
+                                <div style="position: relative;">
+                                    <input 
+                                        type="password" 
+                                        id="confirmPassword" 
+                                        name="confirmPassword" 
+                                        class="form-input" 
+                                        placeholder="비밀번호를 다시 입력하세요"
+                                        required
+                                        style="padding-left: 2.5rem; padding-right: 2.5rem;"
+                                    >
+                                    <span style="position: absolute; left: 0.75rem; top: 50%; transform: translateY(-50%);">🔒</span>
+                                    <button 
+                                        type="button" 
+                                        class="toggle-password" 
+                                        style="position: absolute; right: 0.75rem; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer;"
+                                    >
+                                        👁
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <!-- Terms Agreement -->
+                            <div class="form-group">
+                                <div style="display: flex; align-items: start; gap: 0.5rem;">
+                                    <input 
+                                        type="checkbox" 
+                                        id="agreeToTerms" 
+                                        name="agreeToTerms" 
+                                        required
+                                        style="margin-top: 0.25rem;"
+                                    >
+                                    <label for="agreeToTerms" class="form-label" style="margin: 0; cursor: pointer; font-size: 0.875rem; line-height: 1.5;">
+                                        <a href="/terms" style="color: var(--primary);">이용약관</a>과 
+                                        <a href="/privacy" style="color: var(--primary);">개인정보 처리방침</a>에 동의합니다 *
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <!-- Submit Button -->
+                            <button type="submit" class="btn btn-primary btn-lg btn-block btn-animated" style="margin-top: 1.5rem;">
+                                회원가입
+                            </button>
+                        </form>
+                        
+                        <!-- Login Link -->
+                        <div style="text-align: center; margin-top: 2rem; font-size: 0.875rem;">
+                            이미 계정이 있으신가요? 
+                            <a href="login.html" style="color: var(--primary); font-weight: 500; text-decoration: none;">로그인</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <div id="footer-container"></div>
+
+    <!-- Scripts -->
+    <script src="../../js/components.js"></script>
+    <script src="../../js/main.js"></script>
+    <script src="../../js/auth.js"></script>
+    
+    <script>
+        $(document).ready(function() {
+            // Wait for components to load
+            setTimeout(function() {
+                // Initialize auth forms
+                if (typeof initSignupForm === 'function') {
+                    initSignupForm();
+                }
+                if (typeof initPasswordToggle === 'function') {
+                    initPasswordToggle();
+                }
+                
+                // Initialize animations
+                if (typeof initRevealAnimations === 'function') {
+                    initRevealAnimations();
+                }
+            }, 200);
+        });
+    </script>
+    
+    <style>
+        .alert {
+            padding: 0.75rem;
+            border-radius: var(--radius-lg);
+            margin-bottom: 1rem;
+        }
+        .alert-error {
+            background-color: #fee2e2;
+            color: #dc2626;
+        }
+        .alert-success {
+            background-color: #d1fae5;
+            color: #059669;
+        }
+    </style>
+</body>
+</html>
+

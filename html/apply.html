@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>강의 신청하기 | Irum Academy</title>
+    <meta name="description" content="강의 신청하기">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/animations.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/ui-lightness/jquery-ui.css">
+    
+    <!-- jQuery Validation -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <div id="header-container"></div>
+
+    <!-- Page Hero -->
+    <section class="page-hero" style="background-image: url('../images/backgrounds/apply-banner.png'); background-size: cover; background-position: center; background-repeat: no-repeat; background-attachment: scroll; padding-top: 120px; min-height: calc(50vh - 300px); display: flex; align-items: center; justify-content: center; padding-bottom: 3rem; position: relative; transform: translate3d(0, 0, 0); -webkit-transform: translate3d(0, 0, 0); backface-visibility: hidden; -webkit-backface-visibility: hidden;">
+        <div class="page-hero-overlay" style="position: absolute; inset: 0; background: rgba(255, 255, 255, 0.6); z-index: 0;"></div>
+        <div class="container" style="position: relative; z-index: 1; width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 1.5rem;">
+            <div class="page-hero-content reveal-up" style="text-align: center !important; width: 100% !important; margin: 0 auto !important; padding: 0 !important; color: #000000 !important; max-width: 100% !important;">
+                <h1 class="page-hero-title" id="apply-page-title" style="color: #000000 !important; text-shadow: none !important;">강의 신청하기</h1>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="main-content" style="background-color: #ffffff; padding-top: 2rem; padding-bottom: 3rem;">
+        <section class="section">
+            <div class="container" style="max-width: 1200px;">
+                <!-- Progress Steps -->
+                <div class="progress-steps reveal-up" style="display: flex; justify-content: center; align-items: center; margin-bottom: 3rem; gap: 1rem;">
+                    <div class="step-item" data-step="1">
+                        <div class="step-icon active">📄</div>
+                        <span class="step-title">과정 선택</span>
+                    </div>
+                    <div class="step-connector"></div>
+                    <div class="step-item" data-step="2">
+                        <div class="step-icon">👤</div>
+                        <span class="step-title">신청자 정보</span>
+                    </div>
+                    <div class="step-connector"></div>
+                    <div class="step-item" data-step="3">
+                        <div class="step-icon">✓</div>
+                        <span class="step-title">확인 및 제출</span>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr; gap: 2rem;">
+                    <!-- Form Area -->
+                    <div class="form-area">
+                        <form id="apply-form">
+                            <!-- Step 1: Course Selection -->
+                            <div class="form-step active" data-step="1">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h2 class="card-title">과정 선택</h2>
+                                        <p class="card-description">신청하실 강의를 선택해주세요</p>
+                                    </div>
+                                    <div class="card-content">
+                                        <div class="form-group" id="course-selection-group">
+                                            <!-- Course selection will be loaded here -->
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="preferredSchedule" class="form-label">희망 일정 *</label>
+                                            <input 
+                                                type="text" 
+                                                id="preferredSchedule" 
+                                                name="preferredSchedule" 
+                                                class="form-input" 
+                                                placeholder="날짜를 선택해주세요"
+                                                readonly
+                                                required
+                                            >
+                                            <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.5rem;">
+                                                원하시는 수강 일정을 선택해주세요
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="display: flex; justify-content: flex-end; margin-top: 1.5rem;">
+                                    <button type="button" class="btn btn-primary btn-lg" onclick="nextStep()">
+                                        다음 단계 →
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Step 2: Applicant Info -->
+                            <div class="form-step" data-step="2" style="display: none;">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h2 class="card-title">신청자 정보</h2>
+                                        <p class="card-description">신청자 정보를 입력해주세요</p>
+                                    </div>
+                                    <div class="card-content">
+                                        <div class="form-group">
+                                            <label for="name" class="form-label">이름 *</label>
+                                            <input type="text" id="name" name="name" class="form-input" placeholder="홍길동" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="email" class="form-label">이메일 *</label>
+                                            <input type="email" id="email" name="email" class="form-input" placeholder="example@email.com" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="phone" class="form-label">연락처 *</label>
+                                            <input type="tel" id="phone" name="phone" class="form-input" placeholder="010-1234-5678" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="organization" class="form-label">소속 (선택)</label>
+                                            <input type="text" id="organization" name="organization" class="form-input" placeholder="회사명 또는 조직명">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="position" class="form-label">직무 *</label>
+                                            <input type="text" id="position" name="position" class="form-input" placeholder="예: 마케터, 기획자, 개발자" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; margin-top: 1.5rem;">
+                                    <button type="button" class="btn btn-outline btn-lg" onclick="prevStep()">
+                                        ← 이전
+                                    </button>
+                                    <button type="button" class="btn btn-primary btn-lg" onclick="nextStep()">
+                                        다음 단계 →
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Step 3: Confirmation -->
+                            <div class="form-step" data-step="3" style="display: none;">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h2 class="card-title">신청 정보 확인</h2>
+                                        <p class="card-description">입력하신 정보를 확인해주세요</p>
+                                    </div>
+                                    <div class="card-content" id="confirmation-content">
+                                        <!-- Confirmation content will be generated here -->
+                                    </div>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; margin-top: 1.5rem;">
+                                    <button type="button" class="btn btn-outline btn-lg" onclick="prevStep()">
+                                        ← 이전
+                                    </button>
+                                    <button type="submit" class="btn btn-primary btn-lg" id="submit-btn">
+                                        신청 제출
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Summary Card -->
+                    <div class="summary-card" style="position: sticky; top: 100px; height: fit-content;">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">신청 요약</h3>
+                            </div>
+                            <div class="card-content" id="summary-content">
+                                <p style="color: var(--text-muted);">과정을 선택해주세요</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Success Modal -->
+    <div class="modal-overlay" id="success-modal">
+        <div class="modal-content" style="max-width: 600px; text-align: center;">
+            <div style="font-size: 4rem; margin-bottom: 1rem;">✓</div>
+            <h2 style="font-size: 2rem; font-weight: 700; margin-bottom: 1rem;">접수 완료</h2>
+            <p style="color: var(--text-muted); margin-bottom: 2rem;">
+                신청이 성공적으로 접수되었습니다.<br>
+                확인 후 연락드리겠습니다.
+            </p>
+            <div style="display: flex; gap: 1rem; justify-content: center;">
+                <a href="courses.html" class="btn btn-outline btn-lg">다른 강의 보기</a>
+                <a href="index.html" class="btn btn-primary btn-lg">홈으로 가기</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div id="footer-container"></div>
+
+    <!-- Scripts -->
+    <script src="../js/courses-data.js"></script>
+    <script src="../js/components.js"></script>
+    <script src="../js/main.js"></script>
+    <script src="../js/animations.js"></script>
+    <script src="../js/courses.js"></script>
+    
+    <script>
+        let currentStep = 1;
+        let selectedCourse = null;
+        let isInstructorMode = false;
+        let isConsultMode = false;
+        
+        $(document).ready(function() {
+            // Initialize datepicker with Korean locale
+            $.datepicker.setDefaults({
+                dateFormat: 'yy년 mm월 dd일',
+                monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+                monthNamesShort: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+                dayNames: ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'],
+                dayNamesShort: ['일', '월', '화', '수', '목', '금', '토'],
+                dayNamesMin: ['일', '월', '화', '수', '목', '금', '토'],
+                showMonthAfterYear: true,
+                yearSuffix: '년',
+                minDate: 0, // 오늘 이후 날짜만 선택 가능
+                showButtonPanel: true,
+                currentText: '오늘',
+                closeText: '닫기',
+                prevText: '이전 달',
+                nextText: '다음 달'
+            });
+            
+            $('#preferredSchedule').datepicker({
+                onSelect: function(dateText, inst) {
+                    $(this).val(dateText);
+                }
+            });
+            
+            // Wait for components to load
+            setTimeout(function() {
+                // Check URL parameters
+                const urlParams = new URLSearchParams(window.location.search);
+                const courseParam = urlParams.get('course');
+                const typeParam = urlParams.get('type');
+                const actionParam = urlParams.get('action');
+                
+                if (typeParam === 'instructor') {
+                    isInstructorMode = true;
+                    if (actionParam === 'consult') {
+                        isConsultMode = true;
+                        $('#apply-page-title').text('Zoom 상담 신청');
+                        updateScheduleLabelForConsult();
+                        addTimeInputField();
+                    } else {
+                        $('#apply-page-title').text('강사 성장 프로그램 신청');
+                    }
+                    if (typeof loadInstructorMode === 'function') {
+                        loadInstructorMode();
+                    }
+                } else if (courseParam) {
+                    if (typeof loadCourseSelection === 'function') {
+                        loadCourseSelection(courseParam);
+                    }
+                } else {
+                    if (typeof loadCourseSelection === 'function') {
+                        loadCourseSelection();
+                    }
+                }
+                
+                // Initialize form validation
+                if (typeof initApplyForm === 'function') {
+                    initApplyForm();
+                }
+                
+                // Initialize animations
+                if (typeof initRevealAnimations === 'function') {
+                    initRevealAnimations();
+                }
+            }, 200);
+        });
+        
+        function updateScheduleLabelForConsult() {
+            const $label = $('label[for="preferredSchedule"]');
+            const $helpText = $('#preferredSchedule').next('p');
+            if ($label.length) {
+                $label.text('Zoom 상담 희망일정 *');
+            }
+            if ($helpText.length) {
+                $helpText.text('원하시는 Zoom 상담 일정을 선택해주세요');
+            }
+        }
+        
+        function addTimeInputField() {
+            const $scheduleGroup = $('#preferredSchedule').closest('.form-group');
+            if ($scheduleGroup.length && !$('#preferredTime').length) {
+                const $timeGroup = $(`
+                    <div class="form-group" style="margin-top: 1rem;">
+                        <label for="preferredTime" class="form-label">희망 시간 *</label>
+                        <select 
+                            id="preferredTime" 
+                            name="preferredTime" 
+                            class="form-input" 
+                            required
+                            style="padding: 0.5rem 0.75rem;"
+                        >
+                            <option value="">시간을 선택해주세요</option>
+                            <option value="09:00">09:00</option>
+                            <option value="10:00">10:00</option>
+                            <option value="11:00">11:00</option>
+                            <option value="12:00">12:00</option>
+                            <option value="13:00">13:00</option>
+                            <option value="14:00">14:00</option>
+                            <option value="15:00">15:00</option>
+                            <option value="16:00">16:00</option>
+                            <option value="17:00">17:00</option>
+                            <option value="18:00">18:00</option>
+                            <option value="19:00">19:00</option>
+                            <option value="20:00">20:00</option>
+                        </select>
+                        <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.5rem;">
+                            원하시는 Zoom 상담 시간을 선택해주세요
+                        </p>
+                    </div>
+                `);
+                $scheduleGroup.after($timeGroup);
+            }
+        }
+        
+        function loadCourseSelection(preselectedSlug = null) {
+            // Use embedded data instead of AJAX
+            const courses = typeof COURSES_DATA !== 'undefined' ? COURSES_DATA : [];
+            
+            if (courses.length === 0) {
+                // Fallback: try AJAX
+                $.getJSON('../data/courses.json', function(courses) {
+                const $group = $('#course-selection-group');
+                $group.html('<label for="courseSlug" class="form-label">강의 선택 *</label>');
+                
+                const $select = $('<select>').attr({
+                    id: 'courseSlug',
+                    name: 'courseSlug',
+                    class: 'form-input',
+                    required: true
+                });
+                
+                $select.append($('<option>').val('').text('강의를 선택하세요'));
+                
+                courses.forEach(function(course) {
+                    const $option = $('<option>').val(course.slug).text(course.title);
+                    if (preselectedSlug === course.slug) {
+                        $option.prop('selected', true);
+                        selectedCourse = course;
+                        updateSummary();
+                    }
+                    $select.append($option);
+                });
+                
+                $group.append($select);
+                
+                $select.on('change', function() {
+                    const slug = $(this).val();
+                    if (slug) {
+                        selectedCourse = courses.find(c => c.slug === slug);
+                        updateSummary();
+                    } else {
+                        selectedCourse = null;
+                        updateSummary();
+                    }
+                });
+                });
+            } else {
+                // Use embedded data
+                const $group = $('#course-selection-group');
+                $group.html('<label for="courseSlug" class="form-label">강의 선택 *</label>');
+                
+                const $select = $('<select>').attr({
+                    id: 'courseSlug',
+                    name: 'courseSlug',
+                    class: 'form-input',
+                    required: true
+                });
+                
+                $select.append($('<option>').val('').text('강의를 선택하세요'));
+                
+                courses.forEach(function(course) {
+                    const $option = $('<option>').val(course.slug).text(course.title);
+                    if (preselectedSlug === course.slug) {
+                        $option.prop('selected', true);
+                        selectedCourse = course;
+                        updateSummary();
+                    }
+                    $select.append($option);
+                });
+                
+                $group.append($select);
+                
+                $select.on('change', function() {
+                    const slug = $(this).val();
+                    if (slug) {
+                        selectedCourse = courses.find(c => c.slug === slug);
+                        updateSummary();
+                    } else {
+                        selectedCourse = null;
+                        updateSummary();
+                    }
+                });
+            }
+        }
+        
+        function loadInstructorMode() {
+            const $group = $('#course-selection-group');
+            $group.html(`
+                <div style="padding: 1rem; border: 1px solid var(--border); border-radius: var(--radius-lg); background: rgba(255,255,255,0.5);">
+                    <p style="font-weight: 500;">강사 성장 프로그램</p>
+                    <p style="font-size: 0.875rem; color: var(--text-muted); margin-top: 0.5rem;">
+                        전문 강사로 성장하기 위한 체계적인 프로그램입니다.
+                    </p>
+                </div>
+            `);
+            selectedCourse = { title: '강사 성장 프로그램', category: '강사 성장' };
+            updateSummary();
+        }
+        
+        function nextStep() {
+            if (validateCurrentStep()) {
+                if (currentStep < 3) {
+                    currentStep++;
+                    showStep(currentStep);
+                    updateProgressSteps();
+                }
+            }
+        }
+        
+        function prevStep() {
+            if (currentStep > 1) {
+                currentStep--;
+                showStep(currentStep);
+                updateProgressSteps();
+            }
+        }
+        
+        function showStep(step) {
+            $('.form-step').hide().removeClass('active');
+            $(`.form-step[data-step="${step}"]`).show().addClass('active');
+            
+            if (step === 3) {
+                generateConfirmation();
+            }
+        }
+        
+        function updateProgressSteps() {
+            $('.step-item').each(function() {
+                const stepNum = parseInt($(this).data('step'));
+                const $icon = $(this).find('.step-icon');
+                if (stepNum <= currentStep) {
+                    $(this).addClass('active');
+                    $icon.addClass('active');
+                } else {
+                    $(this).removeClass('active');
+                    $icon.removeClass('active');
+                }
+            });
+        }
+        
+        function validateCurrentStep() {
+            if (currentStep === 1) {
+                if (!selectedCourse && !isInstructorMode) {
+                    alert('과정을 선택해주세요');
+                    return false;
+                }
+                if (!$('#preferredSchedule').val()) {
+                    const scheduleLabel = isConsultMode ? 'Zoom 상담 희망일정' : '희망 일정';
+                    alert(scheduleLabel + '을 입력해주세요');
+                    return false;
+                }
+                if (isConsultMode && !$('#preferredTime').val()) {
+                    alert('희망 시간을 선택해주세요');
+                    return false;
+                }
+            } else if (currentStep === 2) {
+                if (!$('#name').val() || !$('#email').val() || !$('#phone').val() || !$('#position').val()) {
+                    alert('필수 항목을 모두 입력해주세요');
+                    return false;
+                }
+            }
+            return true;
+        }
+        
+        function generateConfirmation() {
+            const formData = {
+                course: selectedCourse ? selectedCourse.title : (isConsultMode ? 'Zoom 상담 신청' : '강사 성장 프로그램'),
+                schedule: $('#preferredSchedule').val(),
+                time: $('#preferredTime').val() || '',
+                name: $('#name').val(),
+                email: $('#email').val(),
+                phone: $('#phone').val(),
+                organization: $('#organization').val(),
+                position: $('#position').val()
+            };
+            
+            const scheduleLabel = isConsultMode ? 'Zoom 상담 희망일정' : '희망 일정';
+            const scheduleDisplay = formData.time ? `${formData.schedule} ${formData.time}` : formData.schedule;
+            
+            const $content = $('#confirmation-content');
+            $content.html(`
+                <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                    <div>
+                        <label class="form-label" style="font-weight: 600;">${isConsultMode ? '신청 유형' : '선택한 과정'}</label>
+                        <p>${formData.course}</p>
+                    </div>
+                    <div>
+                        <label class="form-label" style="font-weight: 600;">${scheduleLabel}</label>
+                        <p>${scheduleDisplay}</p>
+                    </div>
+                    <div>
+                        <label class="form-label" style="font-weight: 600;">이름</label>
+                        <p>${formData.name}</p>
+                    </div>
+                    <div>
+                        <label class="form-label" style="font-weight: 600;">이메일</label>
+                        <p>${formData.email}</p>
+                    </div>
+                    <div>
+                        <label class="form-label" style="font-weight: 600;">연락처</label>
+                        <p>${formData.phone}</p>
+                    </div>
+                    ${formData.organization ? `
+                    <div>
+                        <label class="form-label" style="font-weight: 600;">소속</label>
+                        <p>${formData.organization}</p>
+                    </div>
+                    ` : ''}
+                    <div>
+                        <label class="form-label" style="font-weight: 600;">직무</label>
+                        <p>${formData.position}</p>
+                    </div>
+                    <div style="padding-top: 1.5rem; border-top: 1px solid var(--border);">
+                        <div style="display: flex; align-items: start; gap: 0.5rem;">
+                            <input type="checkbox" id="agreeToTerms" name="agreeToTerms" required style="margin-top: 0.25rem;">
+                            <label for="agreeToTerms" style="font-size: 0.875rem; cursor: pointer;">
+                                개인정보 처리방침에 동의합니다. *
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            `);
+        }
+        
+        function updateSummary() {
+            const $summary = $('#summary-content');
+            if (selectedCourse) {
+                $summary.html(`
+                    <div style="display: flex; flex-direction: column; gap: 1rem;">
+                        <div>
+                            <label style="font-size: 0.75rem; color: var(--text-muted);">선택한 강의</label>
+                            <p style="font-weight: 500; margin-top: 0.25rem;">${selectedCourse.title}</p>
+                            <span class="badge" style="margin-top: 0.5rem; display: inline-block;">${selectedCourse.category}</span>
+                        </div>
+                        <div>
+                            <label style="font-size: 0.75rem; color: var(--text-muted);">기간</label>
+                            <p style="font-size: 0.875rem; margin-top: 0.25rem;">${selectedCourse.durationLabel}</p>
+                        </div>
+                        <div>
+                            <label style="font-size: 0.75rem; color: var(--text-muted);">형식</label>
+                            <p style="font-size: 0.875rem; margin-top: 0.25rem;">${selectedCourse.formatLabel}</p>
+                        </div>
+                    </div>
+                `);
+            } else if (isInstructorMode) {
+                $summary.html(`
+                    <div>
+                        <label style="font-size: 0.75rem; color: var(--text-muted);">프로그램</label>
+                        <p style="font-weight: 500; margin-top: 0.25rem;">강사 성장 프로그램</p>
+                    </div>
+                `);
+            } else {
+                $summary.html('<p style="color: var(--text-muted);">과정을 선택해주세요</p>');
+            }
+        }
+        
+        function initApplyForm() {
+            $('#apply-form').on('submit', function(e) {
+                e.preventDefault();
+                
+                if (!$('#agreeToTerms').is(':checked')) {
+                    alert('개인정보 처리방침에 동의해주세요');
+                    return;
+                }
+                
+                const $submitBtn = $('#submit-btn');
+                $submitBtn.prop('disabled', true).html('<span class="spinner"></span> 제출 중...');
+                
+                // API Call - Replace with your backend endpoint
+                const formData = {
+                    courseSlug: isInstructorMode ? 'instructor-growth' : $('#courseSlug').val(),
+                    preferredSchedule: $('#preferredSchedule').val(),
+                    preferredTime: $('#preferredTime').val() || '',
+                    name: $('#name').val(),
+                    email: $('#email').val(),
+                    phone: $('#phone').val(),
+                    organization: $('#organization').val(),
+                    position: $('#position').val(),
+                    agreeToTerms: true,
+                    courseTitle: selectedCourse ? selectedCourse.title : (isConsultMode ? 'Zoom 상담 신청' : '강사 성장 프로그램'),
+                    courseCategory: selectedCourse ? selectedCourse.category : '강사 성장',
+                    applicationType: isConsultMode ? 'consult' : (isInstructorMode ? 'instructor' : 'student')
+                };
+                
+                // Save application to localStorage for admin viewing
+                const applicationData = {
+                    ...formData,
+                    id: Date.now().toString(),
+                    submittedAt: new Date().toISOString(),
+                    status: 'pending'
+                };
+                
+                // Get existing applications from localStorage
+                let applications = [];
+                try {
+                    const stored = localStorage.getItem('applications');
+                    if (stored) {
+                        applications = JSON.parse(stored);
+                    }
+                } catch (e) {
+                    console.error('Error reading applications:', e);
+                }
+                
+                // Add new application
+                applications.push(applicationData);
+                
+                // Save back to localStorage
+                try {
+                    localStorage.setItem('applications', JSON.stringify(applications));
+                    console.log('Application saved:', applicationData);
+                } catch (e) {
+                    console.error('Error saving application:', e);
+                }
+                
+                $.ajax({
+                    url: '/api/apply', // Replace with your API endpoint
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(formData),
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response.success) {
+                            $('#success-modal').addClass('active');
+                        } else {
+                            alert('신청 처리 중 오류가 발생했습니다.');
+                            $submitBtn.prop('disabled', false).text('신청 제출');
+                        }
+                    },
+                    error: function() {
+                        // Fallback: Show success modal anyway (for development)
+                        console.warn('API call failed, showing success modal (development mode)');
+                        $('#success-modal').addClass('active');
+                    }
+                });
+            });
+        }
+    </script>
+    
+    <style>
+        .progress-steps {
+            flex-wrap: wrap;
+        }
+        .step-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .step-icon {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            border: 2px solid var(--border);
+            color: var(--text-muted);
+            font-size: 1.25rem;
+            transition: all 0.3s ease;
+        }
+        .step-icon.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        .step-title {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+        .step-connector {
+            width: 4rem;
+            height: 2px;
+            background: var(--border);
+            transition: background 0.3s ease;
+        }
+        .step-item.active ~ .step-connector,
+        .step-item.active + .step-connector {
+            background: var(--primary);
+        }
+        @media (min-width: 1024px) {
+            .form-area {
+                grid-column: 1 / 2;
+            }
+            .summary-card {
+                grid-column: 2 / 3;
+            }
+        }
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background-color: var(--secondary);
+            color: var(--secondary-foreground);
+            border-radius: var(--radius-full);
+            font-size: var(--font-size-xs);
+            font-weight: 500;
+        }
+        select.form-input {
+            padding: 0.5rem 0.75rem;
+        }
+        
+        /* Datepicker 스타일 */
+        .ui-datepicker {
+            font-family: var(--font-sans);
+            font-size: var(--font-size-sm);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border);
+            padding: 0;
+        }
+        
+        .ui-datepicker-header {
+            background-color: var(--primary);
+            color: white;
+            border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+            padding: var(--spacing-2);
+        }
+        
+        .ui-datepicker-title {
+            color: white;
+            font-weight: 600;
+        }
+        
+        .ui-datepicker-prev,
+        .ui-datepicker-next {
+            cursor: pointer;
+            color: white;
+        }
+        
+        .ui-datepicker-prev:hover,
+        .ui-datepicker-next:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .ui-datepicker-calendar th {
+            background-color: var(--secondary-hover);
+            color: var(--text);
+            font-weight: 600;
+            padding: var(--spacing-2);
+        }
+        
+        .ui-datepicker-calendar td {
+            padding: 0;
+        }
+        
+        .ui-datepicker-calendar td a {
+            padding: var(--spacing-2);
+            text-align: center;
+            display: block;
+            color: var(--text);
+            text-decoration: none;
+            border-radius: var(--radius-base);
+            transition: all var(--transition-base);
+        }
+        
+        .ui-datepicker-calendar td a:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .ui-datepicker-calendar td.ui-datepicker-today a {
+            background-color: var(--primary);
+            color: white;
+            font-weight: 600;
+        }
+        
+        .ui-datepicker-calendar td.ui-datepicker-current-day a {
+            background-color: var(--primary-hover);
+            color: white;
+            font-weight: 700;
+        }
+        
+        .ui-datepicker-calendar td.ui-state-disabled {
+            opacity: 0.3;
+        }
+        
+        .ui-datepicker-buttonpane {
+            border-top: 1px solid var(--border);
+            padding: var(--spacing-2);
+            text-align: center;
+        }
+        
+        .ui-datepicker-buttonpane button {
+            padding: var(--spacing-2) var(--spacing-4);
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: var(--radius-base);
+            cursor: pointer;
+            font-size: var(--font-size-sm);
+            transition: all var(--transition-base);
+        }
+        
+        .ui-datepicker-buttonpane button:hover {
+            background-color: var(--primary-hover);
+        }
+        
+        #preferredSchedule {
+            cursor: pointer;
+        }
+        
+        #preferredSchedule:focus {
+            cursor: text;
+        }
+    </style>
+</body>
+</html>
+

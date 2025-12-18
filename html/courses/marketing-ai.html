@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>강의 상세 | Irum Academy</title>
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/main.css">
+    <link rel="stylesheet" href="../../css/animations.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <div id="header-container"></div>
+
+    <!-- Page Hero -->
+    <section class="page-hero" style="background-color: #ffffff; padding-top: 120px; min-height: 50vh; display: flex; align-items: center; justify-content: center; padding-bottom: 3rem; transform: translate3d(0, 0, 0); -webkit-transform: translate3d(0, 0, 0); backface-visibility: hidden; -webkit-backface-visibility: hidden;">
+        <div class="container" style="position: relative; z-index: 1; width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 1.5rem;">
+            <div class="page-hero-content reveal-up" style="text-align: center !important; width: 100% !important; margin: 0 auto !important; padding: 0 !important; color: #000000 !important; max-width: 100% !important;" id="course-hero">
+                <!-- Content will be loaded dynamically -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="main-content" style="background-color: #ffffff; padding-top: 4rem; padding-bottom: 4rem;">
+        <!-- Results Section -->
+        <section class="section" id="results-section" style="display: none; padding-top: 4rem; padding-bottom: 0;">
+            <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 1.5rem;">
+                <div class="text-center reveal-up" style="margin-bottom: 3rem;">
+                    <h2 class="section-title">이 강의에서 만드는 결과물</h2>
+                    <p class="section-description">
+                        실무에 바로 활용할 수 있는 산출물을 완성합니다
+                    </p>
+                </div>
+                <div class="reveal-up" style="max-width: 800px; margin: 0 auto 3rem auto; padding: 1.5rem; text-align: left;">
+                    <p style="line-height: 1.8; color: var(--text); margin-bottom: 0.75rem;">
+                        AI 도구를 활용한 콘텐츠 기획부터 마케팅 전략 수립까지, 6개 세션을 통해 체계적으로 학습합니다.
+                    </p>
+                    <p style="line-height: 1.8; color: var(--text); margin-bottom: 0.75rem;">
+                        시장조사 자동화와 SNS 자동화를 구축하여 마케팅 프로세스 전반을 효율화하고, 고객응대 자동화 시스템을 통해 실무 생산성을 극대화합니다.
+                    </p>
+                    <p style="line-height: 1.8; color: var(--text); margin-bottom: 0;">
+                        종합 프로젝트를 통해 캠페인 기획부터 실행, 성과 분석까지 전 과정을 경험하며 실무에 바로 적용 가능한 마케팅 역량을 완성합니다.
+                    </p>
+                </div>
+                <div class="stagger-container" id="deliverables-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; max-width: 1200px; margin: 0 auto; justify-items: center;">
+                    <!-- Content will be loaded dynamically -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Curriculum Section -->
+        <section class="section" style="background-color: #f9fafb; padding-top: 0; padding-bottom: 4rem;">
+            <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 1.5rem;">
+                <div class="text-center reveal-up" style="margin-bottom: 3rem;">
+                    <h2 class="section-title">커리큘럼</h2>
+                    <p class="section-description">
+                        체계적인 학습 과정을 통해 실무 역량을 강화합니다
+                    </p>
+                </div>
+                <div class="accordion-container reveal-up" id="curriculum-container" style="max-width: 900px; margin: 0 auto;">
+                    <!-- Content will be loaded dynamically -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Course Overview Section -->
+        <section class="section" id="overview-section" style="display: none; padding-top: 4rem; padding-bottom: 4rem;">
+            <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 1.5rem;">
+                <div class="text-center reveal-up" style="margin-bottom: 3rem;">
+                    <h2 class="section-title">과정 개요</h2>
+                    <p class="section-description">
+                        AI 마케팅 실무 역량을 강화하는 체계적인 교육 과정입니다
+                    </p>
+                </div>
+                <div class="card card-elevated reveal-up" style="max-width: 900px; margin: 0 auto; padding: 2rem;" id="overview-container">
+                    <!-- Content will be loaded dynamically -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Outcomes Section -->
+        <section class="section" id="outcomes-section" style="display: none; padding-top: 4rem; padding-bottom: 0;">
+            <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 1.5rem;">
+                <div class="text-center reveal-up" style="margin-bottom: 3rem;">
+                    <h2 class="section-title">핵심 기대 효과</h2>
+                    <p class="section-description">
+                        이 강의를 통해 얻을 수 있는 변화입니다
+                    </p>
+                </div>
+                <div class="reveal-up" style="max-width: 800px; margin: 0 auto 3rem auto; padding: 1.5rem; background-color: #ffffff; text-align: left;">
+                    <p style="line-height: 1.8; color: var(--text); margin-bottom: 0.75rem;">
+                        6개 세션의 체계적인 커리큘럼을 통해 AI 콘텐츠 기획부터 마케팅 전략 수립, 시장조사 자동화, SNS 자동화, 고객응대 자동화까지 마케팅 전 과정을 자동화할 수 있는 역량을 습득합니다.
+                    </p>
+                    <p style="line-height: 1.8; color: var(--text); margin-bottom: 0.75rem;">
+                        이론 40%와 실습 60%의 구성으로 Google Gemini, NotebookLM, ChatGPT, Make.com, Buffer 등 최신 AI 도구를 직접 활용하여 실무에 바로 적용 가능한 산출물을 완성합니다.
+                    </p>
+                    <p style="line-height: 1.8; color: var(--text); margin-bottom: 0;">
+                        종합 프로젝트를 통해 캠페인 기획부터 실행, 성과 분석까지 전 과정을 경험하며 마케팅 생산성을 25% 이상 향상시키고, 데이터 기반 의사결정 역량을 강화합니다.
+                    </p>
+                </div>
+                <div class="stagger-container" id="outcomes-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; max-width: 1200px; margin: 0 auto; justify-items: center;">
+                    <!-- Content will be loaded dynamically -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Evaluation & Materials Section -->
+        <section class="section" id="evaluation-section" style="display: none; padding-top: 2rem; padding-bottom: 4rem;">
+            <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 1.5rem;">
+                <div class="text-center reveal-up" style="margin-bottom: 3rem;">
+                    <h2 class="section-title">평가 기준 및 제공 자료</h2>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; max-width: 1000px; margin: 0 auto; justify-items: center;">
+                    <div class="card reveal-up" id="evaluation-container" style="width: 100%; max-width: 100%;">
+                        <!-- Content will be loaded dynamically -->
+                    </div>
+                    <div class="card reveal-up" id="materials-container" style="width: 100%; max-width: 100%;">
+                        <!-- Content will be loaded dynamically -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <div id="footer-container"></div>
+
+    <!-- Scripts -->
+    <script src="../../js/courses-data.js"></script>
+    <script src="../../js/components.js"></script>
+    <script src="../../js/main.js"></script>
+    <script src="../../js/animations.js"></script>
+    
+    <script>
+        // Deliverables data (Notion 기반 상세 내용)
+        const deliverables = {
+            "marketing-ai": [
+                { title: "콘텐츠 캘린더", description: "AI 분석 기반 브랜드 콘텐츠 캘린더 및 패키지" },
+                { title: "마케팅 전략서", description: "4P 프레임 기반 AI Gem을 활용한 마케팅 전략서" },
+                { title: "시장조사 보고서", description: "Deep Research 기반 시장조사 보고서 및 대시보드" },
+                { title: "자동화 시스템", description: "Make.com + Buffer + Gems 연동 SNS 자동화 시스템 및 성과 대시보드" },
+                { title: "FAQ 챗봇", description: "Tally 폼 기반 고객응대 자동화 시스템" },
+                { title: "캠페인 계획서", description: "A/B 테스트 기반 캠페인 계획서 및 성과분석 리포트" },
+            ],
+            "planning-ai": [
+                { title: "기획서", description: "실제 프로젝트 기반 종합 기획서" },
+                { title: "사용자 여정 맵", description: "AI 분석 기반 사용자 경험 설계" },
+                { title: "프로젝트 로드맵", description: "실행 가능한 단계별 계획" },
+            ],
+            "dev-ai": [
+                { title: "프로젝트 코드", description: "AI 도구를 활용해 개발한 실제 프로젝트" },
+                { title: "자동화 스크립트", description: "개발 프로세스 자동화 도구" },
+                { title: "문서화", description: "AI 생성 API 문서 및 가이드" },
+            ],
+            "design-ai": [
+                { title: "디자인 시스템", description: "AI 생성 에셋 기반 디자인 시스템" },
+                { title: "브랜드 아이덴티티", description: "완성된 브랜드 가이드라인" },
+                { title: "포트폴리오", description: "실무 프로젝트 포트폴리오" },
+            ],
+            "sales-ai": [
+                { title: "영업 전략서", description: "AI 기반 영업 전략 및 실행 계획" },
+                { title: "고객 관리 시스템", description: "CRM 자동화 워크플로우" },
+                { title: "제안서 템플릿", description: "AI 생성 제안서 템플릿" },
+            ],
+            "hr-ai": [
+                { title: "채용 프로세스", description: "AI 기반 채용 워크플로우" },
+                { title: "인사 평가 시스템", description: "성과 평가 및 개발 계획" },
+                { title: "HR 리포트", description: "인사 데이터 분석 리포트" },
+            ],
+            "job-bootcamp": [
+                { title: "최적화된 이력서", description: "ATS 친화적 이력서" },
+                { title: "포트폴리오", description: "취업용 포트폴리오" },
+                { title: "면접 준비 자료", description: "STAR 기법 기반 면접 답변" },
+            ],
+            "career-ai": [
+                { title: "ATS 최적화 이력서", description: "AI 기반 이력서 최적화" },
+                { title: "면접 준비 자료", description: "면접 답변 및 전략" },
+            ],
+            "employee-ai": [
+                { title: "업무 자동화 시스템", description: "AI 도구를 활용한 업무 자동화" },
+                { title: "생산성 향상 리포트", description: "업무 효율성 개선 결과" },
+            ],
+        };
+
+        // Curriculum data (Notion 기반 상세 내용)
+        const curriculumData = {
+            "marketing-ai": [
+                { 
+                    title: "Session 1: AI 콘텐츠 기획", 
+                    duration: "60분",
+                    items: [
+                        "유튜브 댓글 분석 기반 기획",
+                        "멀티모달 활용",
+                        "NotebookLM 분석"
+                    ],
+                    practice: ["브랜드 콘텐츠 3종 생성"],
+                    deliverables: ["콘텐츠 캘린더", "콘텐츠 패키지"]
+                },
+                { 
+                    title: "Session 2: 프롬프트 엔지니어링", 
+                    duration: "60분",
+                    items: [
+                        "4P 프레임",
+                        "플랫폼별 생성",
+                        "Gemini Gems로 MarkeBot 제작"
+                    ],
+                    practice: ["전략서 작성", "AI Gem 제작"],
+                    deliverables: ["마케팅 전략서", "AI Gem"]
+                },
+                { 
+                    title: "Session 3: 시장조사 자동화", 
+                    duration: "60분",
+                    items: [
+                        "Deep Research/Trends/Market Finder",
+                        "보고서 작성"
+                    ],
+                    practice: ["시장조사 보고서 작성", "대시보드 구축"],
+                    deliverables: ["시장조사 보고서", "대시보드"]
+                },
+                { 
+                    title: "Session 4: SNS 자동화", 
+                    duration: "60분",
+                    items: [
+                        "Make.com + Buffer + Gems 연동",
+                        "RSS 수집 → 콘텐츠 생성 → 예약 → Slack 알림",
+                        "GA4 기반 분석"
+                    ],
+                    practice: ["자동화 시스템 구축", "대시보드 구성"],
+                    deliverables: ["자동화 시스템", "성과 대시보드"]
+                },
+                { 
+                    title: "Session 5: 고객응대 자동화", 
+                    duration: "60분",
+                    items: [
+                        "Tally 폼 → Make.com 트리거 → Gems 답변 → SMS/이메일 발송 → CRM/Slack 기록"
+                    ],
+                    practice: ["FAQ 챗봇 구축", "응대 자동화 시스템"],
+                    deliverables: ["FAQ 챗봇", "응대 자동화 시스템"]
+                },
+                { 
+                    title: "Session 6: 종합 프로젝트", 
+                    duration: "60분",
+                    items: [
+                        "캠페인 기획/실행",
+                        "A/B 테스트",
+                        "KPI(CTR/전환/ROAS) 분석"
+                    ],
+                    practice: ["캠페인 실행", "성과 분석"],
+                    deliverables: ["캠페인 계획서", "성과분석 리포트"]
+                },
+            ],
+            "planning-ai": [
+                { title: "1차시: 기획의 기초와 AI 활용", items: ["기획 프로세스 이해", "AI 도구를 활용한 정보 수집 및 분석", "문제 정의 및 기회 발견", "기획서 작성 프레임워크"] },
+                { title: "2차시: 사용자 중심 기획", items: ["사용자 리서치 및 페르소나 설정", "AI를 활용한 사용자 인사이트 도출", "사용자 여정 맵핑", "요구사항 정의 및 우선순위 설정"] },
+                { title: "3차시: 전략 수립 및 로드맵", items: ["비즈니스 모델 분석", "AI 기반 경쟁사 분석", "전략 수립 및 목표 설정", "프로젝트 로드맵 작성"] },
+                { title: "4차시: 실행 계획 및 리스크 관리", items: ["실행 계획 수립", "리소스 계획 및 배분", "리스크 식별 및 대응 방안", "KPI 설정 및 모니터링 체계"] },
+                { title: "5차시: 종합 프로젝트", items: ["실제 프로젝트 기획서 작성", "프레젠테이션 및 피드백", "개선 사항 반영", "최종 기획서 완성"] },
+            ],
+            "dev-ai": [
+                { title: "Session 1: AI 개발 도구 기초", items: ["AI 코딩 어시스턴트 소개", "GitHub Copilot 설정 및 활용", "ChatGPT를 활용한 코드 생성", "개발 환경 설정"] },
+                { title: "Session 2: 코드 생성 및 최적화", items: ["프롬프트 엔지니어링", "코드 리뷰 및 개선", "테스트 코드 자동 생성", "문서화 자동화"] },
+                { title: "Session 3: 개발 프로세스 자동화", items: ["CI/CD 파이프라인 구축", "자동화 스크립트 작성", "배포 자동화", "모니터링 및 로깅"] },
+                { title: "Session 4: AI 기반 디버깅", items: ["에러 분석 및 해결", "성능 최적화", "보안 취약점 분석", "코드 품질 개선"] },
+                { title: "Session 5: 실무 프로젝트", items: ["실제 프로젝트 개발", "AI 도구 활용 사례", "프로젝트 리뷰", "포트폴리오 완성"] },
+            ],
+            "design-ai": [
+                { title: "Session 1: AI 디자인 도구 기초", items: ["AI 이미지 생성 도구 소개", "Midjourney/DALL-E 활용", "디자인 컨셉 개발", "브랜드 아이덴티티 기획"] },
+                { title: "Session 2: 디자인 자동화", items: ["템플릿 기반 디자인", "일괄 생성 및 변형", "디자인 시스템 구축", "에셋 관리"] },
+                { title: "Session 3: 실무 디자인 프로젝트", items: ["로고 및 브랜딩", "웹/앱 UI 디자인", "마케팅 자료 제작", "포트폴리오 구성"] },
+            ],
+            "sales-ai": [
+                { title: "Session 1: AI 영업 전략", items: ["AI 기반 고객 분석", "영업 전략 수립", "CRM 시스템 활용", "리드 관리"] },
+                { title: "Session 2: 고객 커뮤니케이션", items: ["AI 기반 제안서 작성", "고객 맞춤 솔루션 개발", "이메일 자동화", "팔로우업 전략"] },
+                { title: "Session 3: 영업 성과 분석", items: ["영업 데이터 분석", "성과 측정 및 개선", "예측 분석", "영업 리포트 작성"] },
+            ],
+            "hr-ai": [
+                { title: "Session 1: AI 채용 프로세스", items: ["ATS 시스템 활용", "이력서 스크리닝", "면접 질문 생성", "채용 프로세스 최적화"] },
+                { title: "Session 2: 인사 관리 자동화", items: ["인사 데이터 분석", "성과 평가 시스템", "교육 프로그램 기획", "HR 리포트 작성"] },
+            ],
+            "job-bootcamp": [
+                { title: "1주차: 이력서 최적화", items: ["ATS 친화적 이력서 작성", "키워드 최적화", "경력 기술 방법", "포트폴리오 구성"] },
+                { title: "2주차: 면접 준비", items: ["STAR 기법", "면접 질문 대비", "포트폴리오 발표", "롤플레이 연습"] },
+            ],
+            "career-ai": [
+                { title: "Part 1: 이력서 최적화", items: ["ATS 분석", "이력서 작성", "키워드 최적화"] },
+                { title: "Part 2: 면접 전략", items: ["면접 준비", "답변 구성", "실전 연습"] },
+            ],
+            "employee-ai": [
+                { title: "Day 1: AI 도구 기초", items: ["ChatGPT/Claude 활용", "업무 자동화 기초", "생산성 향상 전략"] },
+                { title: "Day 2: 실무 적용", items: ["실제 업무 자동화", "워크플로우 구축", "성과 측정"] },
+            ],
+        };
+
+        // Course Overview data (Notion 기반)
+        const courseOverview = {
+            "marketing-ai": {
+                name: "AI 마케팅 직무역량 강화 과정",
+                duration: "6세션(세션당 60분)",
+                audience: ["마케팅/브랜딩/콘텐츠 기획 담당자"],
+                format: "이론 40% + 실습 60%",
+                tools: ["Google Gemini", "NotebookLM", "ChatGPT", "Make.com", "Buffer", "Tally", "Solapi", "Gemini Gems", "GA4"],
+                goals: [
+                    "마케팅 전 과정(콘텐츠→시장조사→SNS자동화→고객응대→성과분석) 자동화",
+                    "생산성 25%+ 향상",
+                    "AI 도구를 활용한 실무 역량 강화"
+                ],
+                evaluation: {
+                    criteria: ["출석", "과제", "프로젝트"],
+                    completion: ["출석률 80% 이상", "과제 제출 완료", "프로젝트 완성"]
+                },
+                materials: [
+                    "강의안",
+                    "템플릿",
+                    "프롬프트 라이브러리",
+                    "체크리스트"
+                ]
+            }
+        };
+
+        // Outcomes data (Notion 기반)
+        const outcomesData = {
+            "marketing-ai": [
+                "마케팅 전 과정(콘텐츠→시장조사→SNS자동화→고객응대→성과분석) 자동화 구축 능력",
+                "생산성 25%+ 향상",
+                "AI 도구를 활용한 실무 역량 강화",
+                "데이터 기반 마케팅 의사결정 역량",
+            ],
+        };
+
+        let retryCount = 0;
+        const MAX_RETRIES = 20;
+        
+        function loadCourseData() {
+            // Get course slug from URL
+            let slug = '';
+            // For file:// protocol, use window.location.href
+            const href = window.location.href;
+            const pathParts = href.split('/');
+            const filename = pathParts[pathParts.length - 1];
+            if (filename && filename.endsWith('.html')) {
+                slug = filename.replace('.html', '');
+            } else {
+                // Fallback: try to get from hash or query
+                const hash = window.location.hash.replace('#', '');
+                const params = new URLSearchParams(window.location.search);
+                slug = hash || params.get('course') || 'marketing-ai';
+            }
+            
+            // Ensure slug is set
+            if (!slug) {
+                slug = 'marketing-ai'; // Default fallback
+            }
+            
+            console.log('Loading course:', slug);
+            console.log('COURSES_DATA available:', typeof COURSES_DATA !== 'undefined');
+            console.log('getCourseBySlug available:', typeof getCourseBySlug === 'function');
+            console.log('curriculumData available:', typeof curriculumData !== 'undefined');
+            console.log('deliverables available:', typeof deliverables !== 'undefined');
+            console.log('outcomesData available:', typeof outcomesData !== 'undefined');
+            console.log('courseOverview available:', typeof courseOverview !== 'undefined');
+            
+            // Wait for COURSES_DATA to load
+            if (typeof COURSES_DATA === 'undefined') {
+                retryCount++;
+                if (retryCount < MAX_RETRIES) {
+                    console.warn('COURSES_DATA not loaded yet, retrying... (' + retryCount + '/' + MAX_RETRIES + ')');
+                    setTimeout(loadCourseData, 300);
+                } else {
+                    console.error('Failed to load COURSES_DATA after ' + MAX_RETRIES + ' retries');
+                    $('#course-hero').html('<p style="color: red; padding: 2rem;">데이터를 불러올 수 없습니다. 페이지를 새로고침해주세요.</p>');
+                }
+                return;
+            }
+            
+            // Get course data
+            let course = null;
+            if (typeof getCourseBySlug === 'function') {
+                course = getCourseBySlug(slug);
+            } else if (typeof COURSES_DATA !== 'undefined' && Array.isArray(COURSES_DATA)) {
+                course = COURSES_DATA.find(c => c.slug === slug);
+            }
+            
+            if (!course) {
+                console.error('Course not found:', slug);
+                $('#course-hero').html('<p style="color: red; padding: 2rem;">강의를 찾을 수 없습니다. <a href="../courses.html">강의 목록으로 돌아가기</a></p>');
+                return;
+            }
+            
+            console.log('Course found:', course);
+            
+            // Update page title
+            document.title = course.title + ' | Irum Academy';
+            
+            // Render hero section
+            renderHero(course);
+            
+            // Render deliverables
+            const courseDeliverables = deliverables[slug] || [];
+            console.log('Deliverables for', slug, ':', courseDeliverables);
+            if (courseDeliverables.length > 0) {
+                renderDeliverables(courseDeliverables);
+                $('#results-section').show();
+            } else {
+                console.warn('No deliverables found for', slug);
+                $('#results-section').hide();
+            }
+            
+            // Render curriculum
+            if (typeof curriculumData === 'undefined') {
+                console.error('curriculumData is not defined!');
+                $('#curriculum-container').html('<p style="text-align: center; padding: 2rem; color: red;">커리큘럼 데이터를 불러올 수 없습니다.</p>');
+            } else {
+                const curriculum = curriculumData[slug] || [];
+                console.log('Curriculum for', slug, ':', curriculum);
+                if (curriculum.length > 0) {
+                    renderCurriculum(curriculum);
+                } else {
+                    console.warn('No curriculum found for', slug);
+                    $('#curriculum-container').html('<p style="text-align: center; padding: 2rem; color: var(--text-muted);">커리큘럼 정보를 준비 중입니다.</p>');
+                }
+            }
+            
+            // Render outcomes
+            const outcomes = outcomesData[slug] || [];
+            console.log('Outcomes for', slug, ':', outcomes);
+            if (outcomes.length > 0) {
+                renderOutcomes(outcomes);
+                $('#outcomes-section').show();
+            } else {
+                console.warn('No outcomes found for', slug);
+                $('#outcomes-section').hide();
+            }
+            
+            // Render overview
+            const overview = courseOverview && courseOverview[slug];
+            if (overview) {
+                renderOverview(overview);
+                $('#overview-section').show();
+                
+                // Render evaluation and materials
+                if (overview.evaluation && overview.materials) {
+                    renderEvaluation(overview.evaluation, overview.materials);
+                    $('#evaluation-section').show();
+                }
+            }
+            
+            // Update CTA
+            $('#cta-button').attr('href', '../apply.html?course=' + slug);
+            if ($('#cta-description').length) {
+                $('#cta-description').text(course.shortDescription);
+            }
+            
+            // Initialize accordion
+            setTimeout(function() {
+                if (typeof initAccordion === 'function') {
+                    initAccordion();
+                }
+            }, 100);
+            
+            // Initialize animations
+            setTimeout(function() {
+                if (typeof initRevealAnimations === 'function') {
+                    initRevealAnimations();
+                }
+                if (typeof initStaggerAnimations === 'function') {
+                    initStaggerAnimations();
+                }
+            }, 200);
+        }
+        
+        // Ensure jQuery is loaded before executing
+        function initPage() {
+            if (typeof jQuery === 'undefined') {
+                console.error('jQuery is not loaded');
+                setTimeout(initPage, 100);
+                return;
+            }
+            
+            // Wait for DOM to be ready
+            $(document).ready(function() {
+                console.log('Document ready, starting loadCourseData...');
+                console.log('courseOverview available:', typeof courseOverview !== 'undefined');
+                console.log('renderOverview available:', typeof renderOverview === 'function');
+                // Wait a bit more to ensure all scripts are loaded
+                setTimeout(function() {
+                    console.log('Calling loadCourseData...');
+                    loadCourseData();
+                }, 300);
+            });
+        }
+        
+        // Start initialization
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initPage);
+        } else {
+            initPage();
+        }
+        
+        function renderHero(course) {
+            const toolsHtml = (course.tools || []).map(tool =>
+                `<span class="badge" style="display: inline-block; padding: 0.25rem 0.75rem; background-color: #f5f5f5; color: #171717; border-radius: 9999px; font-size: 0.75rem;">${tool}</span>`
+            ).join('');
+
+            $('#course-hero').html(`
+                <div style="display: flex !important; align-items: center !important; gap: 1rem; justify-content: center !important; flex-wrap: wrap; margin: 0 auto 0.5rem auto !important; width: 100% !important;">
+                    <span class="badge" style="display: inline-block; padding: 0.375rem 1rem; background-color: #f5f5f5; color: #171717; border-radius: 9999px; font-size: 0.875rem; font-weight: 500;">${course.category}</span>
+                    <span style="font-size: 0.875rem; color: var(--text-muted);">${course.durationLabel || ''} · ${course.formatLabel || ''}</span>
+                </div>
+                <h1 class="page-hero-title" style="color: #000000 !important; font-size: 2rem !important; font-weight: 700 !important; margin: 0 auto 0.5rem auto !important; padding: 0 !important; line-height: 1.2 !important; text-align: center !important; width: 100% !important; text-shadow: none !important;">
+                    ${course.title}
+                </h1>
+                <p style="font-size: 1.125rem !important; color: var(--text-muted) !important; max-width: 800px !important; margin: 0 auto 1rem auto !important; line-height: 1.6 !important; text-align: center !important; width: 100% !important;">
+                    ${course.shortDescription}
+                </p>
+                ${toolsHtml ? `<div style="display: flex !important; flex-wrap: wrap !important; gap: 0.5rem !important; justify-content: center !important; margin: 0 auto 1rem auto !important; width: 100% !important;">
+                    ${toolsHtml}
+                </div>` : ''}
+                <div style="text-align: center !important; width: 100% !important; margin: 0 auto !important;">
+                    <a href="../apply.html?course=${course.slug}" class="btn btn-primary btn-lg btn-animated" style="margin-top: 0.5rem; display: inline-block !important;">
+                        강의 신청하기 →
+                    </a>
+                </div>
+            `);
+        }
+        
+        function renderDeliverables(deliverables) {
+            const html = deliverables.map((item, index) => `
+                <div class="card stagger-item reveal-up" style="transition-delay: ${index * 0.1}s">
+                    <div class="card-header">
+                        <h3 class="card-title">${item.title}</h3>
+                    </div>
+                    <p class="card-description">${item.description}</p>
+                </div>
+            `).join('');
+            $('#deliverables-container').html(html);
+        }
+        
+        function renderCurriculum(curriculum) {
+            if (!curriculum || curriculum.length === 0) {
+                $('#curriculum-container').html('<p style="text-align: center; padding: 2rem; color: var(--text-muted);">커리큘럼 정보를 준비 중입니다.</p>');
+                return;
+            }
+
+            const html = curriculum.map((section, index) => {
+                const durationHtml = section.duration ? `<span style="font-size: 0.875rem; color: var(--text-muted); margin-left: 0.5rem;">(${section.duration})</span>` : '';
+                const itemsHtml = (section.items || []).length > 0 ? `
+                           <div style="margin-bottom: 1rem;">
+                               <h4 style="font-size: 0.875rem; font-weight: 600; color: var(--text-muted); margin-bottom: 0.5rem; text-transform: uppercase;">학습 내용</h4>
+                               <ul style="padding: 0; list-style: none; margin: 0;">
+                                   ${section.items.map(item => `
+                                       <li style="padding: 0.5rem 0; display: flex; align-items: start; gap: 0.5rem;">
+                                           <span style="color: var(--primary); font-weight: 700;">✓</span>
+                                           <span>${item}</span>
+                                       </li>
+                                   `).join('')}
+                               </ul>
+                           </div>
+                       ` : '';
+                const practiceHtml = (section.practice || []).length > 0 ? `
+                           <div style="margin-bottom: 1rem;">
+                               <h4 style="font-size: 0.875rem; font-weight: 600; color: var(--text-muted); margin-bottom: 0.5rem; text-transform: uppercase;">실습</h4>
+                               <ul style="padding: 0; list-style: none; margin: 0;">
+                                   ${section.practice.map(item => `
+                                       <li style="padding: 0.5rem 0; display: flex; align-items: start; gap: 0.5rem;">
+                                           <span style="color: #10b981; font-weight: 700;">▶</span>
+                                           <span>${item}</span>
+                                       </li>
+                                   `).join('')}
+                               </ul>
+                           </div>
+                       ` : '';
+                const deliverablesHtml = (section.deliverables || []).length > 0 ? `
+                           <div style="margin-bottom: 1rem;">
+                               <h4 style="font-size: 0.875rem; font-weight: 600; color: var(--text-muted); margin-bottom: 0.5rem; text-transform: uppercase;">산출물</h4>
+                               <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                                   ${section.deliverables.map(item => `
+                                       <span style="display: inline-block; padding: 0.25rem 0.75rem; background-color: #f0f9ff; color: #0369a1; border-radius: 9999px; font-size: 0.75rem; font-weight: 500;">${item}</span>
+                                   `).join('')}
+                               </div>
+                           </div>
+                       ` : '';
+
+                return `
+                           <div class="accordion-item">
+                               <div class="accordion-trigger" style="padding: 1.5rem; background: white; border-radius: var(--radius-lg); cursor: pointer; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border); margin-bottom: 0.5rem;">
+                                   <div>
+                                       <span style="font-weight: 600; font-size: 1.125rem;">${section.title || '세션 ' + (index + 1)}</span>
+                                       ${durationHtml}
+                                   </div>
+                                   <span style="font-size: 1.5rem; color: var(--primary);">+</span>
+                               </div>
+                               <div class="accordion-content" style="padding: 0 1.5rem; max-height: 0; overflow: hidden; transition: max-height 0.3s ease;">
+                                   <div style="padding: 1.5rem 0;">
+                                       ${itemsHtml}
+                                       ${practiceHtml}
+                                       ${deliverablesHtml}
+                                   </div>
+                               </div>
+                           </div>
+                       `;
+            }).join('');
+            $('#curriculum-container').html(html);
+
+            // Re-initialize accordion after rendering
+            setTimeout(initAccordion, 50);
+        }
+        
+        function renderOutcomes(outcomes) {
+            const html = outcomes.map((item, index) => `
+                       <div class="card stagger-item reveal-up" style="transition-delay: ${index * 0.1}s">
+                           <div class="card-header">
+                               <h3 class="card-title" style="font-size: 1.125rem; font-weight: 600;">${item}</h3>
+                           </div>
+                       </div>
+                   `).join('');
+            $('#outcomes-container').html(html);
+        }
+        
+        function renderOverview(overview) {
+            const toolsHtml = (overview.tools || []).map(tool => 
+                `<span class="badge" style="display: inline-block; padding: 0.25rem 0.75rem; background-color: #f0f9ff; color: #0369a1; border-radius: 9999px; font-size: 0.75rem; margin: 0.25rem;">${tool}</span>`
+            ).join('');
+            
+            const goalsHtml = (overview.goals || []).map(goal => 
+                `<li style="padding: 0.5rem 0; display: flex; align-items: start; gap: 0.5rem;">
+                    <span style="color: var(--primary); font-weight: 700;">✓</span>
+                    <span>${goal}</span>
+                </li>`
+            ).join('');
+            
+            $('#overview-container').html(`
+                <div style="display: grid; gap: 2rem;">
+                    <div>
+                        <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem; color: #000000;">${overview.name}</h3>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+                            <div>
+                                <div style="font-size: 0.875rem; color: var(--text-muted); margin-bottom: 0.25rem;">기간</div>
+                                <div style="font-weight: 600;">${overview.duration}</div>
+                            </div>
+                            <div>
+                                <div style="font-size: 0.875rem; color: var(--text-muted); margin-bottom: 0.25rem;">형식</div>
+                                <div style="font-weight: 600;">${overview.format}</div>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 1.5rem;">
+                            <div style="font-size: 0.875rem; color: var(--text-muted); margin-bottom: 0.5rem;">대상</div>
+                            <div>${(overview.audience || []).join(', ')}</div>
+                        </div>
+                        <div style="margin-bottom: 1.5rem;">
+                            <div style="font-size: 0.875rem; color: var(--text-muted); margin-bottom: 0.5rem;">사용 도구</div>
+                            <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                                ${toolsHtml}
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 1rem; color: #000000;">과정 목표</h4>
+                        <ul style="list-style: none; padding: 0; margin: 0;">
+                            ${goalsHtml}
+                        </ul>
+                    </div>
+                </div>
+            `);
+        }
+        
+        function renderEvaluation(evaluation, materials) {
+            const criteriaHtml = (evaluation.criteria || []).map(criteria => 
+                `<li style="padding: 0.5rem 0; display: flex; align-items: start; gap: 0.5rem;">
+                    <span style="color: var(--primary); font-weight: 700;">•</span>
+                    <span>${criteria}</span>
+                </li>`
+            ).join('');
+            
+            const completionHtml = (evaluation.completion || []).map(item => 
+                `<li style="padding: 0.5rem 0; display: flex; align-items: start; gap: 0.5rem;">
+                    <span style="color: #10b981; font-weight: 700;">✓</span>
+                    <span>${item}</span>
+                </li>`
+            ).join('');
+            
+            const materialsHtml = (materials || []).map(material => 
+                `<li style="padding: 0.5rem 0; display: flex; align-items: start; gap: 0.5rem;">
+                    <span style="color: var(--primary); font-weight: 700;">📄</span>
+                    <span>${material}</span>
+                </li>`
+            ).join('');
+            
+            $('#evaluation-container').html(`
+                <div>
+                    <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 1rem; color: #000000;">평가 기준</h3>
+                    <ul style="list-style: none; padding: 0; margin: 0 0 1.5rem 0;">
+                        ${criteriaHtml}
+                    </ul>
+                    <h4 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.75rem; color: #000000;">수료 조건</h4>
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        ${completionHtml}
+                    </ul>
+                </div>
+            `);
+            
+            $('#materials-container').html(`
+                <div>
+                    <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 1rem; color: #000000;">제공 자료</h3>
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        ${materialsHtml}
+                    </ul>
+                </div>
+            `);
+        }
+        
+        function initAccordion() {
+            // Remove existing handlers to avoid duplicates
+            $('.accordion-trigger').off('click');
+            
+            $('.accordion-trigger').on('click', function() {
+                const $content = $(this).next('.accordion-content');
+                const $icon = $(this).find('span:last-child');
+                const isActive = $(this).hasClass('active');
+                
+                // Close all
+                $('.accordion-trigger').removeClass('active');
+                $('.accordion-content').css('max-height', '0');
+                $('.accordion-trigger span:last-child').text('+');
+                
+                // Open clicked if it wasn't active
+                if (!isActive) {
+                    $(this).addClass('active');
+                    $content.css('max-height', '1000px');
+                    $icon.text('−');
+                }
+            });
+        }
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Irum Academy - AI시대의 새로운 교육과정</title>
+    <meta name="description" content="온라인 강의 플랫폼">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/animations.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+    
+    <!-- jQuery Validation -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <div id="header-container"></div>
+
+    <!-- Hero Section -->
+    <section class="hero-section" style="background-color: #ffffff; margin-top: 80px; min-height: 50vh; display: flex; align-items: center; justify-content: center; padding-top: 3rem; padding-bottom: 3rem;">
+        <div class="container" style="position: relative; z-index: 1; width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 1.5rem;">
+            <div class="hero-content reveal-up" style="text-align: center !important; width: 100% !important; margin: 0 auto !important; padding: 0 !important; color: #000000 !important; max-width: 100% !important;">
+                <h1 class="hero-title" style="color: #000000 !important; text-shadow: none !important;">AI시대의 새로운 교육과정</h1>
+                <p class="hero-description" style="color: var(--text-muted);">
+                    이룸아카데미와 함께 AI 리터러시를 뛰어넘어<br class="hidden-sm">
+                    AI로 자신의 경쟁력을 높이는 실무교육을 지향합니다.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Introduction Section -->
+        <section class="section intro-section">
+            <div class="container">
+                <div class="intro-content text-center reveal-up">
+                    <h2 class="section-title">AI시대의 새로운 교육과정</h2>
+                    <p class="section-description">
+                        이룸아카데미와 함께 AI 리터러시를 뛰어넘어<br class="hidden-sm">
+                        AI로 자신의 경쟁력을 높이는 실무교육을 지향합니다.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Course Grid Section -->
+        <section class="section grid-section">
+            <div class="container">
+                <div class="course-grid" id="course-grid">
+                    <!-- Grid items will be loaded dynamically -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <div id="footer-container"></div>
+
+    <!-- Scripts -->
+    <script src="../js/courses-data.js"></script>
+    <script src="../js/components.js"></script>
+    <script src="../js/main.js"></script>
+    <script src="../js/animations.js"></script>
+    <script src="../js/courses.js"></script>
+    
+    <script>
+        $(document).ready(function() {
+            // Components (header/footer) are loaded automatically by components.js
+            // Load courses
+            loadCourseGrid();
+            
+            // Initialize animations
+            initRevealAnimations();
+        });
+    </script>
+</body>
+</html>
+

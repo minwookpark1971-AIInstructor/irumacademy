@@ -1,0 +1,12 @@
+{
+  "name": "irumacademy",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "theme:extract": "node scripts/extract-teachable-colors.mjs",
+    "theme:apply": "node scripts/apply-theme.mjs",
+    "theme:setup": "npm run theme:extract && npm run theme:apply"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}

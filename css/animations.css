@@ -1,0 +1,311 @@
+/* ============================================
+   Reveal Animations
+   ============================================ */
+.reveal {
+    opacity: 0;
+    transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-up {
+    transform: translateY(50px);
+}
+
+.reveal-down {
+    transform: translateY(-50px);
+}
+
+.reveal-left {
+    transform: translateX(50px);
+}
+
+.reveal-right {
+    transform: translateX(-50px);
+}
+
+.reveal-fade {
+    transform: none;
+}
+
+.reveal.revealed {
+    opacity: 1;
+    transform: translate(0, 0);
+}
+
+/* ============================================
+   Stagger Animations
+   ============================================ */
+.stagger-container {
+    opacity: 0;
+}
+
+.stagger-item {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.stagger-container.revealed .stagger-item {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ============================================
+   Card Hover Effects
+   ============================================ */
+.card-elevated {
+    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-elevated:hover {
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    transform: translateY(-2px);
+}
+
+/* ============================================
+   Button Animations
+   ============================================ */
+.btn-animated {
+    transition: transform 0.2s ease;
+}
+
+.btn-animated:hover {
+    transform: scale(1.02);
+}
+
+.btn-animated:active {
+    transform: scale(0.98);
+}
+
+/* ============================================
+   Accordion Animations
+   ============================================ */
+.accordion-item {
+    overflow: hidden;
+}
+
+.accordion-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+}
+
+.accordion-item.active .accordion-content {
+    max-height: 1000px;
+    transition: max-height 0.5s ease-in;
+}
+
+/* ============================================
+   Modal/Dialog Animations
+   ============================================ */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    z-index: 100;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.modal-content {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.95);
+    background-color: var(--surface);
+    border-radius: var(--radius-xl);
+    padding: var(--spacing-6);
+    max-width: 90vw;
+    max-height: 90vh;
+    overflow-y: auto;
+    z-index: 101;
+    opacity: 0;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: none;
+}
+
+.modal-overlay.active .modal-content {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+    pointer-events: all;
+}
+
+/* ============================================
+   Page Transition Animations
+   ============================================ */
+.page-transition-enter {
+    opacity: 0;
+    transform: translateX(20px);
+}
+
+.page-transition-enter-active {
+    opacity: 1;
+    transform: translateX(0);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.page-transition-exit {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.page-transition-exit-active {
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* ============================================
+   Loading Spinner
+   ============================================ */
+.spinner {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--border);
+    border-top-color: var(--primary);
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ============================================
+   Fade In/Out
+   ============================================ */
+.fade-in {
+    animation: fadeIn 0.5s ease-in;
+}
+
+.fade-out {
+    animation: fadeOut 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+/* ============================================
+   Slide Animations
+   ============================================ */
+.slide-in-from-top {
+    animation: slideInFromTop 0.3s ease-out;
+}
+
+.slide-in-from-bottom {
+    animation: slideInFromBottom 0.3s ease-out;
+}
+
+.slide-in-from-left {
+    animation: slideInFromLeft 0.3s ease-out;
+}
+
+.slide-in-from-right {
+    animation: slideInFromRight 0.3s ease-out;
+}
+
+@keyframes slideInFromTop {
+    from {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideInFromBottom {
+    from {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideInFromLeft {
+    from {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideInFromRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* ============================================
+   Zoom Animations
+   ============================================ */
+.zoom-in {
+    animation: zoomIn 0.3s ease-out;
+}
+
+.zoom-out {
+    animation: zoomOut 0.3s ease-out;
+}
+
+@keyframes zoomIn {
+    from {
+        transform: scale(0.95);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes zoomOut {
+    from {
+        transform: scale(1);
+        opacity: 1;
+    }
+    to {
+        transform: scale(0.95);
+        opacity: 0;
+    }
+}
+
+

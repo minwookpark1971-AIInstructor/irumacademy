@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>관리자 페이지 | Irum Academy</title>
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/animations.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    
+    <style>
+        .admin-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        .login-container {
+            max-width: 400px;
+            margin: 10rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--border);
+        }
+        .admin-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+        .applications-table {
+            background: white;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .table-header {
+            background: var(--primary);
+            color: white;
+            padding: 1rem;
+            font-weight: 600;
+        }
+        .table-content {
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+        th {
+            background: #f9fafb;
+            font-weight: 600;
+            color: var(--text);
+            font-size: 0.875rem;
+            text-transform: uppercase;
+        }
+        tr:hover {
+            background: #f9fafb;
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        .status-pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        .status-approved {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        .status-rejected {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        .application-detail {
+            display: none;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: #f9fafb;
+            border-radius: 0.5rem;
+        }
+        .application-detail.active {
+            display: block;
+        }
+        .detail-row {
+            display: grid;
+            grid-template-columns: 150px 1fr;
+            gap: 1rem;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+        .detail-label {
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+        .filter-bar {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+        .filter-select {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: 0.375rem;
+            background: white;
+        }
+        .no-applications {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-muted);
+        }
+        .admin-section {
+            display: block;
+        }
+        .admin-tab {
+            transition: all 0.3s ease;
+        }
+        .admin-tab:hover {
+            color: var(--primary) !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div id="header-container"></div>
+
+    <!-- Login Screen -->
+    <div id="login-screen" class="login-container" style="display: none;">
+        <h2 style="text-align: center; margin-bottom: 2rem;">관리자 로그인</h2>
+        <form id="login-form">
+            <div class="form-group">
+                <label for="admin-username" class="form-label">아이디</label>
+                <input type="text" id="admin-username" class="form-input" required>
+            </div>
+            <div class="form-group">
+                <label for="admin-password" class="form-label">비밀번호</label>
+                <input type="password" id="admin-password" class="form-input" required>
+            </div>
+            <button type="submit" class="btn btn-primary btn-lg" style="width: 100%; margin-top: 1rem;">
+                로그인
+            </button>
+        </form>
+        <p style="text-align: center; margin-top: 1rem; font-size: 0.875rem; color: var(--text-muted);">
+            기본 아이디: admin / 비밀번호: admin123
+        </p>
+    </div>
+
+    <!-- Admin Dashboard -->
+    <main class="main-content" id="admin-dashboard" style="display: none; background-color: #f9fafb; padding-top: 120px; padding-bottom: 3rem;">
+        <div class="admin-container">
+            <div class="admin-header">
+                <h1 style="margin: 0;">관리자 대시보드</h1>
+                <div>
+                    <button id="refresh-btn" class="btn btn-outline" style="margin-right: 0.5rem;">
+                        새로고침
+                    </button>
+                    <button id="logout-btn" class="btn btn-outline">
+                        로그아웃
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tab Navigation -->
+            <div style="display: flex; gap: 0.5rem; margin-bottom: 2rem; border-bottom: 2px solid var(--border);">
+                <button class="admin-tab active" data-tab="applications" style="padding: 0.75rem 1.5rem; background: none; border: none; border-bottom: 2px solid var(--primary); color: var(--primary); font-weight: 600; cursor: pointer;">
+                    신청 관리
+                </button>
+                <button class="admin-tab" data-tab="users" style="padding: 0.75rem 1.5rem; background: none; border: none; color: var(--text-muted); font-weight: 600; cursor: pointer;">
+                    회원 관리
+                </button>
+            </div>
+
+            <!-- Applications Section -->
+            <div id="applications-section" class="admin-section">
+                <!-- Statistics -->
+                <div class="admin-stats">
+                    <div class="stat-card">
+                        <div class="stat-number" id="total-count">0</div>
+                        <div class="stat-label">전체 신청</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="pending-count">0</div>
+                        <div class="stat-label">대기 중</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="approved-count">0</div>
+                        <div class="stat-label">승인됨</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="rejected-count">0</div>
+                        <div class="stat-label">거절됨</div>
+                    </div>
+                </div>
+
+                <!-- Filter Bar -->
+                <div class="filter-bar">
+                    <select id="status-filter" class="filter-select">
+                        <option value="">전체 상태</option>
+                        <option value="pending">대기 중</option>
+                        <option value="approved">승인됨</option>
+                        <option value="rejected">거절됨</option>
+                    </select>
+                    <select id="type-filter" class="filter-select">
+                        <option value="">전체 유형</option>
+                        <option value="student">학생 신청</option>
+                        <option value="instructor">강사 신청</option>
+                        <option value="consult">상담 신청</option>
+                    </select>
+                    <input type="text" id="search-input" class="filter-select" placeholder="이름, 이메일 검색..." style="flex: 1; min-width: 200px;">
+                </div>
+
+                <!-- Applications Table -->
+                <div class="applications-table">
+                    <div class="table-header">신청 내역</div>
+                    <div class="table-content">
+                        <table id="applications-table">
+                            <thead>
+                                <tr>
+                                    <th>신청일시</th>
+                                    <th>이름</th>
+                                    <th>이메일</th>
+                                    <th>연락처</th>
+                                    <th>과정/유형</th>
+                                    <th>희망일정</th>
+                                    <th>상태</th>
+                                    <th>작업</th>
+                                </tr>
+                            </thead>
+                            <tbody id="applications-tbody">
+                                <tr>
+                                    <td colspan="8" class="no-applications">신청 내역이 없습니다.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Users Section -->
+            <div id="users-section" class="admin-section" style="display: none;">
+                <!-- User Statistics -->
+                <div class="admin-stats">
+                    <div class="stat-card">
+                        <div class="stat-number" id="total-users">0</div>
+                        <div class="stat-label">전체 회원</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="active-users">0</div>
+                        <div class="stat-label">활성 회원</div>
+                    </div>
+                </div>
+
+                <!-- User Filter Bar -->
+                <div class="filter-bar">
+                    <input type="text" id="user-search-input" class="filter-select" placeholder="이메일 검색..." style="flex: 1; min-width: 200px;">
+                </div>
+
+                <!-- Users Table -->
+                <div class="applications-table">
+                    <div class="table-header">회원 목록</div>
+                    <div class="table-content">
+                        <table id="users-table">
+                            <thead>
+                                <tr>
+                                    <th>가입일시</th>
+                                    <th>이메일</th>
+                                    <th>상태</th>
+                                </tr>
+                            </thead>
+                            <tbody id="users-tbody">
+                                <tr>
+                                    <td colspan="3" class="no-applications">회원이 없습니다.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Application Detail Modal -->
+    <div id="detail-modal" style="display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.5); z-index: 1000; align-items: center; justify-content: center;">
+        <div style="background: white; border-radius: 0.5rem; padding: 2rem; max-width: 800px; max-height: 90vh; overflow-y: auto; margin: 1rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <h2 style="margin: 0;">신청 상세 정보</h2>
+                <button id="close-modal" style="background: none; border: none; font-size: 1.5rem; cursor: pointer;">&times;</button>
+            </div>
+            <div id="detail-content"></div>
+            <div style="display: flex; gap: 1rem; justify-content: flex-end; margin-top: 1.5rem;">
+                <button id="approve-btn" class="btn btn-primary">승인</button>
+                <button id="reject-btn" class="btn" style="background: #ef4444; color: white;">거절</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/components.js"></script>
+    <script>
+        // Admin credentials (in production, this should be server-side)
+        const ADMIN_CREDENTIALS = {
+            username: 'admin',
+            password: 'admin123'
+        };
+
+        let currentApplicationId = null;
+        let applications = [];
+        let users = [];
+
+        // Check if already logged in
+        $(document).ready(function() {
+            const isLoggedIn = sessionStorage.getItem('adminLoggedIn') === 'true';
+            if (isLoggedIn) {
+                showDashboard();
+            } else {
+                showLogin();
+            }
+
+            // Login form handler
+            $('#login-form').on('submit', function(e) {
+                e.preventDefault();
+                const username = $('#admin-username').val();
+                const password = $('#admin-password').val();
+
+                if (username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password) {
+                    sessionStorage.setItem('adminLoggedIn', 'true');
+                    showDashboard();
+                } else {
+                    alert('아이디 또는 비밀번호가 올바르지 않습니다.');
+                }
+            });
+
+            // Logout handler
+            $('#logout-btn').on('click', function() {
+                sessionStorage.removeItem('adminLoggedIn');
+                showLogin();
+            });
+
+            // Refresh handler
+            $('#refresh-btn').on('click', function() {
+                loadApplications();
+                loadUsers();
+            });
+
+            // Tab handlers
+            $('.admin-tab').on('click', function() {
+                const tab = $(this).data('tab');
+                switchTab(tab);
+            });
+
+            // Filter handlers
+            $('#status-filter, #type-filter').on('change', filterApplications);
+            $('#search-input').on('input', filterApplications);
+            $('#user-search-input').on('input', filterUsers);
+
+            // Modal handlers
+            $('#close-modal').on('click', function() {
+                $('#detail-modal').hide();
+            });
+
+            $('#approve-btn').on('click', function() {
+                if (currentApplicationId) {
+                    updateApplicationStatus(currentApplicationId, 'approved');
+                }
+            });
+
+            $('#reject-btn').on('click', function() {
+                if (currentApplicationId) {
+                    updateApplicationStatus(currentApplicationId, 'rejected');
+                }
+            });
+
+            // Load data on dashboard show
+            if (isLoggedIn) {
+                loadApplications();
+                loadUsers();
+            }
+        });
+
+        function switchTab(tab) {
+            // Update tab buttons
+            $('.admin-tab').removeClass('active').css({
+                'border-bottom': 'none',
+                'color': 'var(--text-muted)'
+            });
+            $(`.admin-tab[data-tab="${tab}"]`).addClass('active').css({
+                'border-bottom': '2px solid var(--primary)',
+                'color': 'var(--primary)'
+            });
+
+            // Show/hide sections
+            if (tab === 'applications') {
+                $('#applications-section').show();
+                $('#users-section').hide();
+            } else if (tab === 'users') {
+                $('#applications-section').hide();
+                $('#users-section').show();
+                loadUsers();
+            }
+        }
+
+        function showLogin() {
+            $('#login-screen').show();
+            $('#admin-dashboard').hide();
+            $('#admin-username').val('');
+            $('#admin-password').val('');
+        }
+
+        function showDashboard() {
+            $('#login-screen').hide();
+            $('#admin-dashboard').show();
+            loadApplications();
+            loadUsers();
+        }
+
+        function switchTab(tab) {
+            // Update tab buttons
+            $('.admin-tab').removeClass('active').css({
+                'border-bottom': 'none',
+                'color': 'var(--text-muted)'
+            });
+            $(`.admin-tab[data-tab="${tab}"]`).addClass('active').css({
+                'border-bottom': '2px solid var(--primary)',
+                'color': 'var(--primary)'
+            });
+
+            // Show/hide sections
+            if (tab === 'applications') {
+                $('#applications-section').show();
+                $('#users-section').hide();
+            } else if (tab === 'users') {
+                $('#applications-section').hide();
+                $('#users-section').show();
+                loadUsers();
+            }
+        }
+
+        function loadUsers() {
+            try {
+                const stored = localStorage.getItem('users');
+                if (stored) {
+                    users = JSON.parse(stored);
+                    // Sort by date (newest first)
+                    users.sort((a, b) => new Date(b.registeredAt) - new Date(a.registeredAt));
+                } else {
+                    users = [];
+                }
+                updateUserStatistics();
+                filterUsers();
+            } catch (e) {
+                console.error('Error loading users:', e);
+                users = [];
+                updateUserStatistics();
+                filterUsers();
+            }
+        }
+
+        function updateUserStatistics() {
+            const total = users.length;
+            const active = users.filter(u => u.status === 'active').length;
+
+            $('#total-users').text(total);
+            $('#active-users').text(active);
+        }
+
+        function filterUsers() {
+            const searchTerm = $('#user-search-input').val().toLowerCase();
+
+            let filtered = users;
+
+            if (searchTerm) {
+                filtered = filtered.filter(u => 
+                    u.email.toLowerCase().includes(searchTerm)
+                );
+            }
+
+            renderUsers(filtered);
+        }
+
+        function renderUsers(userList) {
+            const tbody = $('#users-tbody');
+            tbody.empty();
+
+            if (userList.length === 0) {
+                tbody.html('<tr><td colspan="3" class="no-applications">회원이 없습니다.</td></tr>');
+                return;
+            }
+
+            userList.forEach(user => {
+                const date = new Date(user.registeredAt);
+                const dateStr = date.toLocaleDateString('ko-KR') + ' ' + 
+                               date.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' });
+                
+                const statusClass = user.status === 'active' ? 'status-approved' : 'status-rejected';
+                const statusText = user.status === 'active' ? '활성' : '비활성';
+
+                const row = $(`
+                    <tr>
+                        <td>${dateStr}</td>
+                        <td>${user.email}</td>
+                        <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                    </tr>
+                `);
+
+                tbody.append(row);
+            });
+        }
+
+        function loadApplications() {
+            try {
+                const stored = localStorage.getItem('applications');
+                if (stored) {
+                    applications = JSON.parse(stored);
+                    // Sort by date (newest first)
+                    applications.sort((a, b) => new Date(b.submittedAt) - new Date(a.submittedAt));
+                } else {
+                    applications = [];
+                }
+                updateStatistics();
+                filterApplications();
+            } catch (e) {
+                console.error('Error loading applications:', e);
+                applications = [];
+                updateStatistics();
+                filterApplications();
+            }
+        }
+
+        function updateStatistics() {
+            const total = applications.length;
+            const pending = applications.filter(a => a.status === 'pending').length;
+            const approved = applications.filter(a => a.status === 'approved').length;
+            const rejected = applications.filter(a => a.status === 'rejected').length;
+
+            $('#total-count').text(total);
+            $('#pending-count').text(pending);
+            $('#approved-count').text(approved);
+            $('#rejected-count').text(rejected);
+        }
+
+        function filterApplications() {
+            const statusFilter = $('#status-filter').val();
+            const typeFilter = $('#type-filter').val();
+            const searchTerm = $('#search-input').val().toLowerCase();
+
+            let filtered = applications;
+
+            if (statusFilter) {
+                filtered = filtered.filter(a => a.status === statusFilter);
+            }
+
+            if (typeFilter) {
+                filtered = filtered.filter(a => a.applicationType === typeFilter);
+            }
+
+            if (searchTerm) {
+                filtered = filtered.filter(a => 
+                    a.name.toLowerCase().includes(searchTerm) ||
+                    a.email.toLowerCase().includes(searchTerm) ||
+                    (a.phone && a.phone.includes(searchTerm))
+                );
+            }
+
+            renderApplications(filtered);
+        }
+
+        function renderApplications(apps) {
+            const tbody = $('#applications-tbody');
+            tbody.empty();
+
+            if (apps.length === 0) {
+                tbody.html('<tr><td colspan="8" class="no-applications">신청 내역이 없습니다.</td></tr>');
+                return;
+            }
+
+            apps.forEach(app => {
+                const date = new Date(app.submittedAt);
+                const dateStr = date.toLocaleDateString('ko-KR') + ' ' + 
+                               date.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' });
+                
+                const statusClass = `status-${app.status || 'pending'}`;
+                const statusText = {
+                    'pending': '대기 중',
+                    'approved': '승인됨',
+                    'rejected': '거절됨'
+                }[app.status || 'pending'] || '대기 중';
+
+                const typeText = {
+                    'student': '학생 신청',
+                    'instructor': '강사 신청',
+                    'consult': '상담 신청'
+                }[app.applicationType] || app.applicationType;
+
+                const row = $(`
+                    <tr>
+                        <td>${dateStr}</td>
+                        <td>${app.name}</td>
+                        <td>${app.email}</td>
+                        <td>${app.phone || '-'}</td>
+                        <td>${app.courseTitle || typeText}</td>
+                        <td>${app.preferredSchedule || '-'} ${app.preferredTime || ''}</td>
+                        <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                        <td>
+                            <button class="btn btn-sm btn-outline view-detail" data-id="${app.id}">상세보기</button>
+                        </td>
+                    </tr>
+                `);
+
+                row.find('.view-detail').on('click', function() {
+                    showApplicationDetail(app.id);
+                });
+
+                tbody.append(row);
+            });
+        }
+
+        function showApplicationDetail(id) {
+            const app = applications.find(a => a.id === id);
+            if (!app) return;
+
+            currentApplicationId = id;
+
+            const date = new Date(app.submittedAt);
+            const dateStr = date.toLocaleDateString('ko-KR') + ' ' + 
+                           date.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' });
+
+            const detailHtml = `
+                <div class="detail-row">
+                    <div class="detail-label">신청일시</div>
+                    <div>${dateStr}</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">신청 유형</div>
+                    <div>${app.courseTitle || (app.applicationType === 'consult' ? 'Zoom 상담 신청' : app.applicationType === 'instructor' ? '강사 성장 프로그램' : '학생 신청')}</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">희망 일정</div>
+                    <div>${app.preferredSchedule || '-'} ${app.preferredTime || ''}</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">이름</div>
+                    <div>${app.name}</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">이메일</div>
+                    <div>${app.email}</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">연락처</div>
+                    <div>${app.phone || '-'}</div>
+                </div>
+                ${app.organization ? `
+                <div class="detail-row">
+                    <div class="detail-label">소속</div>
+                    <div>${app.organization}</div>
+                </div>
+                ` : ''}
+                <div class="detail-row">
+                    <div class="detail-label">직무</div>
+                    <div>${app.position || '-'}</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">상태</div>
+                    <div><span class="status-badge status-${app.status || 'pending'}">${app.status === 'approved' ? '승인됨' : app.status === 'rejected' ? '거절됨' : '대기 중'}</span></div>
+                </div>
+            `;
+
+            $('#detail-content').html(detailHtml);
+            $('#detail-modal').show();
+        }
+
+        function updateApplicationStatus(id, status) {
+            const appIndex = applications.findIndex(a => a.id === id);
+            if (appIndex === -1) return;
+
+            applications[appIndex].status = status;
+            
+            try {
+                localStorage.setItem('applications', JSON.stringify(applications));
+                loadApplications();
+                $('#detail-modal').hide();
+                alert(`신청이 ${status === 'approved' ? '승인' : '거절'}되었습니다.`);
+            } catch (e) {
+                console.error('Error updating application:', e);
+                alert('상태 업데이트 중 오류가 발생했습니다.');
+            }
+        }
+
+        function switchTab(tab) {
+            // Update tab buttons
+            $('.admin-tab').removeClass('active').css({
+                'border-bottom': 'none',
+                'color': 'var(--text-muted)'
+            });
+            $(`.admin-tab[data-tab="${tab}"]`).addClass('active').css({
+                'border-bottom': '2px solid var(--primary)',
+                'color': 'var(--primary)'
+            });
+
+            // Show/hide sections
+            if (tab === 'applications') {
+                $('#applications-section').show();
+                $('#users-section').hide();
+            } else if (tab === 'users') {
+                $('#applications-section').hide();
+                $('#users-section').show();
+                loadUsers();
+            }
+        }
+
+        function loadUsers() {
+            try {
+                const stored = localStorage.getItem('users');
+                if (stored) {
+                    users = JSON.parse(stored);
+                    // Sort by date (newest first)
+                    users.sort((a, b) => new Date(b.registeredAt) - new Date(a.registeredAt));
+                } else {
+                    users = [];
+                }
+                updateUserStatistics();
+                filterUsers();
+            } catch (e) {
+                console.error('Error loading users:', e);
+                users = [];
+                updateUserStatistics();
+                filterUsers();
+            }
+        }
+
+        function updateUserStatistics() {
+            const total = users.length;
+            const active = users.filter(u => u.status === 'active').length;
+
+            $('#total-users').text(total);
+            $('#active-users').text(active);
+        }
+
+        function filterUsers() {
+            const searchTerm = $('#user-search-input').val().toLowerCase();
+
+            let filtered = users;
+
+            if (searchTerm) {
+                filtered = filtered.filter(u => 
+                    u.email.toLowerCase().includes(searchTerm)
+                );
+            }
+
+            renderUsers(filtered);
+        }
+
+        function renderUsers(userList) {
+            const tbody = $('#users-tbody');
+            tbody.empty();
+
+            if (userList.length === 0) {
+                tbody.html('<tr><td colspan="3" class="no-applications">회원이 없습니다.</td></tr>');
+                return;
+            }
+
+            userList.forEach(user => {
+                const date = new Date(user.registeredAt);
+                const dateStr = date.toLocaleDateString('ko-KR') + ' ' + 
+                               date.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' });
+                
+                const statusClass = user.status === 'active' ? 'status-approved' : 'status-rejected';
+                const statusText = user.status === 'active' ? '활성' : '비활성';
+
+                const row = $(`
+                    <tr>
+                        <td>${dateStr}</td>
+                        <td>${user.email}</td>
+                        <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                    </tr>
+                `);
+
+                tbody.append(row);
+            });
+        }
+    </script>
+</body>
+</html>
+

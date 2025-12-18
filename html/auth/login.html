@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로그인 | Irum Academy</title>
+    <meta name="description" content="Irum Academy 로그인">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/main.css">
+    <link rel="stylesheet" href="../../css/animations.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+    
+    <!-- jQuery Validation -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <div id="header-container"></div>
+
+    <!-- Main Content -->
+    <main class="main-content" style="padding-top: 120px; padding-bottom: 3rem;">
+        <section class="section">
+            <div class="container" style="max-width: 500px;">
+                <div class="card reveal-up">
+                    <div class="card-header text-center">
+                        <h1 class="card-title" style="font-size: 2rem; margin-bottom: 0.5rem;">로그인</h1>
+                        <p class="card-description">계정에 로그인하세요</p>
+                    </div>
+                    <div class="card-content">
+                        <form id="login-form" class="auth-form">
+                            <!-- Error Message -->
+                            <div class="error-message alert alert-error" style="display: none; margin-bottom: 1rem; padding: 0.75rem; background-color: #fee2e2; color: #dc2626; border-radius: var(--radius-lg);"></div>
+                            
+                            <!-- Email -->
+                            <div class="form-group">
+                                <label for="email" class="form-label">이메일</label>
+                                <div style="position: relative;">
+                                    <input 
+                                        type="email" 
+                                        id="email" 
+                                        name="email" 
+                                        class="form-input" 
+                                        placeholder="example@email.com"
+                                        required
+                                        style="padding-left: 2.5rem;"
+                                    >
+                                    <span style="position: absolute; left: 0.75rem; top: 50%; transform: translateY(-50%);">✉</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Password -->
+                            <div class="form-group">
+                                <label for="password" class="form-label">비밀번호</label>
+                                <div style="position: relative;">
+                                    <input 
+                                        type="password" 
+                                        id="password" 
+                                        name="password" 
+                                        class="form-input" 
+                                        placeholder="비밀번호를 입력하세요"
+                                        required
+                                        style="padding-left: 2.5rem; padding-right: 2.5rem;"
+                                    >
+                                    <span style="position: absolute; left: 0.75rem; top: 50%; transform: translateY(-50%);">🔒</span>
+                                    <button 
+                                        type="button" 
+                                        class="toggle-password" 
+                                        style="position: absolute; right: 0.75rem; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer;"
+                                    >
+                                        👁
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <!-- Submit Button -->
+                            <button type="submit" class="btn btn-primary btn-lg btn-block btn-animated" style="margin-top: 1.5rem;">
+                                로그인
+                            </button>
+                        </form>
+                        
+                        <!-- Social Login -->
+                        <div style="margin-top: 2rem;">
+                            <div style="position: relative; text-align: center; margin-bottom: 1.5rem;">
+                                <span style="background: white; padding: 0 1rem; position: relative; z-index: 1; color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase;">또는</span>
+                                <div style="position: absolute; top: 50%; left: 0; right: 0; height: 1px; background: var(--border);"></div>
+                            </div>
+                            
+                            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem;">
+                                <button type="button" class="btn btn-outline btn-block" onclick="socialLogin('google')">
+                                    Google
+                                </button>
+                                <button type="button" class="btn btn-outline btn-block" style="background: #03C75A; color: white; border-color: #03C75A;" onclick="socialLogin('naver')">
+                                    Naver
+                                </button>
+                                <button type="button" class="btn btn-outline btn-block" style="background: #FEE500; color: #000; border-color: #FEE500;" onclick="socialLogin('kakao')">
+                                    Kakao
+                                </button>
+                                <button type="button" class="btn btn-outline btn-block" style="background: #000; color: white; border-color: #000;" onclick="socialLogin('apple')">
+                                    Apple
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Signup Link -->
+                        <div style="text-align: center; margin-top: 2rem; font-size: 0.875rem;">
+                            계정이 없으신가요? 
+                            <a href="signup.html" style="color: var(--primary); font-weight: 500; text-decoration: none;">회원가입</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <div id="footer-container"></div>
+
+    <!-- Scripts -->
+    <script src="../../js/components.js"></script>
+    <script src="../../js/main.js"></script>
+    <script src="../../js/auth.js"></script>
+    <script src="../../js/oauth-config.js"></script>
+    
+    <script>
+        $(document).ready(function() {
+            // Wait for components to load
+            setTimeout(function() {
+                // Initialize auth forms
+                if (typeof initLoginForm === 'function') {
+                    initLoginForm();
+                }
+                if (typeof initPasswordToggle === 'function') {
+                    initPasswordToggle();
+                }
+                
+                // Initialize animations
+                if (typeof initRevealAnimations === 'function') {
+                    initRevealAnimations();
+                }
+                
+                // Update SNS button states based on configuration
+                updateSNSButtonStates();
+            }, 200);
+        });
+        
+        // Update SNS button states
+        function updateSNSButtonStates() {
+            const providers = ['google', 'naver', 'kakao', 'apple'];
+            providers.forEach(provider => {
+                const $btn = $(`button[onclick*="socialLogin('${provider}')"]`);
+                if ($btn.length && typeof isOAuthConfigured === 'function') {
+                    if (!isOAuthConfigured(provider)) {
+                        $btn.css('opacity', '0.6');
+                        $btn.attr('title', 'OAuth 설정이 필요합니다. js/oauth-config.js 파일을 확인하세요.');
+                    }
+                }
+            });
+        }
+        
+        // Social login handler
+        function socialLogin(provider) {
+            const providerNames = {
+                google: 'Google',
+                naver: 'Naver',
+                kakao: 'Kakao',
+                apple: 'Apple'
+            };
+            
+            const providerName = providerNames[provider] || provider;
+            
+            // Check if OAuth is configured
+            if (typeof getOAuthUrl === 'function' && typeof isOAuthConfigured === 'function') {
+                if (!isOAuthConfigured(provider)) {
+                    alert(providerName + ' 로그인 설정이 필요합니다.\n\n설정 방법:\n1. js/oauth-config.js 파일을 열어주세요\n2. ' + providerName + '의 clientId와 redirectUri를 설정하세요\n3. enabled를 true로 변경하세요\n\n자세한 설정 방법은 js/oauth-config.js 파일의 주석을 참고하세요.');
+                    console.warn('OAuth not configured for', provider);
+                    console.info('설정 파일 위치: js/oauth-config.js');
+                    return;
+                }
+                
+                // Get OAuth URL
+                const oauthUrl = getOAuthUrl(provider);
+                if (oauthUrl) {
+                    // Redirect to OAuth provider
+                    window.location.href = oauthUrl;
+                } else {
+                    alert(providerName + ' 로그인 URL 생성 중 오류가 발생했습니다.');
+                }
+            } else {
+                // Fallback if oauth-config.js is not loaded
+                alert(providerName + ' 로그인 설정 파일을 불러올 수 없습니다.\njs/oauth-config.js 파일이 있는지 확인해주세요.');
+            }
+        }
+    </script>
+    
+    <style>
+        .alert {
+            padding: 0.75rem;
+            border-radius: var(--radius-lg);
+            margin-bottom: 1rem;
+        }
+        .alert-error {
+            background-color: #fee2e2;
+            color: #dc2626;
+        }
+        .alert-success {
+            background-color: #d1fae5;
+            color: #059669;
+        }
+    </style>
+</body>
+</html>
+
