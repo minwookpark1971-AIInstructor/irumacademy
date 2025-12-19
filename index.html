@@ -30,8 +30,8 @@
     <section class="hero-section" style="background-image: url('images/backgrounds/hero-background.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat; margin-top: 80px; min-height: 50vh; display: flex; align-items: center; justify-content: center; padding-top: 3rem; padding-bottom: 3rem; position: relative;">
         <div class="container" style="position: relative; z-index: 1; width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 1.5rem;">
             <div class="hero-content reveal-up" style="text-align: center; width: 100%; margin: 0 auto;">
-                <h1 class="hero-title" style="text-align: center; margin-bottom: 1.5rem; color: #ffffff; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);">AI시대의 새로운 교육과정</h1>
-                <p class="hero-description" style="text-align: center; max-width: 800px; margin: 0 auto; color: #ffffff; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);">
+                <h1 class="hero-title" style="text-align: center; margin-bottom: 1.5rem; color: #ffffff; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); font-size: 3.6rem !important;">AI시대의 새로운 교육과정</h1>
+                <p class="hero-description" style="text-align: center; max-width: 800px; margin: 0 auto; color: #ffffff; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5); font-size: 1.8rem !important;">
                     이룸아카데미와 함께 AI 리터러시를 뛰어넘어<br class="hidden-sm">
                     AI로 자신의 경쟁력을 높이는 실무교육을 지향합니다.
                 </p>
@@ -77,6 +77,43 @@
             }, 200);
         });
     </script>
+    
+    <style>
+        /* Hero title and description font size (20% reduced from 100% enlarged) */
+        .hero-title {
+            font-size: 3.6rem !important;
+        }
+        .hero-description {
+            font-size: 1.8rem !important;
+        }
+        
+        @media (min-width: 768px) {
+            .hero-title {
+                font-size: 4.8rem !important;
+            }
+            .hero-description {
+                font-size: 2rem !important;
+            }
+        }
+        
+        @media (min-width: 1024px) {
+            .hero-title {
+                font-size: 6rem !important;
+            }
+            .hero-description {
+                font-size: 2rem !important;
+            }
+        }
+        
+        @media (max-width: 767px) {
+            .hero-title {
+                font-size: 3rem !important;
+            }
+            .hero-description {
+                font-size: 1.6rem !important;
+            }
+        }
+    </style>
 </body>
 </html>
 
