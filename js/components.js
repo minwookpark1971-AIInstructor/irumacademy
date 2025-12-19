@@ -4,9 +4,47 @@
  * This allows the site to work with file:// protocol
  */
 
+// Check if user is logged in
+function isLoggedIn() {
+    return localStorage.getItem('isLoggedIn') === 'true';
+}
+
+// Get user email
+function getUserEmail() {
+    return localStorage.getItem('userEmail') || '';
+}
+
 // Generate header HTML
 function generateHeader() {
     const pathInfo = getPathInfo();
+    const loggedIn = isLoggedIn();
+    const userEmail = getUserEmail();
+    
+    // 로그인 상태에 따른 버튼 HTML 생성
+    let desktopActions, mobileActions;
+    if (loggedIn) {
+        desktopActions = `
+            <div class="desktop-actions">
+                <span style="margin-right: 1rem; color: var(--text); font-size: 0.875rem;">${userEmail}</span>
+                <button id="logout-btn-header" class="btn btn-outline btn-sm">로그아웃</button>
+            </div>`;
+        mobileActions = `
+            <div class="mobile-actions">
+                <div style="padding: 0.75rem; color: var(--text); font-size: 0.875rem; text-align: center; margin-bottom: 0.5rem;">${userEmail}</div>
+                <button id="logout-btn-mobile" class="btn btn-outline btn-sm btn-block">로그아웃</button>
+            </div>`;
+    } else {
+        desktopActions = `
+            <div class="desktop-actions">
+                <a href="${pathInfo.loginUrl}" class="btn btn-ghost btn-sm">로그인</a>
+                <a href="${pathInfo.signupUrl}" class="btn btn-primary btn-sm">회원가입</a>
+            </div>`;
+        mobileActions = `
+            <div class="mobile-actions">
+                <a href="${pathInfo.loginUrl}" class="btn btn-ghost btn-sm btn-block">로그인</a>
+                <a href="${pathInfo.signupUrl}" class="btn btn-primary btn-sm btn-block">회원가입</a>
+            </div>`;
+    }
     
     return `
 <header class="main-header" id="main-header">
@@ -25,10 +63,7 @@ function generateHeader() {
             </nav>
 
             <!-- Desktop Actions -->
-            <div class="desktop-actions">
-                <a href="${pathInfo.loginUrl}" class="btn btn-ghost btn-sm">로그인</a>
-                <a href="${pathInfo.signupUrl}" class="btn btn-primary btn-sm">회원가입</a>
-            </div>
+            ${desktopActions}
 
             <!-- Mobile Menu Button -->
             <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="메뉴 열기">
@@ -44,10 +79,7 @@ function generateHeader() {
             <a href="${pathInfo.instructorUrl}" class="mobile-nav-link">전문강사 성장 프로그램</a>
             <a href="${pathInfo.applyUrl}" class="mobile-nav-link">강의신청하기</a>
             <a href="${pathInfo.communityUrl}" class="mobile-nav-link">강사커뮤니티</a>
-            <div class="mobile-actions">
-                <a href="${pathInfo.loginUrl}" class="btn btn-ghost btn-sm btn-block">로그인</a>
-                <a href="${pathInfo.signupUrl}" class="btn btn-primary btn-sm btn-block">회원가입</a>
-            </div>
+            ${mobileActions}
         </nav>
     </div>
     
@@ -213,6 +245,52 @@ function getPathInfo() {
     };
 }
 
+// Update header login status
+function updateHeaderLoginStatus() {
+    const $headerContainer = $('#header-container');
+    if ($headerContainer.length) {
+        $headerContainer.html(generateHeader());
+        // Initialize header after a short delay to ensure DOM is ready
+        setTimeout(function() {
+            if (typeof initHeader === 'function') {
+                initHeader();
+            }
+            // 로그아웃 버튼 이벤트 바인딩
+            bindLogoutButtons();
+        }, 100);
+    }
+}
+
+// Bind logout button events
+function bindLogoutButtons() {
+    // 로그아웃 함수가 있는지 확인
+    if (typeof logout === 'function') {
+        $('#logout-btn-header, #logout-btn-mobile').on('click', function(e) {
+            e.preventDefault();
+            logout();
+        });
+    } else {
+        // auth.js가 로드되지 않은 경우 직접 처리
+        $('#logout-btn-header, #logout-btn-mobile').on('click', function(e) {
+            e.preventDefault();
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('userEmail');
+            localStorage.removeItem('authToken');
+            localStorage.removeItem('userName');
+            localStorage.removeItem('authProvider');
+            localStorage.removeItem('authMethod');
+            // 헤더 업데이트
+            updateHeaderLoginStatus();
+            // 현재 페이지가 로그인/회원가입 페이지가 아니면 홈으로 이동
+            const currentPath = window.location.pathname;
+            if (!currentPath.includes('login.html') && !currentPath.includes('signup.html')) {
+                const pathInfo = getPathInfo();
+                window.location.href = pathInfo.homeUrl;
+            }
+        });
+    }
+}
+
 // Load header and footer
 function loadComponents() {
     const $headerContainer = $('#header-container');
@@ -225,6 +303,8 @@ function loadComponents() {
             if (typeof initHeader === 'function') {
                 initHeader();
             }
+            // 로그아웃 버튼 이벤트 바인딩
+            bindLogoutButtons();
         }, 100);
     }
     

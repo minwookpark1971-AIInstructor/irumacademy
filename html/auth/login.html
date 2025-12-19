@@ -155,12 +155,23 @@
         // Update SNS button states
         function updateSNSButtonStates() {
             const providers = ['google', 'naver', 'kakao', 'apple'];
+            const isDevMode = typeof OAUTH_DEV_MODE !== 'undefined' && OAUTH_DEV_MODE === true;
+            
             providers.forEach(provider => {
                 const $btn = $(`button[onclick*="socialLogin('${provider}')"]`);
-                if ($btn.length && typeof isOAuthConfigured === 'function') {
-                    if (!isOAuthConfigured(provider)) {
-                        $btn.css('opacity', '0.6');
-                        $btn.attr('title', 'OAuth 설정이 필요합니다. js/oauth-config.js 파일을 확인하세요.');
+                if ($btn.length) {
+                    if (isDevMode) {
+                        // 개발 모드: 모든 버튼 활성화, 툴팁 표시
+                        $btn.css('opacity', '1');
+                        $btn.attr('title', '개발 모드: 시뮬레이션으로 테스트됩니다');
+                    } else if (typeof isOAuthConfigured === 'function') {
+                        if (!isOAuthConfigured(provider)) {
+                            $btn.css('opacity', '0.6');
+                            $btn.attr('title', 'OAuth 설정이 필요합니다. js/oauth-config.js 파일을 확인하세요.');
+                        } else {
+                            $btn.css('opacity', '1');
+                            $btn.removeAttr('title');
+                        }
                     }
                 }
             });
@@ -177,7 +188,19 @@
             
             const providerName = providerNames[provider] || provider;
             
-            // Check if OAuth is configured
+            // 개발 모드 확인
+            const isDevMode = typeof OAUTH_DEV_MODE !== 'undefined' && OAUTH_DEV_MODE === true;
+            
+            // 개발 모드이거나 handleSocialLogin 함수가 있으면 사용
+            if (typeof handleSocialLogin === 'function') {
+                const success = handleSocialLogin(provider);
+                if (!success) {
+                    alert(providerName + ' 로그인 처리 중 오류가 발생했습니다.');
+                }
+                return;
+            }
+            
+            // 기존 로직 (실제 OAuth 모드)
             if (typeof getOAuthUrl === 'function' && typeof isOAuthConfigured === 'function') {
                 if (!isOAuthConfigured(provider)) {
                     alert(providerName + ' 로그인 설정이 필요합니다.\n\n설정 방법:\n1. js/oauth-config.js 파일을 열어주세요\n2. ' + providerName + '의 clientId와 redirectUri를 설정하세요\n3. enabled를 true로 변경하세요\n\n자세한 설정 방법은 js/oauth-config.js 파일의 주석을 참고하세요.');

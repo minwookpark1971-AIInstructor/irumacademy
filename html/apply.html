@@ -103,20 +103,23 @@
                                 <div class="card">
                                     <div class="card-header">
                                         <h2 class="card-title">신청자 정보</h2>
-                                        <p class="card-description">신청자 정보를 입력해주세요</p>
+                                        <p class="card-description" id="applicant-info-description">신청자 정보를 입력해주세요</p>
                                     </div>
                                     <div class="card-content">
                                         <div class="form-group">
                                             <label for="name" class="form-label">이름 *</label>
-                                            <input type="text" id="name" name="name" class="form-input" placeholder="홍길동" required>
+                                            <input type="text" id="name" name="name" class="form-input" placeholder="홍길동" required readonly style="background-color: #f3f4f6; cursor: not-allowed;">
+                                            <p id="name-info" style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem; display: none;">로그인한 회원 정보입니다</p>
                                         </div>
                                         <div class="form-group">
                                             <label for="email" class="form-label">이메일 *</label>
-                                            <input type="email" id="email" name="email" class="form-input" placeholder="example@email.com" required>
+                                            <input type="email" id="email" name="email" class="form-input" placeholder="example@email.com" required readonly style="background-color: #f3f4f6; cursor: not-allowed;">
+                                            <p id="email-info" style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem; display: none;">로그인한 회원 정보입니다</p>
                                         </div>
                                         <div class="form-group">
                                             <label for="phone" class="form-label">연락처 *</label>
-                                            <input type="tel" id="phone" name="phone" class="form-input" placeholder="010-1234-5678" required>
+                                            <input type="tel" id="phone" name="phone" class="form-input" placeholder="010-1234-5678" required readonly style="background-color: #f3f4f6; cursor: not-allowed;">
+                                            <p id="phone-info" style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem; display: none;">로그인한 회원 정보입니다</p>
                                         </div>
                                         <div class="form-group">
                                             <label for="organization" class="form-label">소속 (선택)</label>
@@ -441,8 +444,59 @@
             $('.form-step').hide().removeClass('active');
             $(`.form-step[data-step="${step}"]`).show().addClass('active');
             
+            // Step 2로 이동할 때 로그인 정보 자동 입력
+            if (step === 2) {
+                loadUserInfo();
+            }
+            
             if (step === 3) {
                 generateConfirmation();
+            }
+        }
+        
+        // 로그인한 사용자 정보 불러오기
+        function loadUserInfo() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            
+            if (isLoggedIn) {
+                const userEmail = localStorage.getItem('userEmail') || '';
+                const userName = localStorage.getItem('userName') || '';
+                
+                // 이메일과 이름은 localStorage에서 가져오기
+                if (userEmail) {
+                    $('#email').val(userEmail);
+                    $('#email-info').show();
+                }
+                if (userName) {
+                    $('#name').val(userName);
+                    $('#name-info').show();
+                }
+                
+                // 전화번호는 users 배열에서 찾기
+                try {
+                    const stored = localStorage.getItem('users');
+                    if (stored) {
+                        const users = JSON.parse(stored);
+                        const currentUser = users.find(u => u.email === userEmail);
+                        if (currentUser && currentUser.phone) {
+                            $('#phone').val(currentUser.phone);
+                            $('#phone-info').show();
+                        }
+                    }
+                } catch (e) {
+                    console.error('Error loading user phone:', e);
+                }
+                
+                // 설명 텍스트 변경
+                $('#applicant-info-description').text('회원 정보가 자동으로 입력되었습니다. 소속과 직무만 입력해주세요.');
+            } else {
+                // 로그인하지 않은 경우 필드를 편집 가능하게
+                $('#name, #email, #phone').prop('readonly', false).css({
+                    'background-color': '',
+                    'cursor': ''
+                });
+                $('#name-info, #email-info, #phone-info').hide();
+                $('#applicant-info-description').text('신청자 정보를 입력해주세요');
             }
         }
         
@@ -476,9 +530,19 @@
                     return false;
                 }
             } else if (currentStep === 2) {
-                if (!$('#name').val() || !$('#email').val() || !$('#phone').val() || !$('#position').val()) {
-                    alert('필수 항목을 모두 입력해주세요');
-                    return false;
+                const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+                if (isLoggedIn) {
+                    // 로그인한 경우: 직무만 필수
+                    if (!$('#position').val()) {
+                        alert('직무를 입력해주세요');
+                        return false;
+                    }
+                } else {
+                    // 로그인하지 않은 경우: 모든 필수 항목 확인
+                    if (!$('#name').val() || !$('#email').val() || !$('#phone').val() || !$('#position').val()) {
+                        alert('필수 항목을 모두 입력해주세요');
+                        return false;
+                    }
                 }
             }
             return true;
@@ -501,42 +565,60 @@
             
             const $content = $('#confirmation-content');
             $content.html(`
-                <div style="display: flex; flex-direction: column; gap: 1.5rem;">
-                    <div>
-                        <label class="form-label" style="font-weight: 600;">${isConsultMode ? '신청 유형' : '선택한 과정'}</label>
-                        <p>${formData.course}</p>
+                <div class="confirmation-summary">
+                    <!-- 과정 정보 섹션 -->
+                    <div class="confirmation-section">
+                        <div class="confirmation-section-header">
+                            <span class="section-icon">📚</span>
+                            <h3 class="section-title">과정 정보</h3>
+                        </div>
+                        <div class="confirmation-item">
+                            <span class="confirmation-label">${isConsultMode ? '신청 유형' : '선택한 과정'}</span>
+                            <span class="confirmation-value">${formData.course}</span>
+                        </div>
+                        <div class="confirmation-item">
+                            <span class="confirmation-label">${scheduleLabel}</span>
+                            <span class="confirmation-value">${scheduleDisplay}</span>
+                        </div>
                     </div>
-                    <div>
-                        <label class="form-label" style="font-weight: 600;">${scheduleLabel}</label>
-                        <p>${scheduleDisplay}</p>
+                    
+                    <!-- 신청자 정보 섹션 -->
+                    <div class="confirmation-section">
+                        <div class="confirmation-section-header">
+                            <span class="section-icon">👤</span>
+                            <h3 class="section-title">신청자 정보</h3>
+                        </div>
+                        <div class="confirmation-item">
+                            <span class="confirmation-label">이름</span>
+                            <span class="confirmation-value">${formData.name}</span>
+                        </div>
+                        <div class="confirmation-item">
+                            <span class="confirmation-label">이메일</span>
+                            <span class="confirmation-value">${formData.email}</span>
+                        </div>
+                        <div class="confirmation-item">
+                            <span class="confirmation-label">연락처</span>
+                            <span class="confirmation-value">${formData.phone}</span>
+                        </div>
+                        ${formData.organization ? `
+                        <div class="confirmation-item">
+                            <span class="confirmation-label">소속</span>
+                            <span class="confirmation-value">${formData.organization}</span>
+                        </div>
+                        ` : ''}
+                        <div class="confirmation-item">
+                            <span class="confirmation-label">직무</span>
+                            <span class="confirmation-value">${formData.position}</span>
+                        </div>
                     </div>
-                    <div>
-                        <label class="form-label" style="font-weight: 600;">이름</label>
-                        <p>${formData.name}</p>
-                    </div>
-                    <div>
-                        <label class="form-label" style="font-weight: 600;">이메일</label>
-                        <p>${formData.email}</p>
-                    </div>
-                    <div>
-                        <label class="form-label" style="font-weight: 600;">연락처</label>
-                        <p>${formData.phone}</p>
-                    </div>
-                    ${formData.organization ? `
-                    <div>
-                        <label class="form-label" style="font-weight: 600;">소속</label>
-                        <p>${formData.organization}</p>
-                    </div>
-                    ` : ''}
-                    <div>
-                        <label class="form-label" style="font-weight: 600;">직무</label>
-                        <p>${formData.position}</p>
-                    </div>
-                    <div style="padding-top: 1.5rem; border-top: 1px solid var(--border);">
-                        <div style="display: flex; align-items: start; gap: 0.5rem;">
-                            <input type="checkbox" id="agreeToTerms" name="agreeToTerms" required style="margin-top: 0.25rem;">
-                            <label for="agreeToTerms" style="font-size: 0.875rem; cursor: pointer;">
-                                개인정보 처리방침에 동의합니다. *
+                    
+                    <!-- 약관 동의 -->
+                    <div class="confirmation-agreement">
+                        <div class="agreement-checkbox">
+                            <input type="checkbox" id="agreeToTerms" name="agreeToTerms" required>
+                            <label for="agreeToTerms">
+                                <span class="checkbox-label">개인정보 처리방침에 동의합니다</span>
+                                <span class="required-mark">*</span>
                             </label>
                         </div>
                     </div>
@@ -675,20 +757,30 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: white;
-            border: 2px solid var(--border);
-            color: var(--text-muted);
+            background: #94a3b8 !important;
+            border: 2px solid #94a3b8 !important;
+            color: #475569 !important;
             font-size: 1.25rem;
             transition: all 0.3s ease;
+            /* 이모지를 회색으로 변환 */
+            filter: grayscale(100%) opacity(0.8) !important;
         }
         .step-icon.active {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
+            background: #2563eb !important;
+            border-color: #2563eb !important;
+            color: #475569 !important;
+            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+            /* 이모지를 회색으로 변환 */
+            filter: grayscale(100%) opacity(0.8) !important;
         }
         .step-title {
             font-size: 0.75rem;
-            color: var(--text-muted);
+            color: #94a3b8 !important;
+            transition: color 0.3s ease;
+        }
+        .step-item.active .step-title {
+            color: #2563eb !important;
+            font-weight: 600;
         }
         .step-connector {
             width: 4rem;
@@ -698,7 +790,7 @@
         }
         .step-item.active ~ .step-connector,
         .step-item.active + .step-connector {
-            background: var(--primary);
+            background: #2563eb;
         }
         @media (min-width: 1024px) {
             .form-area {
@@ -823,6 +915,133 @@
         
         #preferredSchedule:focus {
             cursor: text;
+        }
+        
+        /* 신청 정보 확인 디자인 */
+        .confirmation-summary {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+        
+        .confirmation-section {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .confirmation-section-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        
+        .section-icon {
+            font-size: 1.25rem;
+            width: 2rem;
+            height: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .section-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin: 0;
+        }
+        
+        .confirmation-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.875rem 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .confirmation-item:last-child {
+            border-bottom: none;
+        }
+        
+        .confirmation-label {
+            font-size: 0.875rem;
+            color: #64748b;
+            font-weight: 500;
+            min-width: 100px;
+        }
+        
+        .confirmation-value {
+            font-size: 0.9375rem;
+            color: #1e293b;
+            font-weight: 500;
+            text-align: right;
+            flex: 1;
+            margin-left: 1rem;
+        }
+        
+        .confirmation-agreement {
+            margin-top: 1rem;
+            padding: 1.25rem;
+            background: #f1f5f9;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .agreement-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .agreement-checkbox input[type="checkbox"] {
+            width: 1.125rem;
+            height: 1.125rem;
+            cursor: pointer;
+            accent-color: #87CEEB;
+        }
+        
+        .agreement-checkbox label {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            font-size: 0.875rem;
+            color: #475569;
+            cursor: pointer;
+            user-select: none;
+        }
+        
+        .checkbox-label {
+            font-weight: 500;
+        }
+        
+        .required-mark {
+            color: #ef4444;
+            font-weight: 600;
+        }
+        
+        @media (max-width: 640px) {
+            .confirmation-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+            
+            .confirmation-value {
+                text-align: left;
+                margin-left: 0;
+            }
+            
+            .confirmation-label {
+                min-width: auto;
+            }
         }
     </style>
 </body>

@@ -35,6 +35,10 @@
  *    - Services ID를 아래 apple.clientId에 입력
  */
 
+// 개발 모드 설정
+// true로 설정하면 백엔드 없이도 소셜 로그인을 테스트할 수 있습니다
+const OAUTH_DEV_MODE = true; // 개발 모드 활성화
+
 const OAUTH_CONFIG = {
     google: {
         enabled: false, // true로 변경하여 활성화
@@ -120,9 +124,118 @@ function getOAuthUrl(provider) {
 
 // Check if OAuth is configured
 function isOAuthConfigured(provider) {
+    // 개발 모드에서는 항상 true 반환
+    if (OAUTH_DEV_MODE) {
+        return true;
+    }
     const config = OAUTH_CONFIG[provider];
     return config && config.enabled && config.clientId && 
            !config.clientId.includes('YOUR_') && 
            config.authUrl() !== null;
+}
+
+// 개발 모드에서 소셜 로그인 시뮬레이션
+function simulateSocialLogin(provider) {
+    // 가상의 사용자 정보 생성
+    const mockUsers = {
+        google: {
+            email: 'user.google@example.com',
+            name: 'Google 사용자',
+            provider: 'google'
+        },
+        naver: {
+            email: 'user.naver@example.com',
+            name: '네이버 사용자',
+            provider: 'naver'
+        },
+        kakao: {
+            email: 'user.kakao@example.com',
+            name: '카카오 사용자',
+            provider: 'kakao'
+        },
+        apple: {
+            email: 'user.apple@example.com',
+            name: 'Apple 사용자',
+            provider: 'apple'
+        }
+    };
+    
+    const user = mockUsers[provider];
+    if (!user) {
+        return false;
+    }
+    
+    // 회원 목록에 저장 (admin 페이지에서 확인 가능)
+    try {
+        let users = [];
+        const stored = localStorage.getItem('users');
+        if (stored) {
+            users = JSON.parse(stored);
+        }
+        
+        // 이미 존재하는 사용자인지 확인
+        const existingUser = users.find(u => u.email === user.email);
+        if (!existingUser) {
+            const userData = {
+                id: Date.now().toString(),
+                email: user.email,
+                name: user.name,
+                registeredAt: new Date().toISOString(),
+                status: 'active',
+                authMethod: 'social',
+                authProvider: user.provider
+            };
+            users.push(userData);
+            localStorage.setItem('users', JSON.stringify(users));
+            console.log('Social login user registered:', userData);
+        }
+    } catch (e) {
+        console.error('Error saving social login user:', e);
+    }
+    
+    // 로그인 처리
+    localStorage.setItem('isLoggedIn', 'true');
+    localStorage.setItem('userEmail', user.email);
+    localStorage.setItem('userName', user.name);
+    localStorage.setItem('authProvider', user.provider);
+    localStorage.setItem('authMethod', 'social');
+    
+    return true;
+}
+
+// 소셜 로그인 처리 (개발 모드 또는 실제 모드)
+function handleSocialLogin(provider) {
+    if (OAUTH_DEV_MODE) {
+        // 개발 모드: 시뮬레이션
+        if (simulateSocialLogin(provider)) {
+            // 성공 메시지 표시
+            if (typeof showSuccessMessage === 'function') {
+                showSuccessMessage('소셜 로그인 성공! (개발 모드)');
+            }
+            
+            // 헤더 업데이트 (같은 페이지에 있을 경우)
+            if (typeof updateHeaderLoginStatus === 'function') {
+                updateHeaderLoginStatus();
+            }
+            
+            // 홈으로 리다이렉트
+            setTimeout(function() {
+                const currentPath = window.location.pathname;
+                const isInAuth = currentPath.includes('/auth/');
+                const redirectUrl = isInAuth ? '../../index.html' : '../index.html';
+                window.location.href = redirectUrl;
+            }, 1000);
+            return true;
+        }
+        return false;
+    } else {
+        // 실제 모드: OAuth URL로 리다이렉트
+        const oauthUrl = getOAuthUrl(provider);
+        if (oauthUrl) {
+            window.location.href = oauthUrl;
+            return true;
+        }
+        return false;
+    }
 }
 

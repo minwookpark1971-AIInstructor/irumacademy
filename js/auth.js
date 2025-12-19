@@ -60,8 +60,28 @@ function initSignupForm() {
     const $form = $('#signup-form');
     
     if ($form.length) {
+        // 한국 전화번호 검증 메서드 추가
+        $.validator.addMethod("phoneKR", function(value, element) {
+            // 숫자만 추출
+            const phoneNumber = value.replace(/[^0-9]/g, '');
+            // 10자리 또는 11자리 숫자인지 확인
+            if (phoneNumber.length < 10 || phoneNumber.length > 11) {
+                return false;
+            }
+            // 010, 011, 016, 017, 018, 019로 시작하는지 확인
+            return /^01[0-9]/.test(phoneNumber);
+        }, "올바른 전화번호 형식을 입력해주세요 (예: 010-1234-5678)");
+        
         $form.validate({
             rules: {
+                name: {
+                    required: true,
+                    minlength: 2
+                },
+                phone: {
+                    required: true,
+                    phoneKR: true
+                },
                 email: {
                     required: true,
                     email: true
@@ -80,6 +100,14 @@ function initSignupForm() {
                 }
             },
             messages: {
+                name: {
+                    required: '이름을 입력해주세요',
+                    minlength: '이름은 최소 2자 이상이어야 합니다'
+                },
+                phone: {
+                    required: '이동전화번호를 입력해주세요',
+                    phoneKR: '올바른 전화번호 형식을 입력해주세요 (예: 010-1234-5678)'
+                },
                 email: {
                     required: '이메일을 입력해주세요',
                     email: '올바른 이메일을 입력해주세요'
@@ -108,7 +136,20 @@ function initSignupForm() {
                 }
             },
             submitHandler: function(form) {
+                console.log('Form validation passed, submitting...');
                 handleSignup(form);
+            },
+            invalidHandler: function(event, validator) {
+                console.log('Form validation failed');
+                console.log('Errors:', validator.errorList);
+                // 첫 번째 에러 메시지를 상단에 표시
+                const firstError = validator.errorList[0];
+                if (firstError) {
+                    const $errorMsg = $('.error-message');
+                    if ($errorMsg.length) {
+                        $errorMsg.text(firstError.message).show();
+                    }
+                }
             }
         });
     }
@@ -152,6 +193,11 @@ function handleLogin(form) {
                 // Show success message
                 showSuccessMessage('로그인 성공!');
                 
+                // 헤더 업데이트 (같은 페이지에 있을 경우)
+                if (typeof updateHeaderLoginStatus === 'function') {
+                    updateHeaderLoginStatus();
+                }
+                
                 // Redirect to home page
                 setTimeout(function() {
                     window.location.href = '../index.html';
@@ -183,6 +229,7 @@ function handleLogin(form) {
 
 // Handle signup
 function handleSignup(form) {
+    console.log('handleSignup called');
     const $form = $(form);
     const $submitBtn = $form.find('button[type="submit"]');
     const $errorMsg = $form.find('.error-message');
@@ -192,10 +239,14 @@ function handleSignup(form) {
     $errorMsg.hide();
     
     const formData = {
+        name: $('#name').val(),
+        phone: $('#phone').val(),
         email: $('#email').val(),
         password: $('#password').val(),
         confirmPassword: $('#confirmPassword').val()
     };
+    
+    console.log('Form data:', formData);
     
     // API Call - Replace with your backend endpoint
     $.ajax({
@@ -210,15 +261,22 @@ function handleSignup(form) {
                 if (response.token) {
                     localStorage.setItem('authToken', response.token);
                     localStorage.setItem('userEmail', response.email);
+                    localStorage.setItem('userName', response.name || formData.name || '');
                     localStorage.setItem('isLoggedIn', 'true');
                 } else {
                     // Fallback: local storage only (for development)
                     localStorage.setItem('isLoggedIn', 'true');
                     localStorage.setItem('userEmail', formData.email);
+                    localStorage.setItem('userName', formData.name || '');
                 }
                 
                 // Show success message
                 showSuccessMessage('회원가입 성공!');
+                
+                // 헤더 업데이트 (같은 페이지에 있을 경우)
+                if (typeof updateHeaderLoginStatus === 'function') {
+                    updateHeaderLoginStatus();
+                }
                 
                 // Redirect to home page
                 setTimeout(function() {
@@ -257,6 +315,11 @@ function handleLoginFallback(formData) {
     
     showSuccessMessage('로그인 성공! (개발 모드)');
     
+    // 헤더 업데이트 (같은 페이지에 있을 경우)
+    if (typeof updateHeaderLoginStatus === 'function') {
+        updateHeaderLoginStatus();
+    }
+    
     setTimeout(function() {
         window.location.href = '../index.html';
     }, 1000);
@@ -267,9 +330,12 @@ function handleSignupFallback(formData) {
     // Store user data in localStorage for admin viewing
     const userData = {
         id: Date.now().toString(),
+        name: formData.name || '',
+        phone: formData.phone || '',
         email: formData.email,
         registeredAt: new Date().toISOString(),
-        status: 'active'
+        status: 'active',
+        authMethod: 'normal'
     };
     
     // Get existing users from localStorage
@@ -304,8 +370,14 @@ function handleSignupFallback(formData) {
     // Store in localStorage for login
     localStorage.setItem('isLoggedIn', 'true');
     localStorage.setItem('userEmail', formData.email);
+    localStorage.setItem('userName', formData.name || '');
     
     showSuccessMessage('회원가입 성공! (개발 모드)');
+    
+    // 헤더 업데이트 (같은 페이지에 있을 경우)
+    if (typeof updateHeaderLoginStatus === 'function') {
+        updateHeaderLoginStatus();
+    }
     
     setTimeout(function() {
         window.location.href = '../index.html';
@@ -380,6 +452,15 @@ function logout() {
             localStorage.removeItem('authToken');
             localStorage.removeItem('isLoggedIn');
             localStorage.removeItem('userEmail');
+            localStorage.removeItem('userName');
+            localStorage.removeItem('authProvider');
+            localStorage.removeItem('authMethod');
+            
+            // 헤더 업데이트
+            if (typeof updateHeaderLoginStatus === 'function') {
+                updateHeaderLoginStatus();
+            }
+            
             window.location.href = '../index.html';
         });
     } else {
@@ -387,6 +468,15 @@ function logout() {
         localStorage.removeItem('authToken');
         localStorage.removeItem('isLoggedIn');
         localStorage.removeItem('userEmail');
+        localStorage.removeItem('userName');
+        localStorage.removeItem('authProvider');
+        localStorage.removeItem('authMethod');
+        
+        // 헤더 업데이트
+        if (typeof updateHeaderLoginStatus === 'function') {
+            updateHeaderLoginStatus();
+        }
+        
         window.location.href = '../index.html';
     }
 }

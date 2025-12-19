@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>소셜 로그인 처리 중... | Irum Academy</title>
+    <meta name="description" content="OAuth 인증 처리 중">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/main.css">
+    <link rel="stylesheet" href="../../css/animations.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <div id="header-container"></div>
+
+    <!-- Main Content -->
+    <main class="main-content" style="padding-top: 120px; padding-bottom: 3rem;">
+        <section class="section">
+            <div class="container" style="max-width: 500px;">
+                <div class="card reveal-up">
+                    <div class="card-header text-center">
+                        <h1 class="card-title" style="font-size: 2rem; margin-bottom: 0.5rem;">인증 처리 중...</h1>
+                        <p class="card-description">잠시만 기다려주세요</p>
+                    </div>
+                    <div class="card-content text-center">
+                        <div class="spinner" style="width: 40px; height: 40px; border: 4px solid var(--border); border-top-color: var(--primary); border-radius: 50%; animation: spin 1s linear infinite; margin: 2rem auto;"></div>
+                        <p id="status-message" style="margin-top: 1rem; color: var(--text-muted);">소셜 로그인을 처리하고 있습니다...</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <div id="footer-container"></div>
+
+    <!-- Scripts -->
+    <script src="../../js/components.js"></script>
+    <script src="../../js/main.js"></script>
+    <script src="../../js/auth.js"></script>
+    <script src="../../js/oauth-config.js"></script>
+    
+    <script>
+        $(document).ready(function() {
+            // URL 파라미터에서 정보 추출
+            const urlParams = new URLSearchParams(window.location.search);
+            const code = urlParams.get('code');
+            const state = urlParams.get('state');
+            const error = urlParams.get('error');
+            const errorDescription = urlParams.get('error_description');
+            
+            // URL에서 provider 추출 (예: /auth/google/callback -> google)
+            const pathname = window.location.pathname;
+            const providerMatch = pathname.match(/\/(google|naver|kakao|apple)\/callback/);
+            const provider = providerMatch ? providerMatch[1] : null;
+            
+            // 개발 모드 확인
+            const isDevMode = typeof OAUTH_DEV_MODE !== 'undefined' && OAUTH_DEV_MODE === true;
+            
+            // 에러 처리
+            if (error) {
+                handleOAuthError(error, errorDescription);
+                return;
+            }
+            
+            // 개발 모드: 시뮬레이션 처리
+            if (isDevMode) {
+                handleDevModeCallback(provider);
+                return;
+            }
+            
+            // 실제 OAuth 플로우: 인증 코드가 있으면 백엔드로 전송
+            if (code && provider) {
+                handleOAuthCallback(code, state, provider);
+            } else {
+                handleOAuthError('missing_code', '인증 코드를 받지 못했습니다.');
+            }
+        });
+        
+        // 개발 모드 콜백 처리
+        function handleDevModeCallback(provider) {
+            const $statusMsg = $('#status-message');
+            $statusMsg.text('개발 모드: 로그인 처리 중...');
+            
+            // 시뮬레이션 로그인
+            if (typeof simulateSocialLogin === 'function') {
+                setTimeout(function() {
+                    if (simulateSocialLogin(provider)) {
+                        $statusMsg.text('로그인 성공! 홈으로 이동합니다...');
+                        
+                        // 헤더 업데이트 (같은 페이지에 있을 경우)
+                        if (typeof updateHeaderLoginStatus === 'function') {
+                            updateHeaderLoginStatus();
+                        }
+                        
+                        setTimeout(function() {
+                            window.location.href = '../../index.html';
+                        }, 1000);
+                    } else {
+                        handleOAuthError('simulation_failed', '시뮬레이션 로그인에 실패했습니다.');
+                    }
+                }, 1500);
+            } else {
+                handleOAuthError('function_not_found', '로그인 함수를 찾을 수 없습니다.');
+            }
+        }
+        
+        // 실제 OAuth 콜백 처리
+        function handleOAuthCallback(code, state, provider) {
+            const $statusMsg = $('#status-message');
+            $statusMsg.text('인증 정보를 확인하고 있습니다...');
+            
+            // 백엔드 API 호출 (예시)
+            // 실제 구현 시 백엔드 엔드포인트로 인증 코드를 전송해야 합니다
+            $.ajax({
+                url: '/api/auth/' + provider + '/callback',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    code: code,
+                    state: state
+                }),
+                dataType: 'json',
+                success: function(response) {
+                    if (response.success && response.token) {
+                        // 토큰 저장
+                        localStorage.setItem('authToken', response.token);
+                        localStorage.setItem('isLoggedIn', 'true');
+                        localStorage.setItem('userEmail', response.email || '');
+                        localStorage.setItem('authProvider', provider);
+                        localStorage.setItem('authMethod', 'social');
+                        
+                        $statusMsg.text('로그인 성공! 홈으로 이동합니다...');
+                        setTimeout(function() {
+                            window.location.href = '../../index.html';
+                        }, 1000);
+                    } else {
+                        handleOAuthError('login_failed', response.message || '로그인에 실패했습니다.');
+                    }
+                },
+                error: function(xhr) {
+                    // 백엔드가 없으면 개발 모드로 폴백
+                    if (xhr.status === 0 || xhr.status === 404) {
+                        console.warn('Backend not available, using dev mode');
+                        handleDevModeCallback(provider);
+                    } else {
+                        handleOAuthError('api_error', '서버 오류가 발생했습니다.');
+                    }
+                }
+            });
+        }
+        
+        // OAuth 에러 처리
+        function handleOAuthError(error, description) {
+            const $statusMsg = $('#status-message');
+            $statusMsg.html('<span style="color: #dc2626;">인증 오류가 발생했습니다.</span><br><small>' + (description || error) + '</small>');
+            
+            setTimeout(function() {
+                window.location.href = 'login.html';
+            }, 3000);
+        }
+        
+        // 스피너 애니메이션
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+    
+    <style>
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid var(--border);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 2rem auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</body>
+</html>
+

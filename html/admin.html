@@ -195,6 +195,12 @@
             <div class="admin-header">
                 <h1 style="margin: 0;">관리자 대시보드</h1>
                 <div>
+                    <button id="export-applications-btn" class="btn btn-outline" style="margin-right: 0.5rem;">
+                        신청 내역 엑셀 내보내기
+                    </button>
+                    <button id="export-users-btn" class="btn btn-outline" style="margin-right: 0.5rem;">
+                        회원 목록 엑셀 내보내기
+                    </button>
                     <button id="refresh-btn" class="btn btn-outline" style="margin-right: 0.5rem;">
                         새로고침
                     </button>
@@ -307,7 +313,7 @@
                             <thead>
                                 <tr>
                                     <th>가입일시</th>
-                                    <th>이메일</th>
+                                    <th>이메일 (가입방법)</th>
                                     <th>상태</th>
                                 </tr>
                             </thead>
@@ -325,10 +331,11 @@
 
     <!-- Application Detail Modal -->
     <div id="detail-modal" style="display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.5); z-index: 1000; align-items: center; justify-content: center;">
-        <div style="background: white; border-radius: 0.5rem; padding: 2rem; max-width: 800px; max-height: 90vh; overflow-y: auto; margin: 1rem;">
+        <div id="modal-backdrop" style="position: absolute; inset: 0; cursor: pointer;"></div>
+        <div style="position: relative; z-index: 1001; background: white; border-radius: 0.5rem; padding: 2rem; max-width: 800px; max-height: 90vh; overflow-y: auto; margin: 1rem;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
                 <h2 style="margin: 0;">신청 상세 정보</h2>
-                <button id="close-modal" style="background: none; border: none; font-size: 1.5rem; cursor: pointer;">&times;</button>
+                <button id="close-modal" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; padding: 0; width: 2rem; height: 2rem; display: flex; align-items: center; justify-content: center;">&times;</button>
             </div>
             <div id="detail-content"></div>
             <div style="display: flex; gap: 1rem; justify-content: flex-end; margin-top: 1.5rem;">
@@ -339,6 +346,8 @@
     </div>
 
     <!-- Scripts -->
+    <!-- SheetJS 라이브러리 (엑셀 파일 생성용) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="../js/components.js"></script>
     <script>
         // Admin credentials (in production, this should be server-side)
@@ -384,6 +393,43 @@
             $('#refresh-btn').on('click', function() {
                 loadApplications();
                 loadUsers();
+                alert('데이터를 새로고침했습니다.');
+            });
+            
+            // Export handlers
+            $('#export-applications-btn').on('click', function() {
+                // 필터링된 데이터 가져오기
+                const statusFilter = $('#status-filter').val();
+                const typeFilter = $('#type-filter').val();
+                const searchTerm = $('#search-input').val().toLowerCase();
+                
+                let filtered = applications;
+                if (statusFilter) {
+                    filtered = filtered.filter(a => a.status === statusFilter);
+                }
+                if (typeFilter) {
+                    filtered = filtered.filter(a => a.applicationType === typeFilter);
+                }
+                if (searchTerm) {
+                    filtered = filtered.filter(a => 
+                        a.name.toLowerCase().includes(searchTerm) ||
+                        a.email.toLowerCase().includes(searchTerm) ||
+                        (a.phone && a.phone.includes(searchTerm))
+                    );
+                }
+                exportToExcel(filtered, 'applications');
+            });
+            
+            $('#export-users-btn').on('click', function() {
+                // 필터링된 데이터 가져오기
+                const searchTerm = $('#user-search-input').val().toLowerCase();
+                let filtered = users;
+                if (searchTerm) {
+                    filtered = filtered.filter(u => 
+                        u.email.toLowerCase().includes(searchTerm)
+                    );
+                }
+                exportToExcel(filtered, 'users');
             });
 
             // Tab handlers
@@ -398,8 +444,25 @@
             $('#user-search-input').on('input', filterUsers);
 
             // Modal handlers
-            $('#close-modal').on('click', function() {
-                $('#detail-modal').hide();
+            function closeModal() {
+                $('#detail-modal').css('display', 'none');
+                currentApplicationId = null;
+            }
+            
+            $('#close-modal').on('click', function(e) {
+                e.stopPropagation();
+                closeModal();
+            });
+            
+            $('#modal-backdrop').on('click', function() {
+                closeModal();
+            });
+            
+            // ESC 키로 모달 닫기
+            $(document).on('keydown', function(e) {
+                if (e.key === 'Escape' && $('#detail-modal').is(':visible')) {
+                    closeModal();
+                }
             });
 
             $('#approve-btn').on('click', function() {
@@ -457,33 +520,16 @@
             loadUsers();
         }
 
-        function switchTab(tab) {
-            // Update tab buttons
-            $('.admin-tab').removeClass('active').css({
-                'border-bottom': 'none',
-                'color': 'var(--text-muted)'
-            });
-            $(`.admin-tab[data-tab="${tab}"]`).addClass('active').css({
-                'border-bottom': '2px solid var(--primary)',
-                'color': 'var(--primary)'
-            });
-
-            // Show/hide sections
-            if (tab === 'applications') {
-                $('#applications-section').show();
-                $('#users-section').hide();
-            } else if (tab === 'users') {
-                $('#applications-section').hide();
-                $('#users-section').show();
-                loadUsers();
-            }
-        }
-
         function loadUsers() {
             try {
                 const stored = localStorage.getItem('users');
                 if (stored) {
-                    users = JSON.parse(stored);
+                    const parsed = JSON.parse(stored);
+                    // 데이터 유효성 검사
+                    users = Array.isArray(parsed) ? parsed.filter(u => {
+                        // 필수 필드 확인
+                        return u && u.email && u.registeredAt;
+                    }) : [];
                     // Sort by date (newest first)
                     users.sort((a, b) => new Date(b.registeredAt) - new Date(a.registeredAt));
                 } else {
@@ -537,11 +583,16 @@
                 
                 const statusClass = user.status === 'active' ? 'status-approved' : 'status-rejected';
                 const statusText = user.status === 'active' ? '활성' : '비활성';
+                
+                // 가입 방법 표시
+                const authMethod = user.authMethod === 'social' ? 
+                    `<span style="font-size: 0.75rem; color: var(--text-muted);">(${user.authProvider || '소셜'})</span>` : 
+                    '<span style="font-size: 0.75rem; color: var(--text-muted);">(일반)</span>';
 
                 const row = $(`
                     <tr>
                         <td>${dateStr}</td>
-                        <td>${user.email}</td>
+                        <td>${user.email || '-'} ${authMethod}</td>
                         <td><span class="status-badge ${statusClass}">${statusText}</span></td>
                     </tr>
                 `);
@@ -554,7 +605,12 @@
             try {
                 const stored = localStorage.getItem('applications');
                 if (stored) {
-                    applications = JSON.parse(stored);
+                    const parsed = JSON.parse(stored);
+                    // 데이터 유효성 검사
+                    applications = Array.isArray(parsed) ? parsed.filter(a => {
+                        // 필수 필드 확인
+                        return a && a.id && a.submittedAt && a.email;
+                    }) : [];
                     // Sort by date (newest first)
                     applications.sort((a, b) => new Date(b.submittedAt) - new Date(a.submittedAt));
                 } else {
@@ -710,117 +766,120 @@
             `;
 
             $('#detail-content').html(detailHtml);
-            $('#detail-modal').show();
+            $('#detail-modal').css('display', 'flex');
         }
 
         function updateApplicationStatus(id, status) {
             const appIndex = applications.findIndex(a => a.id === id);
-            if (appIndex === -1) return;
+            if (appIndex === -1) {
+                alert('신청을 찾을 수 없습니다.');
+                return;
+            }
 
             applications[appIndex].status = status;
             
             try {
                 localStorage.setItem('applications', JSON.stringify(applications));
+                $('#detail-modal').css('display', 'none');
+                currentApplicationId = null;
                 loadApplications();
-                $('#detail-modal').hide();
                 alert(`신청이 ${status === 'approved' ? '승인' : '거절'}되었습니다.`);
             } catch (e) {
                 console.error('Error updating application:', e);
-                alert('상태 업데이트 중 오류가 발생했습니다.');
+                alert('상태 업데이트 중 오류가 발생했습니다. localStorage 용량을 확인해주세요.');
             }
         }
-
-        function switchTab(tab) {
-            // Update tab buttons
-            $('.admin-tab').removeClass('active').css({
-                'border-bottom': 'none',
-                'color': 'var(--text-muted)'
-            });
-            $(`.admin-tab[data-tab="${tab}"]`).addClass('active').css({
-                'border-bottom': '2px solid var(--primary)',
-                'color': 'var(--primary)'
-            });
-
-            // Show/hide sections
-            if (tab === 'applications') {
-                $('#applications-section').show();
-                $('#users-section').hide();
-            } else if (tab === 'users') {
-                $('#applications-section').hide();
-                $('#users-section').show();
-                loadUsers();
-            }
-        }
-
-        function loadUsers() {
-            try {
-                const stored = localStorage.getItem('users');
-                if (stored) {
-                    users = JSON.parse(stored);
-                    // Sort by date (newest first)
-                    users.sort((a, b) => new Date(b.registeredAt) - new Date(a.registeredAt));
-                } else {
-                    users = [];
-                }
-                updateUserStatistics();
-                filterUsers();
-            } catch (e) {
-                console.error('Error loading users:', e);
-                users = [];
-                updateUserStatistics();
-                filterUsers();
-            }
-        }
-
-        function updateUserStatistics() {
-            const total = users.length;
-            const active = users.filter(u => u.status === 'active').length;
-
-            $('#total-users').text(total);
-            $('#active-users').text(active);
-        }
-
-        function filterUsers() {
-            const searchTerm = $('#user-search-input').val().toLowerCase();
-
-            let filtered = users;
-
-            if (searchTerm) {
-                filtered = filtered.filter(u => 
-                    u.email.toLowerCase().includes(searchTerm)
-                );
-            }
-
-            renderUsers(filtered);
-        }
-
-        function renderUsers(userList) {
-            const tbody = $('#users-tbody');
-            tbody.empty();
-
-            if (userList.length === 0) {
-                tbody.html('<tr><td colspan="3" class="no-applications">회원이 없습니다.</td></tr>');
+        
+        // 엑셀 내보내기 함수
+        function exportToExcel(data, type) {
+            if (!data || data.length === 0) {
+                alert('내보낼 데이터가 없습니다.');
                 return;
             }
-
-            userList.forEach(user => {
-                const date = new Date(user.registeredAt);
-                const dateStr = date.toLocaleDateString('ko-KR') + ' ' + 
-                               date.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' });
-                
-                const statusClass = user.status === 'active' ? 'status-approved' : 'status-rejected';
-                const statusText = user.status === 'active' ? '활성' : '비활성';
-
-                const row = $(`
-                    <tr>
-                        <td>${dateStr}</td>
-                        <td>${user.email}</td>
-                        <td><span class="status-badge ${statusClass}">${statusText}</span></td>
-                    </tr>
-                `);
-
-                tbody.append(row);
+            
+            // SheetJS 라이브러리 확인
+            if (typeof XLSX === 'undefined') {
+                alert('엑셀 내보내기 기능을 사용할 수 없습니다. 페이지를 새로고침해주세요.');
+                return;
+            }
+            
+            let headers = [];
+            let rows = [];
+            
+            if (type === 'applications') {
+                headers = ['신청일시', '이름', '이메일', '연락처', '과정/유형', '희망일정', '희망시간', '소속', '직무', '상태'];
+                data.forEach(app => {
+                    const date = new Date(app.submittedAt);
+                    const dateStr = date.toLocaleDateString('ko-KR') + ' ' + 
+                                   date.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' });
+                    const statusText = {
+                        'pending': '대기 중',
+                        'approved': '승인됨',
+                        'rejected': '거절됨'
+                    }[app.status || 'pending'] || '대기 중';
+                    
+                    rows.push([
+                        dateStr,
+                        app.name || '',
+                        app.email || '',
+                        app.phone || '',
+                        app.courseTitle || app.applicationType || '',
+                        app.preferredSchedule || '',
+                        app.preferredTime || '',
+                        app.organization || '',
+                        app.position || '',
+                        statusText
+                    ]);
+                });
+            } else if (type === 'users') {
+                headers = ['가입일시', '이메일', '이름', '가입방법', '상태'];
+                data.forEach(user => {
+                    const date = new Date(user.registeredAt);
+                    const dateStr = date.toLocaleDateString('ko-KR') + ' ' + 
+                                   date.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' });
+                    const authMethod = user.authMethod === 'social' ? 
+                        `소셜 (${user.authProvider || '알 수 없음'})` : '일반';
+                    const statusText = user.status === 'active' ? '활성' : '비활성';
+                    
+                    rows.push([
+                        dateStr,
+                        user.email || '',
+                        user.name || '',
+                        authMethod,
+                        statusText
+                    ]);
+                });
+            }
+            
+            // 워크북 생성
+            const wb = XLSX.utils.book_new();
+            
+            // 데이터 배열 생성 (헤더 + 데이터)
+            const wsData = [headers, ...rows];
+            
+            // 워크시트 생성
+            const ws = XLSX.utils.aoa_to_sheet(wsData);
+            
+            // 컬럼 너비 설정
+            const colWidths = headers.map((header, idx) => {
+                // 각 컬럼의 최대 길이 계산
+                const maxLength = Math.max(
+                    header.length,
+                    ...rows.map(row => String(row[idx] || '').length)
+                );
+                return { wch: Math.min(Math.max(maxLength + 2, 10), 50) }; // 최소 10, 최대 50
             });
+            ws['!cols'] = colWidths;
+            
+            // 워크시트를 워크북에 추가
+            const sheetName = type === 'applications' ? '신청 내역' : '회원 목록';
+            XLSX.utils.book_append_sheet(wb, ws, sheetName);
+            
+            // 파일명 생성
+            const fileName = `${type === 'applications' ? '신청내역' : '회원목록'}_${new Date().toISOString().split('T')[0]}.xlsx`;
+            
+            // 엑셀 파일 다운로드
+            XLSX.writeFile(wb, fileName);
         }
     </script>
 </body>
