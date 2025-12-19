@@ -37,13 +37,17 @@
 
 // 개발 모드 설정
 // true로 설정하면 백엔드 없이도 소셜 로그인을 테스트할 수 있습니다
+// 실제 OAuth 설정이 완료되면 false로 변경하거나, 실제 설정이 있으면 자동으로 실제 모드 사용
 const OAUTH_DEV_MODE = true; // 개발 모드 활성화
+
+// 웹사이트 도메인
+const SITE_DOMAIN = 'https://www.irumcompany.co.kr';
 
 const OAUTH_CONFIG = {
     google: {
-        enabled: false, // true로 변경하여 활성화
-        clientId: 'YOUR_GOOGLE_CLIENT_ID',
-        redirectUri: 'http://localhost:3000/auth/google/callback', // 실제 도메인으로 변경 필요
+        enabled: false, // true로 변경하여 활성화 (clientId 설정 후)
+        clientId: 'YOUR_GOOGLE_CLIENT_ID', // Google Cloud Console에서 발급받은 Client ID로 변경 필요
+        redirectUri: SITE_DOMAIN + '/html/auth/oauth-callback.html?provider=google',
         authUrl: function() {
             if (!this.enabled || this.clientId === 'YOUR_GOOGLE_CLIENT_ID') {
                 return null;
@@ -60,9 +64,9 @@ const OAUTH_CONFIG = {
         }
     },
     naver: {
-        enabled: false, // true로 변경하여 활성화
-        clientId: 'YOUR_NAVER_CLIENT_ID',
-        redirectUri: 'http://localhost:3000/auth/naver/callback', // 실제 도메인으로 변경 필요
+        enabled: false, // true로 변경하여 활성화 (clientId 설정 후)
+        clientId: 'YOUR_NAVER_CLIENT_ID', // Naver Developers에서 발급받은 Client ID로 변경 필요
+        redirectUri: SITE_DOMAIN + '/html/auth/oauth-callback.html?provider=naver',
         state: 'STATE_STRING_' + Date.now(), // CSRF 방지를 위한 랜덤 문자열
         authUrl: function() {
             if (!this.enabled || this.clientId === 'YOUR_NAVER_CLIENT_ID') {
@@ -78,9 +82,9 @@ const OAUTH_CONFIG = {
         }
     },
     kakao: {
-        enabled: false, // true로 변경하여 활성화
-        clientId: 'YOUR_KAKAO_REST_API_KEY',
-        redirectUri: 'http://localhost:3000/auth/kakao/callback', // 실제 도메인으로 변경 필요
+        enabled: false, // true로 변경하여 활성화 (clientId 설정 후)
+        clientId: 'YOUR_KAKAO_REST_API_KEY', // Kakao Developers에서 발급받은 REST API 키로 변경 필요
+        redirectUri: SITE_DOMAIN + '/html/auth/oauth-callback.html?provider=kakao',
         authUrl: function() {
             if (!this.enabled || this.clientId === 'YOUR_KAKAO_REST_API_KEY') {
                 return null;
@@ -94,9 +98,9 @@ const OAUTH_CONFIG = {
         }
     },
     apple: {
-        enabled: false, // true로 변경하여 활성화
-        clientId: 'YOUR_APPLE_SERVICES_ID',
-        redirectUri: 'http://localhost:3000/auth/apple/callback', // 실제 도메인으로 변경 필요
+        enabled: false, // true로 변경하여 활성화 (clientId 설정 후)
+        clientId: 'YOUR_APPLE_SERVICES_ID', // Apple Developer에서 발급받은 Services ID로 변경 필요
+        redirectUri: SITE_DOMAIN + '/html/auth/oauth-callback.html?provider=apple',
         authUrl: function() {
             if (!this.enabled || this.clientId === 'YOUR_APPLE_SERVICES_ID') {
                 return null;
@@ -136,7 +140,7 @@ function isOAuthConfigured(provider) {
 
 // 개발 모드에서 소셜 로그인 시뮬레이션
 function simulateSocialLogin(provider) {
-    // 가상의 사용자 정보 생성
+    // 가상의 사용자 정보 생성 (각 provider마다 고유한 사용자)
     const mockUsers = {
         google: {
             email: 'user.google@example.com',
@@ -162,19 +166,20 @@ function simulateSocialLogin(provider) {
     
     const user = mockUsers[provider];
     if (!user) {
+        console.error('Unknown provider:', provider);
         return false;
     }
     
-    // 회원 목록에 저장 (admin 페이지에서 확인 가능)
     try {
+        // 회원 목록에 저장 (admin 페이지에서 확인 가능)
         let users = [];
         const stored = localStorage.getItem('users');
         if (stored) {
             users = JSON.parse(stored);
         }
         
-        // 이미 존재하는 사용자인지 확인
-        const existingUser = users.find(u => u.email === user.email);
+        // 이미 존재하는 사용자인지 확인 (이메일과 provider로 확인)
+        const existingUser = users.find(u => u.email === user.email && u.authProvider === user.provider);
         if (!existingUser) {
             const userData = {
                 id: Date.now().toString(),
@@ -188,29 +193,59 @@ function simulateSocialLogin(provider) {
             users.push(userData);
             localStorage.setItem('users', JSON.stringify(users));
             console.log('Social login user registered:', userData);
+        } else {
+            console.log('Existing social login user:', existingUser);
         }
+        
+        // 기존 로그인 정보 초기화 (다른 사용자로 로그인된 경우 대비)
+        // 현재 provider의 사용자로만 로그인 처리
+        localStorage.setItem('isLoggedIn', 'true');
+        localStorage.setItem('userEmail', user.email);
+        localStorage.setItem('userName', user.name);
+        localStorage.setItem('authProvider', user.provider);
+        localStorage.setItem('authMethod', 'social');
+        
+        console.log('Social login successful for provider:', provider, 'User:', user.email);
+        return true;
     } catch (e) {
-        console.error('Error saving social login user:', e);
+        console.error('Error in simulateSocialLogin:', e);
+        return false;
     }
-    
-    // 로그인 처리
-    localStorage.setItem('isLoggedIn', 'true');
-    localStorage.setItem('userEmail', user.email);
-    localStorage.setItem('userName', user.name);
-    localStorage.setItem('authProvider', user.provider);
-    localStorage.setItem('authMethod', 'social');
-    
-    return true;
 }
 
 // 소셜 로그인 처리 (개발 모드 또는 실제 모드)
 function handleSocialLogin(provider) {
+    // 실제 OAuth URL이 설정되어 있는지 확인
+    const config = OAUTH_CONFIG[provider];
+    const hasRealOAuthConfig = config && config.enabled && 
+                               config.clientId && 
+                               !config.clientId.includes('YOUR_') && 
+                               config.authUrl && config.authUrl() !== null;
+    
+    // 실제 OAuth 설정이 있으면 항상 실제 OAuth 플로우 사용 (개발 모드 여부와 무관)
+    if (hasRealOAuthConfig) {
+        const oauthUrl = getOAuthUrl(provider);
+        if (oauthUrl) {
+            console.log('Redirecting to OAuth provider:', provider, oauthUrl);
+            window.location.href = oauthUrl;
+            return true;
+        }
+    }
+    
+    // 실제 OAuth 설정이 없고 개발 모드인 경우: 시뮬레이션
     if (OAUTH_DEV_MODE) {
-        // 개발 모드: 시뮬레이션
-        if (simulateSocialLogin(provider)) {
+        const success = simulateSocialLogin(provider);
+        if (success) {
             // 성공 메시지 표시
             if (typeof showSuccessMessage === 'function') {
-                showSuccessMessage('소셜 로그인 성공! (개발 모드)');
+                const providerNames = {
+                    google: 'Google',
+                    naver: 'Naver',
+                    kakao: 'Kakao',
+                    apple: 'Apple'
+                };
+                const providerName = providerNames[provider] || provider;
+                showSuccessMessage(providerName + ' 로그인 성공! (시뮬레이션 모드)');
             }
             
             // 헤더 업데이트 (같은 페이지에 있을 경우)
@@ -226,14 +261,29 @@ function handleSocialLogin(provider) {
                 window.location.href = redirectUrl;
             }, 1000);
             return true;
+        } else {
+            // 실패 시 에러 메시지
+            if (typeof showError === 'function') {
+                showError('소셜 로그인 처리 중 오류가 발생했습니다.');
+            } else {
+                alert('소셜 로그인 처리 중 오류가 발생했습니다.');
+            }
+            return false;
         }
-        return false;
     } else {
-        // 실제 모드: OAuth URL로 리다이렉트
-        const oauthUrl = getOAuthUrl(provider);
-        if (oauthUrl) {
-            window.location.href = oauthUrl;
-            return true;
+        // 실제 모드인데 OAuth 설정이 없는 경우
+        const providerNames = {
+            google: 'Google',
+            naver: 'Naver',
+            kakao: 'Kakao',
+            apple: 'Apple'
+        };
+        const providerName = providerNames[provider] || provider;
+        
+        if (typeof showError === 'function') {
+            showError('OAuth 설정이 올바르지 않습니다.');
+        } else {
+            alert(providerName + ' 로그인 설정이 필요합니다.\n\n설정 방법:\n1. js/oauth-config.js 파일을 열어주세요\n2. ' + providerName + '의 clientId와 redirectUri를 설정하세요\n3. enabled를 true로 변경하세요');
         }
         return false;
     }

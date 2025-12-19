@@ -294,9 +294,14 @@ function handleSignup(form) {
                 errorMessage = xhr.responseJSON.message;
             } else if (xhr.status === 409) {
                 errorMessage = '이미 등록된 이메일입니다.';
-            } else if (xhr.status === 0) {
+            } else if (xhr.status === 0 || xhr.status === 404 || !xhr.status) {
                 // CORS or network error - use fallback
                 console.warn('API connection failed, using fallback');
+                handleSignupFallback(formData);
+                return;
+            } else {
+                // Other errors - try fallback
+                console.warn('API error, trying fallback');
                 handleSignupFallback(formData);
                 return;
             }
@@ -327,61 +332,85 @@ function handleLoginFallback(formData) {
 
 // Fallback signup (for development/testing without backend)
 function handleSignupFallback(formData) {
-    // Store user data in localStorage for admin viewing
-    const userData = {
-        id: Date.now().toString(),
-        name: formData.name || '',
-        phone: formData.phone || '',
-        email: formData.email,
-        registeredAt: new Date().toISOString(),
-        status: 'active',
-        authMethod: 'normal'
-    };
+    const $form = $('#signup-form');
+    const $submitBtn = $form ? $form.find('button[type="submit"]') : null;
     
-    // Get existing users from localStorage
-    let users = [];
     try {
-        const stored = localStorage.getItem('users');
-        if (stored) {
-            users = JSON.parse(stored);
+        // Store user data in localStorage for admin viewing
+        const userData = {
+            id: Date.now().toString(),
+            name: formData.name || '',
+            phone: formData.phone || '',
+            email: formData.email,
+            registeredAt: new Date().toISOString(),
+            status: 'active',
+            authMethod: 'normal'
+        };
+        
+        // Get existing users from localStorage
+        let users = [];
+        try {
+            const stored = localStorage.getItem('users');
+            if (stored) {
+                users = JSON.parse(stored);
+            }
+        } catch (e) {
+            console.error('Error reading users:', e);
+            showError('사용자 데이터를 읽는 중 오류가 발생했습니다.');
+            if ($submitBtn) {
+                $submitBtn.prop('disabled', false).text('회원가입');
+            }
+            return;
         }
+        
+        // Check if email already exists
+        const existingUser = users.find(u => u.email === formData.email);
+        if (existingUser) {
+            showError('이미 등록된 이메일입니다.');
+            if ($submitBtn) {
+                $submitBtn.prop('disabled', false).text('회원가입');
+            }
+            return;
+        }
+        
+        // Add new user
+        users.push(userData);
+        
+        // Save back to localStorage
+        try {
+            localStorage.setItem('users', JSON.stringify(users));
+            console.log('User registered:', userData);
+        } catch (e) {
+            console.error('Error saving user:', e);
+            showError('사용자 데이터를 저장하는 중 오류가 발생했습니다.');
+            if ($submitBtn) {
+                $submitBtn.prop('disabled', false).text('회원가입');
+            }
+            return;
+        }
+        
+        // Store in localStorage for login
+        localStorage.setItem('isLoggedIn', 'true');
+        localStorage.setItem('userEmail', formData.email);
+        localStorage.setItem('userName', formData.name || '');
+        
+        showSuccessMessage('회원가입 성공!');
+        
+        // 헤더 업데이트 (같은 페이지에 있을 경우)
+        if (typeof updateHeaderLoginStatus === 'function') {
+            updateHeaderLoginStatus();
+        }
+        
+        setTimeout(function() {
+            window.location.href = '../index.html';
+        }, 1000);
     } catch (e) {
-        console.error('Error reading users:', e);
+        console.error('Error in handleSignupFallback:', e);
+        showError('회원가입 처리 중 오류가 발생했습니다. 다시 시도해주세요.');
+        if ($submitBtn) {
+            $submitBtn.prop('disabled', false).text('회원가입');
+        }
     }
-    
-    // Check if email already exists
-    const existingUser = users.find(u => u.email === formData.email);
-    if (existingUser) {
-        showError('이미 등록된 이메일입니다.');
-        return;
-    }
-    
-    // Add new user
-    users.push(userData);
-    
-    // Save back to localStorage
-    try {
-        localStorage.setItem('users', JSON.stringify(users));
-        console.log('User registered:', userData);
-    } catch (e) {
-        console.error('Error saving user:', e);
-    }
-    
-    // Store in localStorage for login
-    localStorage.setItem('isLoggedIn', 'true');
-    localStorage.setItem('userEmail', formData.email);
-    localStorage.setItem('userName', formData.name || '');
-    
-    showSuccessMessage('회원가입 성공! (개발 모드)');
-    
-    // 헤더 업데이트 (같은 페이지에 있을 경우)
-    if (typeof updateHeaderLoginStatus === 'function') {
-        updateHeaderLoginStatus();
-    }
-    
-    setTimeout(function() {
-        window.location.href = '../index.html';
-    }, 1000);
 }
 
 // Show error message
