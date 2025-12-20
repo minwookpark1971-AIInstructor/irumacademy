@@ -323,11 +323,12 @@
                                     <th>전화번호</th>
                                     <th>가입방법</th>
                                     <th>상태</th>
+                                    <th>작업</th>
                                 </tr>
                             </thead>
                             <tbody id="users-tbody">
                                 <tr>
-                                    <td colspan="6" class="no-applications">회원이 없습니다.</td>
+                                    <td colspan="7" class="no-applications">회원이 없습니다.</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -702,7 +703,7 @@
             tbody.empty();
 
             if (userList.length === 0) {
-                tbody.html('<tr><td colspan="6" class="no-applications">회원이 없습니다.</td></tr>');
+                tbody.html('<tr><td colspan="7" class="no-applications">회원이 없습니다.</td></tr>');
                 return;
             }
 
@@ -725,8 +726,18 @@
                         <td>${user.phone || '-'}</td>
                         <td>${authMethod}</td>
                         <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                        <td>
+                            <button class="btn btn-sm" style="background: #ef4444; color: white; border: none;" data-id="${user.id}" data-action="delete-user">삭제</button>
+                        </td>
                     </tr>
                 `);
+
+                row.find('[data-action="delete-user"]').on('click', function() {
+                    const id = $(this).data('id');
+                    if (confirm('정말로 이 회원을 삭제하시겠습니까?')) {
+                        deleteUser(id);
+                    }
+                });
 
                 tbody.append(row);
             });
@@ -832,13 +843,21 @@
                         <td>${app.preferredSchedule || '-'} ${app.preferredTime || ''}</td>
                         <td><span class="status-badge ${statusClass}">${statusText}</span></td>
                         <td>
-                            <button class="btn btn-sm btn-outline view-detail" data-id="${app.id}">상세보기</button>
+                            <button class="btn btn-sm btn-outline view-detail" data-id="${app.id}" style="margin-right: 0.5rem;">상세보기</button>
+                            <button class="btn btn-sm" style="background: #ef4444; color: white; border: none;" data-id="${app.id}" data-action="delete-application">삭제</button>
                         </td>
                     </tr>
                 `);
 
                 row.find('.view-detail').on('click', function() {
                     showApplicationDetail(app.id);
+                });
+
+                row.find('[data-action="delete-application"]').on('click', function() {
+                    const id = $(this).data('id');
+                    if (confirm('정말로 이 신청 내역을 삭제하시겠습니까?')) {
+                        deleteApplication(id);
+                    }
                 });
 
                 tbody.append(row);
@@ -921,6 +940,66 @@
             } catch (e) {
                 console.error('Error updating application:', e);
                 alert('상태 업데이트 중 오류가 발생했습니다. localStorage 용량을 확인해주세요.');
+            }
+        }
+
+        // 신청 내역 삭제 함수
+        function deleteApplication(id) {
+            const appIndex = applications.findIndex(a => a.id === id);
+            if (appIndex === -1) {
+                alert('신청을 찾을 수 없습니다.');
+                return;
+            }
+
+            applications.splice(appIndex, 1);
+            
+            try {
+                localStorage.setItem('applications', JSON.stringify(applications));
+                loadApplications();
+                alert('신청 내역이 삭제되었습니다.');
+            } catch (e) {
+                console.error('Error deleting application:', e);
+                alert('삭제 중 오류가 발생했습니다.');
+            }
+        }
+
+        // 회원 삭제 함수
+        function deleteUser(id) {
+            const userIndex = users.findIndex(u => u.id === id);
+            if (userIndex === -1) {
+                alert('회원을 찾을 수 없습니다.');
+                return;
+            }
+
+            users.splice(userIndex, 1);
+            
+            try {
+                localStorage.setItem('users', JSON.stringify(users));
+                loadUsers();
+                alert('회원이 삭제되었습니다.');
+            } catch (e) {
+                console.error('Error deleting user:', e);
+                alert('삭제 중 오류가 발생했습니다.');
+            }
+        }
+
+        // 문의 삭제 함수
+        function deleteInquiry(id) {
+            const inquiryIndex = inquiries.findIndex(i => i.id === id);
+            if (inquiryIndex === -1) {
+                alert('문의를 찾을 수 없습니다.');
+                return;
+            }
+
+            inquiries.splice(inquiryIndex, 1);
+            
+            try {
+                localStorage.setItem('inquiries', JSON.stringify(inquiries));
+                loadInquiries();
+                alert('문의가 삭제되었습니다.');
+            } catch (e) {
+                console.error('Error deleting inquiry:', e);
+                alert('삭제 중 오류가 발생했습니다.');
             }
         }
         
@@ -1020,18 +1099,35 @@
         function loadLoginHistory() {
             try {
                 const stored = localStorage.getItem('loginHistory');
+                console.log('Loading login history from localStorage:', stored ? 'found' : 'not found');
+                
                 if (stored) {
                     const parsed = JSON.parse(stored);
+                    console.log('Parsed login history:', parsed);
+                    
                     // 데이터 유효성 검사
                     loginHistory = Array.isArray(parsed) ? parsed.filter(h => {
                         // 필수 필드 확인
-                        return h && h.id && h.loginAt && h.userEmail;
+                        const isValid = h && h.id && h.loginAt && h.userEmail;
+                        if (!isValid) {
+                            console.warn('Invalid login history record:', h);
+                        }
+                        return isValid;
                     }) : [];
+                    
+                    console.log('Filtered login history:', loginHistory.length, 'valid records');
+                    
                     // Sort by date (newest first)
-                    loginHistory.sort((a, b) => new Date(b.loginAt) - new Date(a.loginAt));
+                    loginHistory.sort((a, b) => {
+                        const dateA = new Date(a.loginAt);
+                        const dateB = new Date(b.loginAt);
+                        return dateB - dateA;
+                    });
                 } else {
                     loginHistory = [];
+                    console.log('No login history found in localStorage');
                 }
+                
                 updateLoginHistoryStatistics();
                 filterLoginHistory();
             } catch (e) {
@@ -1049,7 +1145,10 @@
             const today = new Date();
             today.setHours(0, 0, 0, 0);
             const todayLogins = loginHistory.filter(h => {
-                const loginDate = new Date(h.loginAt);
+                const loginDateValue = h.loginAt || h.loginAt || h.createdAt || h.date;
+                if (!loginDateValue) return false;
+                const loginDate = new Date(loginDateValue);
+                if (isNaN(loginDate.getTime())) return false;
                 loginDate.setHours(0, 0, 0, 0);
                 return loginDate.getTime() === today.getTime();
             }).length;
@@ -1111,7 +1210,17 @@
             }
 
             historyList.forEach(record => {
+                if (!record.loginAt) {
+                    console.warn('Record missing loginAt:', record);
+                    return;
+                }
+                
                 const date = new Date(record.loginAt);
+                if (isNaN(date.getTime())) {
+                    console.warn('Invalid date in record:', record);
+                    return;
+                }
+                
                 const dateStr = date.toLocaleDateString('ko-KR') + ' ' + 
                                date.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
                 
@@ -1225,13 +1334,21 @@
                         <td>${inquiry.authorEmail || '-'}</td>
                         <td>${answerCount}</td>
                         <td>
-                            <button class="btn btn-sm btn-outline view-inquiry-detail" data-id="${inquiry.id}">상세보기</button>
+                            <button class="btn btn-sm btn-outline view-inquiry-detail" data-id="${inquiry.id}" style="margin-right: 0.5rem;">상세보기</button>
+                            <button class="btn btn-sm" style="background: #ef4444; color: white; border: none;" data-id="${inquiry.id}" data-action="delete-inquiry">삭제</button>
                         </td>
                     </tr>
                 `);
 
                 row.find('.view-inquiry-detail').on('click', function() {
                     showInquiryDetail(inquiry.id);
+                });
+
+                row.find('[data-action="delete-inquiry"]').on('click', function() {
+                    const id = $(this).data('id');
+                    if (confirm('정말로 이 문의를 삭제하시겠습니까?')) {
+                        deleteInquiry(id);
+                    }
                 });
 
                 tbody.append(row);
