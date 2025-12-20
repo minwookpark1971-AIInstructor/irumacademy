@@ -171,7 +171,7 @@
             <div class="header-content" style="display: flex; align-items: center; justify-content: space-between; padding: 1rem 0;">
                 <div style="display: flex; align-items: center; gap: 1rem;">
                     <a href="../index.html" class="logo">
-                        <img src="../images/logo/이룸아카데미_logo.png" alt="Irum Academy" class="logo-image" style="height: 60px; width: auto; display: block;">
+                        <img src="../images/logo/이룸아카데미_logo.png" alt="Irum Academy" class="logo-image" style="height: 60px; width: auto; display: block;" data-original-src="../images/logo/이룸아카데미_logo.png" onerror="this.onerror=null; if(!this.dataset.retried) { this.dataset.retried='true'; this.src=encodeURI(this.dataset.originalSrc); } else { this.style.display='none'; }">
                     </a>
                     <h1 style="margin: 0; font-size: 1.25rem; font-weight: 600; color: var(--text);">irumcompany 관리자</h1>
                 </div>
@@ -180,7 +180,7 @@
     </header>
 
     <!-- Login Screen -->
-    <div id="login-screen" class="login-container" style="display: none;">
+    <div id="login-screen" class="login-container" style="display: block;">
         <h2 style="text-align: center; margin-bottom: 2rem;">관리자 로그인</h2>
         <form id="login-form">
             <div class="form-group">
@@ -235,6 +235,9 @@
                 <button class="admin-tab" data-tab="inquiries" style="padding: 0.75rem 1.5rem; background: none; border: none; color: var(--text-muted); font-weight: 600; cursor: pointer;">
                     문의 관리
                 </button>
+                <button class="admin-tab" data-tab="notices" style="padding: 0.75rem 1.5rem; background: none; border: none; color: var(--text-muted); font-weight: 600; cursor: pointer;">
+                    공지사항 관리
+                </button>
                 <button class="admin-tab" data-tab="login-history" style="padding: 0.75rem 1.5rem; background: none; border: none; color: var(--text-muted); font-weight: 600; cursor: pointer;">
                     로그인 이력
                 </button>
@@ -269,12 +272,6 @@
                         <option value="student">강의신청</option>
                         <option value="consult">상담신청</option>
                     </select>
-                    <select id="status-filter" class="filter-select">
-                        <option value="">전체 상태</option>
-                        <option value="pending">대기 중</option>
-                        <option value="approved">승인됨</option>
-                        <option value="rejected">거절됨</option>
-                    </select>
                     <input type="text" id="search-input" class="filter-select" placeholder="이름, 이메일 검색..." style="flex: 1; min-width: 200px;">
                 </div>
 
@@ -291,7 +288,6 @@
                                     <th>연락처</th>
                                     <th>과정/유형</th>
                                     <th>희망일정</th>
-                                    <th>상태</th>
                                     <th>작업</th>
                                 </tr>
                             </thead>
@@ -336,7 +332,7 @@
                                     <th>이메일</th>
                                     <th>전화번호</th>
                                     <th>가입방법</th>
-                                    <th>상태</th>
+                                    <th>승인상태</th>
                                     <th>작업</th>
                                 </tr>
                             </thead>
@@ -391,6 +387,57 @@
                             <tbody id="inquiries-tbody">
                                 <tr>
                                     <td colspan="6" class="no-applications">문의가 없습니다.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notices Section -->
+            <div id="notices-section" class="admin-section" style="display: none;">
+                <!-- Notice Statistics -->
+                <div class="admin-stats">
+                    <div class="stat-card">
+                        <div class="stat-number" id="total-notices">0</div>
+                        <div class="stat-label">전체 공지사항</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="published-notices">0</div>
+                        <div class="stat-label">게시 중</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="draft-notices">0</div>
+                        <div class="stat-label">임시저장</div>
+                    </div>
+                </div>
+
+                <!-- Notice Actions -->
+                <div class="filter-bar" style="margin-bottom: 1rem;">
+                    <button id="create-notice-btn" class="btn btn-primary">
+                        + 공지사항 작성
+                    </button>
+                    <input type="text" id="notice-search-input" class="filter-select" placeholder="제목, 내용 검색..." style="flex: 1; min-width: 200px;">
+                </div>
+
+                <!-- Notices Table -->
+                <div class="applications-table">
+                    <div class="table-header">공지사항 목록</div>
+                    <div class="table-content">
+                        <table id="notices-table">
+                            <thead>
+                                <tr>
+                                    <th>작성일시</th>
+                                    <th>제목</th>
+                                    <th>작성자</th>
+                                    <th>조회수</th>
+                                    <th>상태</th>
+                                    <th>작업</th>
+                                </tr>
+                            </thead>
+                            <tbody id="notices-tbody">
+                                <tr>
+                                    <td colspan="6" class="no-applications">공지사항이 없습니다.</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -488,6 +535,42 @@
         </div>
     </div>
 
+    <!-- Notice Edit Modal -->
+    <div id="notice-modal" style="display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.5); z-index: 1000; align-items: center; justify-content: center;">
+        <div id="notice-modal-backdrop" style="position: absolute; inset: 0; cursor: pointer;"></div>
+        <div style="position: relative; z-index: 1001; background: white; border-radius: 0.5rem; padding: 2rem; max-width: 900px; max-height: 90vh; overflow-y: auto; margin: 1rem; width: 100%;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <h2 style="margin: 0;" id="notice-modal-title">공지사항 작성</h2>
+                <button id="close-notice-modal" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; padding: 0; width: 2rem; height: 2rem; display: flex; align-items: center; justify-content: center;">&times;</button>
+            </div>
+            <form id="notice-form">
+                <div class="form-group">
+                    <label for="notice-title" class="form-label">제목</label>
+                    <input type="text" id="notice-title" class="form-input" placeholder="공지사항 제목을 입력하세요" required>
+                </div>
+                <div class="form-group">
+                    <label for="notice-content" class="form-label">내용</label>
+                    <textarea id="notice-content" class="form-input" rows="10" placeholder="공지사항 내용을 입력하세요" required style="resize: vertical; min-height: 200px;"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="notice-tags" class="form-label">태그 (쉼표로 구분)</label>
+                    <input type="text" id="notice-tags" class="form-input" placeholder="예: 공지, 일정, 안내">
+                </div>
+                <div class="form-group">
+                    <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                        <input type="checkbox" id="notice-published">
+                        <span>즉시 게시</span>
+                    </label>
+                </div>
+                <div style="display: flex; gap: 1rem; justify-content: flex-end; margin-top: 1.5rem;">
+                    <button type="button" id="cancel-notice-btn" class="btn btn-outline">취소</button>
+                    <button type="button" id="save-notice-draft-btn" class="btn btn-outline">임시저장</button>
+                    <button type="submit" id="save-notice-btn" class="btn btn-primary">저장</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- Scripts -->
     <!-- SheetJS 라이브러리 (엑셀 파일 생성용) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -496,6 +579,30 @@
         $(document).ready(function() {
             // Remove any header-container that might be created
             $('#header-container').remove();
+            
+            // Check for resource loading errors
+            window.addEventListener('error', function(e) {
+                if (e.target.tagName === 'LINK' || e.target.tagName === 'SCRIPT' || e.target.tagName === 'IMG') {
+                    console.error('Resource loading error:', e.target.src || e.target.href, e.message);
+                    // Try to fix image path if it's the logo
+                    if (e.target.tagName === 'IMG' && e.target.src.includes('logo')) {
+                        // Try alternative path
+                        const img = e.target;
+                        const originalSrc = img.getAttribute('data-original-src') || img.src;
+                        if (!img.getAttribute('data-retried')) {
+                            img.setAttribute('data-retried', 'true');
+                            // Try URL encoded version
+                            const encodedSrc = originalSrc.replace(/[가-힣]/g, function(match) {
+                                return encodeURIComponent(match);
+                            });
+                            img.src = encodedSrc;
+                        } else {
+                            // Hide image if retry also failed
+                            img.style.display = 'none';
+                        }
+                    }
+                }
+            }, true);
         });
     </script>
     <script>
@@ -506,13 +613,19 @@
         };
 
         let currentApplicationId = null;
+        let currentNoticeId = null;
         let applications = [];
         let users = [];
         let inquiries = [];
+        let notices = [];
         let loginHistory = [];
 
         // Check if already logged in
         $(document).ready(function() {
+            // 초기 상태 설정 - 로그인 화면 표시
+            $('#login-screen').show();
+            $('#admin-dashboard').hide();
+            
             const isLoggedIn = sessionStorage.getItem('adminLoggedIn') === 'true';
             if (isLoggedIn) {
                 showDashboard();
@@ -545,6 +658,7 @@
                 loadApplications();
                 loadUsers();
                 loadInquiries();
+                loadNotices();
                 loadLoginHistory();
                 alert('데이터를 새로고침했습니다.');
             });
@@ -553,13 +667,9 @@
             $('#export-applications-btn').on('click', function() {
                 // 필터링된 데이터 가져오기
                 const typeFilter = $('#type-filter').val();
-                const statusFilter = $('#status-filter').val();
                 const searchTerm = $('#search-input').val().toLowerCase();
                 
                 let filtered = applications;
-                if (statusFilter) {
-                    filtered = filtered.filter(a => a.status === statusFilter);
-                }
                 if (typeFilter) {
                     filtered = filtered.filter(a => a.applicationType === typeFilter);
                 }
@@ -757,11 +867,38 @@
                 }
             });
 
+            // Notice handlers
+            $('#create-notice-btn').on('click', function() {
+                currentNoticeId = null;
+                $('#notice-modal-title').text('공지사항 작성');
+                $('#notice-form')[0].reset();
+                $('#notice-published').prop('checked', true);
+                $('#notice-modal').css('display', 'flex');
+            });
+
+            $('#close-notice-modal, #notice-modal-backdrop, #cancel-notice-btn').on('click', function() {
+                $('#notice-modal').css('display', 'none');
+                currentNoticeId = null;
+            });
+
+            $('#save-notice-draft-btn').on('click', function() {
+                saveNotice(false);
+            });
+
+            $('#notice-form').on('submit', function(e) {
+                e.preventDefault();
+                const isPublished = $('#notice-published').is(':checked');
+                saveNotice(isPublished);
+            });
+
+            $('#notice-search-input').on('input', filterNotices);
+
             // Load data on dashboard show
             if (isLoggedIn) {
                 loadApplications();
                 loadUsers();
                 loadInquiries();
+                loadNotices();
                 loadLoginHistory();
             }
         });
@@ -782,6 +919,7 @@
                 $('#applications-section').show();
                 $('#users-section').hide();
                 $('#inquiries-section').hide();
+                $('#notices-section').hide();
                 $('#login-history-section').hide();
                 $('#export-applications-btn').show();
                 $('#export-users-btn').hide();
@@ -791,6 +929,7 @@
                 $('#applications-section').hide();
                 $('#users-section').show();
                 $('#inquiries-section').hide();
+                $('#notices-section').hide();
                 $('#login-history-section').hide();
                 $('#export-applications-btn').hide();
                 $('#export-users-btn').show();
@@ -801,16 +940,29 @@
                 $('#applications-section').hide();
                 $('#users-section').hide();
                 $('#inquiries-section').show();
+                $('#notices-section').hide();
                 $('#login-history-section').hide();
                 $('#export-applications-btn').hide();
                 $('#export-users-btn').hide();
                 $('#export-inquiries-btn').show();
                 $('#export-login-history-btn').hide();
                 loadInquiries();
+            } else if (tab === 'notices') {
+                $('#applications-section').hide();
+                $('#users-section').hide();
+                $('#inquiries-section').hide();
+                $('#notices-section').show();
+                $('#login-history-section').hide();
+                $('#export-applications-btn').hide();
+                $('#export-users-btn').hide();
+                $('#export-inquiries-btn').hide();
+                $('#export-login-history-btn').hide();
+                loadNotices();
             } else if (tab === 'login-history') {
                 $('#applications-section').hide();
                 $('#users-section').hide();
                 $('#inquiries-section').hide();
+                $('#notices-section').hide();
                 $('#login-history-section').show();
                 $('#export-applications-btn').hide();
                 $('#export-users-btn').hide();
@@ -833,6 +985,7 @@
             loadApplications();
             loadUsers();
             loadInquiries();
+            loadNotices();
             loadLoginHistory();
         }
 
@@ -863,10 +1016,64 @@
 
         function updateUserStatistics() {
             const total = users.length;
-            const active = users.filter(u => u.status === 'active').length;
+            // 승인된 회원만 활성으로 계산
+            const active = users.filter(u => u.approved === true || u.status === 'approved').length;
 
             $('#total-users').text(total);
             $('#active-users').text(active);
+        }
+
+        // 회원 승인 함수
+        function approveUser(id) {
+            console.log('approveUser called with id:', id);
+            try {
+                // localStorage에서 직접 읽어와서 승인
+                const stored = localStorage.getItem('users');
+                if (!stored) {
+                    alert('회원 목록을 찾을 수 없습니다.');
+                    return;
+                }
+                
+                let userList = JSON.parse(stored);
+                const userIndex = userList.findIndex(u => u && u.id === id);
+                
+                if (userIndex === -1) {
+                    alert('회원을 찾을 수 없습니다.');
+                    return;
+                }
+
+                // 회원 승인 처리
+                userList[userIndex].approved = true;
+                userList[userIndex].status = 'approved';
+                
+                // localStorage에 저장
+                localStorage.setItem('users', JSON.stringify(userList));
+                
+                // 전역 배열 업데이트
+                users = userList;
+                
+                // 통계 업데이트
+                updateUserStatistics();
+                
+                // 필터 조건 적용하여 즉시 렌더링
+                const searchTerm = $('#user-search-input').val().toLowerCase();
+                let filtered = users;
+                if (searchTerm) {
+                    filtered = filtered.filter(u => 
+                        u.email.toLowerCase().includes(searchTerm)
+                    );
+                }
+                
+                // 테이블 완전히 비우고 다시 렌더링
+                const tbody = $('#users-tbody');
+                tbody.empty();
+                renderUsers(filtered);
+                
+                alert('회원이 승인되었습니다.');
+            } catch (e) {
+                console.error('Error approving user:', e);
+                alert('승인 중 오류가 발생했습니다: ' + e.message);
+            }
         }
 
         function filterUsers() {
@@ -897,8 +1104,10 @@
                 const dateStr = date.toLocaleDateString('ko-KR') + ' ' + 
                                date.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' });
                 
-                const statusClass = user.status === 'active' ? 'status-approved' : 'status-rejected';
-                const statusText = user.status === 'active' ? '활성' : '비활성';
+                // 승인 상태 확인 (approved 필드 또는 status 필드)
+                const isApproved = user.approved === true || user.status === 'approved';
+                const statusClass = isApproved ? 'status-approved' : 'status-pending';
+                const statusText = isApproved ? '승인됨' : '대기 중';
                 
                 // 가입 방법 표시 (소셜 로그인 제거됨)
                 const authMethod = '일반';
@@ -912,13 +1121,30 @@
                         <td>${authMethod}</td>
                         <td><span class="status-badge ${statusClass}">${statusText}</span></td>
                         <td>
-                            <button class="btn btn-sm" style="background: #ef4444; color: white; border: none;" data-id="${user.id}" data-action="delete-user">삭제</button>
+                            ${!isApproved ? `<button class="btn btn-sm btn-primary approve-user-btn" style="margin-right: 0.5rem;" data-id="${user.id}" data-action="approve-user">승인</button>` : ''}
+                            <button class="btn btn-sm delete-user-btn" style="background: #ef4444; color: white; border: none;" data-id="${user.id}" data-action="delete-user">삭제</button>
                         </td>
                     </tr>
                 `);
 
-                row.find('[data-action="delete-user"]').on('click', function() {
+                // 승인 버튼 이벤트
+                if (!isApproved) {
+                    row.find('[data-action="approve-user"]').on('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        const id = $(this).data('id');
+                        console.log('Approve user button clicked, id:', id);
+                        if (confirm('이 회원을 승인하시겠습니까?')) {
+                            approveUser(id);
+                        }
+                    });
+                }
+
+                row.find('[data-action="delete-user"]').on('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
                     const id = $(this).data('id');
+                    console.log('Delete user button clicked, id:', id);
                     if (confirm('정말로 이 회원을 삭제하시겠습니까?')) {
                         deleteUser(id);
                     }
@@ -967,14 +1193,9 @@
 
         function filterApplications() {
             const typeFilter = $('#type-filter').val();
-            const statusFilter = $('#status-filter').val();
             const searchTerm = $('#search-input').val().toLowerCase();
 
             let filtered = applications;
-
-            if (statusFilter) {
-                filtered = filtered.filter(a => a.status === statusFilter);
-            }
 
             if (typeFilter) {
                 filtered = filtered.filter(a => a.applicationType === typeFilter);
@@ -996,7 +1217,7 @@
             tbody.empty();
 
             if (apps.length === 0) {
-                tbody.html('<tr><td colspan="8" class="no-applications">신청 내역이 없습니다.</td></tr>');
+                tbody.html('<tr><td colspan="7" class="no-applications">신청 내역이 없습니다.</td></tr>');
                 return;
             }
 
@@ -1026,10 +1247,9 @@
                         <td>${app.phone || '-'}</td>
                         <td>${app.courseTitle || typeText}</td>
                         <td>${app.preferredSchedule || '-'} ${app.preferredTime || ''}</td>
-                        <td><span class="status-badge ${statusClass}">${statusText}</span></td>
                         <td>
                             <button class="btn btn-sm btn-outline view-detail" data-id="${app.id}" style="margin-right: 0.5rem;">상세보기</button>
-                            <button class="btn btn-sm" style="background: #ef4444; color: white; border: none;" data-id="${app.id}" data-action="delete-application">삭제</button>
+                            <button class="btn btn-sm delete-application-btn" style="background: #ef4444; color: white; border: none;" data-id="${app.id}" data-action="delete-application">삭제</button>
                         </td>
                     </tr>
                 `);
@@ -1038,8 +1258,11 @@
                     showApplicationDetail(app.id);
                 });
 
-                row.find('[data-action="delete-application"]').on('click', function() {
+                row.find('[data-action="delete-application"]').on('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
                     const id = $(this).data('id');
+                    console.log('Delete application button clicked, id:', id);
                     if (confirm('정말로 이 신청 내역을 삭제하시겠습니까?')) {
                         deleteApplication(id);
                     }
@@ -1130,70 +1353,155 @@
 
         // 신청 내역 삭제 함수
         function deleteApplication(id) {
-            const appIndex = applications.findIndex(a => a.id === id);
-            if (appIndex === -1) {
-                alert('신청을 찾을 수 없습니다.');
-                return;
-            }
-
-            applications.splice(appIndex, 1);
-            
+            console.log('deleteApplication called with id:', id, 'type:', typeof id);
             try {
-                localStorage.setItem('applications', JSON.stringify(applications));
-                // 통계 업데이트
-                updateStatistics();
-                // 현재 필터 상태 유지하면서 다시 필터링
-                filterApplications();
+                // localStorage에서 직접 읽어와서 삭제
+                const stored = localStorage.getItem('applications');
+                if (!stored) {
+                    alert('신청 내역을 찾을 수 없습니다.');
+                    return;
+                }
+                
+                let apps = JSON.parse(stored);
+                console.log('Current applications:', apps.length);
+                
+                // ID를 문자열로 변환하여 비교
+                const appIndex = apps.findIndex(a => {
+                    if (!a || !a.id) return false;
+                    return String(a.id) === String(id);
+                });
+                console.log('Found index:', appIndex);
+                
+                if (appIndex === -1) {
+                    alert('신청을 찾을 수 없습니다. ID: ' + id);
+                    return;
+                }
+
+                // 배열에서 삭제
+                apps.splice(appIndex, 1);
+                console.log('After delete, applications:', apps.length);
+                
+                // localStorage에 저장
+                localStorage.setItem('applications', JSON.stringify(apps));
+                
+                // 데이터 다시 로드하여 화면 갱신 (가장 확실한 방법)
+                loadApplications();
+                
                 alert('신청 내역이 삭제되었습니다.');
             } catch (e) {
                 console.error('Error deleting application:', e);
-                alert('삭제 중 오류가 발생했습니다.');
+                alert('삭제 중 오류가 발생했습니다: ' + e.message);
             }
         }
 
         // 회원 삭제 함수
         function deleteUser(id) {
-            const userIndex = users.findIndex(u => u.id === id);
-            if (userIndex === -1) {
-                alert('회원을 찾을 수 없습니다.');
-                return;
-            }
-
-            users.splice(userIndex, 1);
-            
+            console.log('deleteUser called with id:', id, 'type:', typeof id);
             try {
-                localStorage.setItem('users', JSON.stringify(users));
-                // 통계 업데이트
-                updateUserStatistics();
-                // 현재 필터 상태 유지하면서 다시 필터링
-                filterUsers();
+                // localStorage에서 직접 읽어와서 삭제
+                const stored = localStorage.getItem('users');
+                if (!stored) {
+                    alert('회원 목록을 찾을 수 없습니다.');
+                    return;
+                }
+                
+                let userList = JSON.parse(stored);
+                console.log('Current users:', userList.length);
+                
+                // ID를 문자열로 변환하여 비교
+                const userIndex = userList.findIndex(u => {
+                    if (!u || !u.id) return false;
+                    return String(u.id) === String(id);
+                });
+                console.log('Found index:', userIndex);
+                
+                if (userIndex === -1) {
+                    alert('회원을 찾을 수 없습니다. ID: ' + id);
+                    return;
+                }
+
+                // 배열에서 삭제
+                userList.splice(userIndex, 1);
+                console.log('After delete, users:', userList.length);
+                
+                // localStorage에 저장
+                localStorage.setItem('users', JSON.stringify(userList));
+                
+                // 데이터 다시 로드하여 화면 갱신 (가장 확실한 방법)
+                loadUsers();
+                
                 alert('회원이 삭제되었습니다.');
             } catch (e) {
                 console.error('Error deleting user:', e);
-                alert('삭제 중 오류가 발생했습니다.');
+                alert('삭제 중 오류가 발생했습니다: ' + e.message);
             }
         }
 
         // 문의 삭제 함수
         function deleteInquiry(id) {
-            const inquiryIndex = inquiries.findIndex(i => i.id === id);
-            if (inquiryIndex === -1) {
-                alert('문의를 찾을 수 없습니다.');
-                return;
-            }
-
-            inquiries.splice(inquiryIndex, 1);
-            
+            console.log('deleteInquiry called with id:', id);
             try {
-                localStorage.setItem('inquiries', JSON.stringify(inquiries));
+                // localStorage에서 직접 읽어와서 삭제
+                const stored = localStorage.getItem('inquiries');
+                if (!stored) {
+                    alert('문의 목록을 찾을 수 없습니다.');
+                    return;
+                }
+                
+                let inquiryList = JSON.parse(stored);
+                console.log('Current inquiries:', inquiryList.length);
+                console.log('Looking for id:', id, 'Type:', typeof id);
+                console.log('All inquiry ids:', inquiryList.map(i => ({id: i.id, type: typeof i.id})));
+                
+                const inquiryIndex = inquiryList.findIndex(i => {
+                    if (!i || !i.id) return false;
+                    // ID를 문자열로 비교
+                    return String(i.id) === String(id);
+                });
+                console.log('Found index:', inquiryIndex);
+                
+                if (inquiryIndex === -1) {
+                    alert('문의를 찾을 수 없습니다. ID: ' + id);
+                    return;
+                }
+
+                // 배열에서 삭제
+                inquiryList.splice(inquiryIndex, 1);
+                console.log('After delete, inquiries:', inquiryList.length);
+                
+                // localStorage에 저장
+                localStorage.setItem('inquiries', JSON.stringify(inquiryList));
+                
+                // 전역 배열 업데이트
+                inquiries = inquiryList;
+                
                 // 통계 업데이트
                 updateInquiryStatistics();
-                // 현재 필터 상태 유지하면서 다시 필터링
-                filterInquiries();
+                
+                // 필터 조건 적용하여 즉시 렌더링
+                const searchTerm = $('#inquiry-search-input').val().toLowerCase();
+                let filtered = inquiries;
+                if (searchTerm) {
+                    filtered = filtered.filter(i => 
+                        (i.title && i.title.toLowerCase().includes(searchTerm)) ||
+                        (i.content && i.content.toLowerCase().includes(searchTerm)) ||
+                        (i.author && i.author.toLowerCase().includes(searchTerm)) ||
+                        (i.authorEmail && i.authorEmail.toLowerCase().includes(searchTerm))
+                    );
+                }
+                
+                console.log('Filtered inquiries:', filtered.length);
+                
+                // 테이블 완전히 비우고 다시 렌더링
+                const tbody = $('#inquiries-tbody');
+                tbody.empty();
+                renderInquiries(filtered);
+                
+                console.log('Rendering complete');
                 alert('문의가 삭제되었습니다.');
             } catch (e) {
                 console.error('Error deleting inquiry:', e);
-                alert('삭제 중 오류가 발생했습니다.');
+                alert('삭제 중 오류가 발생했습니다: ' + e.message);
             }
         }
         
@@ -1659,8 +1967,11 @@
                     showInquiryDetail(inquiry.id);
                 });
 
-                row.find('[data-action="delete-inquiry"]').on('click', function() {
+                row.find('[data-action="delete-inquiry"]').on('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
                     const id = $(this).data('id');
+                    console.log('Delete inquiry button clicked, id:', id);
                     if (confirm('정말로 이 문의를 삭제하시겠습니까?')) {
                         deleteInquiry(id);
                     }
@@ -1729,6 +2040,212 @@
             
             // 승인/거절 버튼 숨기기 (문의는 승인/거절이 없음)
             $('#approve-btn, #reject-btn').hide();
+        }
+
+        // 공지사항 관련 함수들
+        function loadNotices() {
+            try {
+                const stored = localStorage.getItem('communityNotices');
+                if (stored) {
+                    const parsed = JSON.parse(stored);
+                    notices = Array.isArray(parsed) ? parsed.filter(n => {
+                        return n && n.id && n.title && n.content && n.createdAt;
+                    }) : [];
+                    notices.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                } else {
+                    notices = [];
+                }
+                updateNoticeStatistics();
+                filterNotices();
+            } catch (e) {
+                console.error('Error loading notices:', e);
+                notices = [];
+                updateNoticeStatistics();
+                filterNotices();
+            }
+        }
+
+        function updateNoticeStatistics() {
+            const total = notices.length;
+            const published = notices.filter(n => n.status === 'published').length;
+            const draft = notices.filter(n => n.status === 'draft').length;
+
+            $('#total-notices').text(total);
+            $('#published-notices').text(published);
+            $('#draft-notices').text(draft);
+        }
+
+        function filterNotices() {
+            const searchTerm = $('#notice-search-input').val().toLowerCase();
+            let filtered = notices;
+
+            if (searchTerm) {
+                filtered = filtered.filter(n => 
+                    (n.title && n.title.toLowerCase().includes(searchTerm)) ||
+                    (n.content && n.content.toLowerCase().includes(searchTerm))
+                );
+            }
+
+            renderNotices(filtered);
+        }
+
+        function renderNotices(noticeList) {
+            const tbody = $('#notices-tbody');
+            tbody.empty();
+
+            if (noticeList.length === 0) {
+                tbody.html('<tr><td colspan="6" class="no-applications">공지사항이 없습니다.</td></tr>');
+                return;
+            }
+
+            noticeList.forEach(notice => {
+                const date = new Date(notice.createdAt);
+                const dateStr = date.toLocaleDateString('ko-KR') + ' ' + 
+                               date.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' });
+                
+                const statusClass = notice.status === 'published' ? 'status-approved' : 'status-pending';
+                const statusText = notice.status === 'published' ? '게시 중' : '임시저장';
+                const views = notice.views || 0;
+
+                const row = $(`
+                    <tr>
+                        <td>${dateStr}</td>
+                        <td>${notice.title}</td>
+                        <td>${notice.author || '관리자'}</td>
+                        <td>${views}</td>
+                        <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                        <td>
+                            <button class="btn btn-sm btn-outline edit-notice" data-id="${notice.id}" style="margin-right: 0.5rem;">수정</button>
+                            <button class="btn btn-sm" style="background: #ef4444; color: white; border: none;" data-id="${notice.id}" data-action="delete-notice">삭제</button>
+                        </td>
+                    </tr>
+                `);
+
+                row.find('.edit-notice').on('click', function() {
+                    const id = $(this).data('id');
+                    editNotice(id);
+                });
+
+                row.find('[data-action="delete-notice"]').on('click', function() {
+                    const id = $(this).data('id');
+                    if (confirm('정말로 이 공지사항을 삭제하시겠습니까?')) {
+                        deleteNotice(id);
+                    }
+                });
+
+                tbody.append(row);
+            });
+        }
+
+        function saveNotice(isPublished) {
+            const title = $('#notice-title').val().trim();
+            const content = $('#notice-content').val().trim();
+            const tagsInput = $('#notice-tags').val().trim();
+            const tags = tagsInput ? tagsInput.split(',').map(t => t.trim()).filter(t => t) : [];
+
+            if (!title || !content) {
+                alert('제목과 내용을 입력해주세요.');
+                return;
+            }
+
+            const noticeData = {
+                id: currentNoticeId || Date.now().toString(),
+                title: title,
+                content: content,
+                tags: tags,
+                status: isPublished ? 'published' : 'draft',
+                author: '관리자',
+                authorRole: '운영팀',
+                views: 0,
+                likes: 0,
+                comments: 0,
+                createdAt: currentNoticeId ? notices.find(n => n.id === currentNoticeId)?.createdAt || new Date().toISOString() : new Date().toISOString(),
+                updatedAt: new Date().toISOString()
+            };
+
+            if (currentNoticeId) {
+                // 수정
+                const index = notices.findIndex(n => n.id === currentNoticeId);
+                if (index !== -1) {
+                    notices[index] = noticeData;
+                }
+            } else {
+                // 새로 작성
+                notices.push(noticeData);
+            }
+
+            try {
+                localStorage.setItem('communityNotices', JSON.stringify(notices));
+                $('#notice-modal').css('display', 'none');
+                currentNoticeId = null;
+                loadNotices();
+                alert(isPublished ? '공지사항이 게시되었습니다.' : '공지사항이 임시저장되었습니다.');
+            } catch (e) {
+                console.error('Error saving notice:', e);
+                alert('저장 중 오류가 발생했습니다.');
+            }
+        }
+
+        function editNotice(id) {
+            const notice = notices.find(n => n.id === id);
+            if (!notice) return;
+
+            currentNoticeId = id;
+            $('#notice-modal-title').text('공지사항 수정');
+            $('#notice-title').val(notice.title);
+            $('#notice-content').val(notice.content);
+            $('#notice-tags').val(notice.tags ? notice.tags.join(', ') : '');
+            $('#notice-published').prop('checked', notice.status === 'published');
+            $('#notice-modal').css('display', 'flex');
+        }
+
+        function deleteNotice(id) {
+            try {
+                // localStorage에서 직접 읽어와서 삭제
+                const stored = localStorage.getItem('communityNotices');
+                if (!stored) {
+                    alert('공지사항 목록을 찾을 수 없습니다.');
+                    return;
+                }
+                
+                let noticeList = JSON.parse(stored);
+                const noticeIndex = noticeList.findIndex(n => n && n.id === id);
+                
+                if (noticeIndex === -1) {
+                    alert('공지사항을 찾을 수 없습니다.');
+                    return;
+                }
+
+                // 배열에서 삭제
+                noticeList.splice(noticeIndex, 1);
+                
+                // localStorage에 저장
+                localStorage.setItem('communityNotices', JSON.stringify(noticeList));
+                
+                // 전역 배열 업데이트
+                notices = noticeList;
+                
+                // 통계 업데이트
+                updateNoticeStatistics();
+                
+                // 화면 즉시 갱신 - 필터 조건 적용하여 렌더링
+                const searchTerm = $('#notice-search-input').val().toLowerCase();
+                let filtered = notices;
+                if (searchTerm) {
+                    filtered = filtered.filter(n => 
+                        (n.title && n.title.toLowerCase().includes(searchTerm)) ||
+                        (n.content && n.content.toLowerCase().includes(searchTerm))
+                    );
+                }
+                
+                // 화면 강제 갱신
+                renderNotices(filtered);
+                
+                alert('공지사항이 삭제되었습니다.');
+            } catch (e) {
+                console.error('Error deleting notice:', e);
+                alert('삭제 중 오류가 발생했습니다.');
+            }
         }
     </script>
 </body>
