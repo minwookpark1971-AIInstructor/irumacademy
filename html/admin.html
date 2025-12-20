@@ -1025,7 +1025,7 @@
 
         // 회원 승인 함수
         function approveUser(id) {
-            console.log('approveUser called with id:', id);
+            console.log('approveUser called with id:', id, 'type:', typeof id);
             try {
                 // localStorage에서 직접 읽어와서 승인
                 const stored = localStorage.getItem('users');
@@ -1035,39 +1035,30 @@
                 }
                 
                 let userList = JSON.parse(stored);
-                const userIndex = userList.findIndex(u => u && u.id === id);
+                console.log('Current users:', userList.length);
+                
+                // ID를 문자열로 변환하여 비교
+                const userIndex = userList.findIndex(u => {
+                    if (!u || !u.id) return false;
+                    return String(u.id) === String(id);
+                });
+                console.log('Found index:', userIndex);
                 
                 if (userIndex === -1) {
-                    alert('회원을 찾을 수 없습니다.');
+                    alert('회원을 찾을 수 없습니다. ID: ' + id);
                     return;
                 }
 
                 // 회원 승인 처리
                 userList[userIndex].approved = true;
                 userList[userIndex].status = 'approved';
+                console.log('User approved:', userList[userIndex]);
                 
                 // localStorage에 저장
                 localStorage.setItem('users', JSON.stringify(userList));
                 
-                // 전역 배열 업데이트
-                users = userList;
-                
-                // 통계 업데이트
-                updateUserStatistics();
-                
-                // 필터 조건 적용하여 즉시 렌더링
-                const searchTerm = $('#user-search-input').val().toLowerCase();
-                let filtered = users;
-                if (searchTerm) {
-                    filtered = filtered.filter(u => 
-                        u.email.toLowerCase().includes(searchTerm)
-                    );
-                }
-                
-                // 테이블 완전히 비우고 다시 렌더링
-                const tbody = $('#users-tbody');
-                tbody.empty();
-                renderUsers(filtered);
+                // 데이터 다시 로드하여 화면 갱신 (가장 확실한 방법)
+                loadUsers();
                 
                 alert('회원이 승인되었습니다.');
             } catch (e) {
