@@ -87,29 +87,6 @@
                             </button>
                         </form>
                         
-                        <!-- Social Login -->
-                        <div style="margin-top: 2rem;">
-                            <div style="position: relative; text-align: center; margin-bottom: 1.5rem;">
-                                <span style="background: white; padding: 0 1rem; position: relative; z-index: 1; color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase;">또는</span>
-                                <div style="position: absolute; top: 50%; left: 0; right: 0; height: 1px; background: var(--border);"></div>
-                            </div>
-                            
-                            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem;">
-                                <button type="button" class="btn btn-outline btn-block" onclick="socialLogin('google')">
-                                    Google
-                                </button>
-                                <button type="button" class="btn btn-outline btn-block" style="background: #03C75A; color: white; border-color: #03C75A;" onclick="socialLogin('naver')">
-                                    Naver
-                                </button>
-                                <button type="button" class="btn btn-outline btn-block" style="background: #FEE500; color: #000; border-color: #FEE500;" onclick="socialLogin('kakao')">
-                                    Kakao
-                                </button>
-                                <button type="button" class="btn btn-outline btn-block" style="background: #000; color: white; border-color: #000;" onclick="socialLogin('apple')">
-                                    Apple
-                                </button>
-                            </div>
-                        </div>
-                        
                         <!-- Signup Link -->
                         <div style="text-align: center; margin-top: 2rem; font-size: 0.875rem;">
                             계정이 없으신가요? 
@@ -128,12 +105,56 @@
     <script src="../../js/components.js"></script>
     <script src="../../js/main.js"></script>
     <script src="../../js/auth.js"></script>
-    <script src="../../js/oauth-config.js"></script>
     
     <script>
         $(document).ready(function() {
+            // 소셜 로그인 영역 완전 제거
+            function removeSocialLogin() {
+                // 소셜 로그인 관련 요소 제거
+                $('.social-login, .social-login-container, .social-login-buttons, .oauth-buttons, .sns-login').remove();
+                $('.divider, .divider-text, .or-divider').remove();
+                $('.btn-google, .btn-naver, .btn-kakao, .btn-apple').remove();
+                $('[class*="social"], [class*="oauth"], [id*="social"], [id*="oauth"]').remove();
+                $('button[onclick*="social"], button[onclick*="oauth"]').remove();
+                
+                // "또는" 텍스트가 포함된 요소 제거
+                $('*').each(function() {
+                    const text = $(this).text().trim();
+                    if (text === '또는' || text === '또는 ' || text.includes('또는')) {
+                        // 부모 요소가 form 내부에 있고 다른 중요한 내용이 없으면 제거
+                        if ($(this).closest('form').length && $(this).siblings().length === 0) {
+                            $(this).remove();
+                        }
+                    }
+                });
+                
+                // 소셜 로그인 관련 텍스트가 포함된 모든 요소 찾아서 제거
+                $('div, p, span, button, a').each(function() {
+                    const text = $(this).text().toLowerCase();
+                    if (text.includes('google') || text.includes('naver') || text.includes('kakao') || text.includes('apple') || 
+                        text.includes('소셜') || text.includes('social')) {
+                        // 버튼이나 링크인 경우에만 제거
+                        if ($(this).is('button') || $(this).is('a') || $(this).hasClass('btn')) {
+                            $(this).remove();
+                        }
+                    }
+                });
+            }
+            
+            // 즉시 실행
+            removeSocialLogin();
+            
+            // 짧은 간격으로 여러 번 실행
+            setTimeout(removeSocialLogin, 50);
+            setTimeout(removeSocialLogin, 100);
+            setTimeout(removeSocialLogin, 200);
+            setTimeout(removeSocialLogin, 500);
+            
             // Wait for components to load
             setTimeout(function() {
+                // 다시 한번 제거 (동적으로 추가된 경우 대비)
+                removeSocialLogin();
+                
                 // Initialize auth forms
                 if (typeof initLoginForm === 'function') {
                     initLoginForm();
@@ -146,82 +167,43 @@
                 if (typeof initRevealAnimations === 'function') {
                     initRevealAnimations();
                 }
-                
-                // Update SNS button states based on configuration
-                updateSNSButtonStates();
             }, 200);
-        });
-        
-        // Update SNS button states
-        function updateSNSButtonStates() {
-            const providers = ['google', 'naver', 'kakao', 'apple'];
-            const isDevMode = typeof OAUTH_DEV_MODE !== 'undefined' && OAUTH_DEV_MODE === true;
             
-            providers.forEach(provider => {
-                const $btn = $(`button[onclick*="socialLogin('${provider}')"]`);
-                if ($btn.length) {
-                    if (isDevMode) {
-                        // 개발 모드: 모든 버튼 활성화, 툴팁 표시
-                        $btn.css('opacity', '1');
-                        $btn.attr('title', '개발 모드: 시뮬레이션으로 테스트됩니다');
-                    } else if (typeof isOAuthConfigured === 'function') {
-                        if (!isOAuthConfigured(provider)) {
-                            $btn.css('opacity', '0.6');
-                            $btn.attr('title', 'OAuth 설정이 필요합니다. js/oauth-config.js 파일을 확인하세요.');
-                        } else {
-                            $btn.css('opacity', '1');
-                            $btn.removeAttr('title');
+            // MutationObserver로 동적 추가 감지 및 제거
+            if (typeof MutationObserver !== 'undefined') {
+                const observer = new MutationObserver(function(mutations) {
+                    let shouldRemove = false;
+                    mutations.forEach(function(mutation) {
+                        if (mutation.addedNodes.length > 0) {
+                            mutation.addedNodes.forEach(function(node) {
+                                if (node.nodeType === 1) { // Element node
+                                    const $node = $(node);
+                                    const text = $node.text().toLowerCase();
+                                    const classes = $node.attr('class') || '';
+                                    const id = $node.attr('id') || '';
+                                    
+                                    if (text.includes('google') || text.includes('naver') || text.includes('kakao') || 
+                                        text.includes('apple') || text.includes('소셜') || text.includes('social') ||
+                                        text.includes('또는') || classes.includes('social') || classes.includes('oauth') ||
+                                        id.includes('social') || id.includes('oauth')) {
+                                        shouldRemove = true;
+                                    }
+                                }
+                            });
                         }
+                    });
+                    if (shouldRemove) {
+                        removeSocialLogin();
                     }
-                }
-            });
-        }
-        
-        // Social login handler
-        function socialLogin(provider) {
-            const providerNames = {
-                google: 'Google',
-                naver: 'Naver',
-                kakao: 'Kakao',
-                apple: 'Apple'
-            };
-            
-            const providerName = providerNames[provider] || provider;
-            
-            // 개발 모드 확인
-            const isDevMode = typeof OAUTH_DEV_MODE !== 'undefined' && OAUTH_DEV_MODE === true;
-            
-            // 개발 모드이거나 handleSocialLogin 함수가 있으면 사용
-            if (typeof handleSocialLogin === 'function') {
-                const success = handleSocialLogin(provider);
-                if (!success) {
-                    alert(providerName + ' 로그인 처리 중 오류가 발생했습니다.');
-                }
-                return;
-            }
-            
-            // 기존 로직 (실제 OAuth 모드)
-            if (typeof getOAuthUrl === 'function' && typeof isOAuthConfigured === 'function') {
-                if (!isOAuthConfigured(provider)) {
-                    alert(providerName + ' 로그인 설정이 필요합니다.\n\n설정 방법:\n1. js/oauth-config.js 파일을 열어주세요\n2. ' + providerName + '의 clientId와 redirectUri를 설정하세요\n3. enabled를 true로 변경하세요\n\n자세한 설정 방법은 js/oauth-config.js 파일의 주석을 참고하세요.');
-                    console.warn('OAuth not configured for', provider);
-                    console.info('설정 파일 위치: js/oauth-config.js');
-                    return;
-                }
+                });
                 
-                // Get OAuth URL
-                const oauthUrl = getOAuthUrl(provider);
-                if (oauthUrl) {
-                    // Redirect to OAuth provider
-                    window.location.href = oauthUrl;
-                } else {
-                    alert(providerName + ' 로그인 URL 생성 중 오류가 발생했습니다.');
-                }
-            } else {
-                // Fallback if oauth-config.js is not loaded
-                alert(providerName + ' 로그인 설정 파일을 불러올 수 없습니다.\njs/oauth-config.js 파일이 있는지 확인해주세요.');
+                observer.observe(document.body, {
+                    childList: true,
+                    subtree: true,
+                    characterData: true
+                });
             }
-        }
+        });
     </script>
     
     <style>
@@ -237,6 +219,33 @@
         .alert-success {
             background-color: #d1fae5;
             color: #059669;
+        }
+        
+        /* 소셜 로그인 영역 완전 제거 */
+        .social-login,
+        .social-login-container,
+        .social-login-buttons,
+        .oauth-buttons,
+        .sns-login,
+        .divider,
+        .divider-text,
+        .or-divider,
+        [class*="social"],
+        [class*="oauth"],
+        [id*="social"],
+        [id*="oauth"],
+        button[onclick*="social"],
+        button[onclick*="oauth"],
+        .btn-google,
+        .btn-naver,
+        .btn-kakao,
+        .btn-apple {
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+            height: 0 !important;
+            margin: 0 !important;
+            padding: 0 !important;
         }
     </style>
 </body>

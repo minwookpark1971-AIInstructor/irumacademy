@@ -36,12 +36,35 @@
  */
 
 // 개발 모드 설정
-// true로 설정하면 백엔드 없이도 소셜 로그인을 테스트할 수 있습니다
-// 실제 OAuth 설정이 완료되면 false로 변경하거나, 실제 설정이 있으면 자동으로 실제 모드 사용
-const OAUTH_DEV_MODE = true; // 개발 모드 활성화
+// false로 설정하면 실제 OAuth 제공자 페이지로 이동합니다
+// 실제 OAuth 설정이 완료되면 false로 변경해야 합니다
+const OAUTH_DEV_MODE = false; // 개발 모드 비활성화 (실제 OAuth 사용)
 
 // 웹사이트 도메인
 const SITE_DOMAIN = 'https://www.irumcompany.co.kr';
+
+// 백엔드 API 설정
+// GitHub Pages는 정적 호스팅이므로 별도의 백엔드 서버가 필요합니다.
+// 옵션 1: Vercel 서버리스 함수 사용 시
+// const API_CONFIG = {
+//     baseURL: 'https://your-vercel-app.vercel.app/api', // Vercel 배포 URL
+//     timeout: 10000,
+//     retryCount: 2
+// };
+
+// 옵션 2: 별도 백엔드 서버 사용 시 (예: Railway, Render, Heroku)
+// const API_CONFIG = {
+//     baseURL: 'https://api.irumcompany.co.kr/api', // 백엔드 서버 URL
+//     timeout: 10000,
+//     retryCount: 2
+// };
+
+// 옵션 3: 같은 도메인의 서브도메인 사용 시
+const API_CONFIG = {
+    baseURL: '/api', // 상대 경로 (프록시 또는 서브도메인 설정 필요)
+    timeout: 10000, // 10초 타임아웃
+    retryCount: 2 // 재시도 횟수
+};
 
 const OAUTH_CONFIG = {
     google: {
@@ -227,6 +250,7 @@ function handleSocialLogin(provider) {
         const oauthUrl = getOAuthUrl(provider);
         if (oauthUrl) {
             console.log('Redirecting to OAuth provider:', provider, oauthUrl);
+            // 실제 OAuth 제공자 페이지로 리다이렉트
             window.location.href = oauthUrl;
             return true;
         }
@@ -280,10 +304,22 @@ function handleSocialLogin(provider) {
         };
         const providerName = providerNames[provider] || provider;
         
+        // OAuth 설정이 없으면 안내 메시지 표시
+        const message = providerName + ' 로그인을 사용하려면 OAuth 설정이 필요합니다.\n\n' +
+                       '설정 방법:\n' +
+                       '1. js/oauth-config.js 파일을 열어주세요\n' +
+                       '2. ' + providerName + '의 clientId와 redirectUri를 실제 값으로 설정하세요\n' +
+                       '3. enabled를 true로 변경하세요\n\n' +
+                       '각 OAuth 제공자에서 Client ID를 발급받아야 합니다:\n' +
+                       '- Google: https://console.cloud.google.com/\n' +
+                       '- Naver: https://developers.naver.com/\n' +
+                       '- Kakao: https://developers.kakao.com/\n' +
+                       '- Apple: https://developer.apple.com/';
+        
         if (typeof showError === 'function') {
-            showError('OAuth 설정이 올바르지 않습니다.');
+            showError('OAuth 설정이 필요합니다.');
         } else {
-            alert(providerName + ' 로그인 설정이 필요합니다.\n\n설정 방법:\n1. js/oauth-config.js 파일을 열어주세요\n2. ' + providerName + '의 clientId와 redirectUri를 설정하세요\n3. enabled를 true로 변경하세요');
+            alert(message);
         }
         return false;
     }

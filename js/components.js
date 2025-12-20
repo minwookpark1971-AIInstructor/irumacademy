@@ -60,6 +60,7 @@ function generateHeader() {
                 <a href="${pathInfo.instructorUrl}" class="nav-link">전문강사 성장 프로그램</a>
                 <a href="${pathInfo.applyUrl}" class="nav-link">강의신청하기</a>
                 <a href="${pathInfo.communityUrl}" class="nav-link">강사커뮤니티</a>
+                <a href="${pathInfo.inquiryUrl}" class="nav-link">문의하기</a>
             </nav>
 
             <!-- Desktop Actions -->
@@ -79,6 +80,7 @@ function generateHeader() {
             <a href="${pathInfo.instructorUrl}" class="mobile-nav-link">전문강사 성장 프로그램</a>
             <a href="${pathInfo.applyUrl}" class="mobile-nav-link">강의신청하기</a>
             <a href="${pathInfo.communityUrl}" class="mobile-nav-link">강사커뮤니티</a>
+            <a href="${pathInfo.inquiryUrl}" class="mobile-nav-link">문의하기</a>
             ${mobileActions}
         </nav>
     </div>
@@ -165,7 +167,7 @@ function getPathInfo() {
     const isInAuth = pathParts.includes('auth');
     
     // Determine relative paths based on current location
-    let homeUrl, coursesUrl, instructorUrl, applyUrl, communityUrl, loginUrl, signupUrl, logoUrl, privacyUrl, termsUrl;
+    let homeUrl, coursesUrl, instructorUrl, applyUrl, communityUrl, inquiryUrl, loginUrl, signupUrl, logoUrl, privacyUrl, termsUrl;
     
     if (isRoot) {
         // From root: html files are in html/ folder
@@ -174,6 +176,7 @@ function getPathInfo() {
         instructorUrl = 'html/instructor-growth.html';
         applyUrl = 'html/apply.html';
         communityUrl = 'html/community.html';
+        inquiryUrl = 'html/inquiry.html';
         loginUrl = 'html/auth/login.html';
         signupUrl = 'html/auth/signup.html';
         logoUrl = 'images/logo/이룸아카데미_logo.png';
@@ -186,6 +189,7 @@ function getPathInfo() {
         instructorUrl = '../../html/instructor-growth.html';
         applyUrl = '../../html/apply.html';
         communityUrl = '../../html/community.html';
+        inquiryUrl = '../../html/inquiry.html';
         loginUrl = 'login.html';
         signupUrl = 'signup.html';
         logoUrl = '../../images/logo/이룸아카데미_logo.png';
@@ -200,6 +204,7 @@ function getPathInfo() {
         instructorUrl = upPath + 'instructor-growth.html';
         applyUrl = upPath + 'apply.html';
         communityUrl = upPath + 'community.html';
+        inquiryUrl = upPath + 'inquiry.html';
         loginUrl = upPath + 'auth/login.html';
         signupUrl = upPath + 'auth/signup.html';
         logoUrl = upPath + '../images/logo/이룸아카데미_logo.png';
@@ -212,6 +217,7 @@ function getPathInfo() {
         instructorUrl = 'instructor-growth.html';
         applyUrl = 'apply.html';
         communityUrl = 'community.html';
+        inquiryUrl = 'inquiry.html';
         loginUrl = 'auth/login.html';
         signupUrl = 'auth/signup.html';
         logoUrl = '../images/logo/이룸아카데미_logo.png';
@@ -224,6 +230,7 @@ function getPathInfo() {
         instructorUrl = 'instructor-growth.html';
         applyUrl = 'apply.html';
         communityUrl = 'community.html';
+        inquiryUrl = 'inquiry.html';
         loginUrl = 'auth/login.html';
         signupUrl = 'auth/signup.html';
         logoUrl = '../images/logo/이룸아카데미_logo.png';
@@ -237,6 +244,7 @@ function getPathInfo() {
         instructorUrl: instructorUrl,
         applyUrl: applyUrl,
         communityUrl: communityUrl,
+        inquiryUrl: inquiryUrl,
         loginUrl: loginUrl,
         signupUrl: signupUrl,
         logoUrl: logoUrl,

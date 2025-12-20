@@ -155,7 +155,7 @@ function initSignupForm() {
     }
 }
 
-// Handle login
+// Handle login (로컬 저장소 기반)
 function handleLogin(form) {
     const $form = $(form);
     const $submitBtn = $form.find('button[type="submit"]');
@@ -170,64 +170,11 @@ function handleLogin(form) {
         password: $('#password').val()
     };
     
-    // API Call - Replace with your backend endpoint
-    $.ajax({
-        url: API_CONFIG.baseURL + API_CONFIG.endpoints.login,
-        method: 'POST',
-        contentType: 'application/json',
-        data: JSON.stringify(formData),
-        dataType: 'json',
-        success: function(response) {
-            if (response.success) {
-                // Store auth token if provided
-                if (response.token) {
-                    localStorage.setItem('authToken', response.token);
-                    localStorage.setItem('userEmail', response.email);
-                    localStorage.setItem('isLoggedIn', 'true');
-                } else {
-                    // Fallback: local storage only (for development)
-                    localStorage.setItem('isLoggedIn', 'true');
-                    localStorage.setItem('userEmail', formData.email);
-                }
-                
-                // Show success message
-                showSuccessMessage('로그인 성공!');
-                
-                // 헤더 업데이트 (같은 페이지에 있을 경우)
-                if (typeof updateHeaderLoginStatus === 'function') {
-                    updateHeaderLoginStatus();
-                }
-                
-                // Redirect to home page
-                setTimeout(function() {
-                    window.location.href = '../index.html';
-                }, 1000);
-            } else {
-                showError(response.message || '로그인에 실패했습니다.');
-                $submitBtn.prop('disabled', false).text('로그인');
-            }
-        },
-        error: function(xhr) {
-            let errorMessage = '로그인 중 오류가 발생했습니다.';
-            
-            if (xhr.responseJSON && xhr.responseJSON.message) {
-                errorMessage = xhr.responseJSON.message;
-            } else if (xhr.status === 401) {
-                errorMessage = '이메일 또는 비밀번호가 올바르지 않습니다.';
-            } else if (xhr.status === 0) {
-                // CORS or network error - use fallback
-                console.warn('API connection failed, using fallback');
-                handleLoginFallback(formData);
-                return;
-            }
-            
-            showError(errorMessage);
-            $submitBtn.prop('disabled', false).text('로그인');
-        }
-    });
+    // 로컬 저장소 기반 로그인 처리
+    handleLoginFallback(formData);
 }
 
-// Handle signup
+// Handle signup (로컬 저장소 기반)
 function handleSignup(form) {
     console.log('handleSignup called');
     const $form = $(form);
@@ -248,89 +195,120 @@ function handleSignup(form) {
     
     console.log('Form data:', formData);
     
-    // API Call - Replace with your backend endpoint
-    $.ajax({
-        url: API_CONFIG.baseURL + API_CONFIG.endpoints.signup,
-        method: 'POST',
-        contentType: 'application/json',
-        data: JSON.stringify(formData),
-        dataType: 'json',
-        success: function(response) {
-            if (response.success) {
-                // Store auth token if provided
-                if (response.token) {
-                    localStorage.setItem('authToken', response.token);
-                    localStorage.setItem('userEmail', response.email);
-                    localStorage.setItem('userName', response.name || formData.name || '');
-                    localStorage.setItem('isLoggedIn', 'true');
-                } else {
-                    // Fallback: local storage only (for development)
-                    localStorage.setItem('isLoggedIn', 'true');
-                    localStorage.setItem('userEmail', formData.email);
-                    localStorage.setItem('userName', formData.name || '');
-                }
-                
-                // Show success message
-                showSuccessMessage('회원가입 성공!');
-                
-                // 헤더 업데이트 (같은 페이지에 있을 경우)
-                if (typeof updateHeaderLoginStatus === 'function') {
-                    updateHeaderLoginStatus();
-                }
-                
-                // Redirect to home page
-                setTimeout(function() {
-                    window.location.href = '../index.html';
-                }, 1000);
-            } else {
-                showError(response.message || '회원가입에 실패했습니다.');
-                $submitBtn.prop('disabled', false).text('회원가입');
-            }
-        },
-        error: function(xhr) {
-            let errorMessage = '회원가입 중 오류가 발생했습니다.';
-            
-            if (xhr.responseJSON && xhr.responseJSON.message) {
-                errorMessage = xhr.responseJSON.message;
-            } else if (xhr.status === 409) {
-                errorMessage = '이미 등록된 이메일입니다.';
-            } else if (xhr.status === 0 || xhr.status === 404 || !xhr.status) {
-                // CORS or network error - use fallback
-                console.warn('API connection failed, using fallback');
-                handleSignupFallback(formData);
-                return;
-            } else {
-                // Other errors - try fallback
-                console.warn('API error, trying fallback');
-                handleSignupFallback(formData);
-                return;
-            }
-            
-            showError(errorMessage);
-            $submitBtn.prop('disabled', false).text('회원가입');
-        }
-    });
+    // 로컬 저장소 기반 회원가입 처리
+    handleSignupFallback(formData);
 }
 
-// Fallback login (for development/testing without backend)
+// 로컬 저장소 기반 로그인 처리
 function handleLoginFallback(formData) {
-    // Store in localStorage
-    localStorage.setItem('isLoggedIn', 'true');
-    localStorage.setItem('userEmail', formData.email);
+    const $form = $('#login-form');
+    const $submitBtn = $form ? $form.find('button[type="submit"]') : null;
     
-    showSuccessMessage('로그인 성공! (개발 모드)');
-    
-    // 헤더 업데이트 (같은 페이지에 있을 경우)
-    if (typeof updateHeaderLoginStatus === 'function') {
-        updateHeaderLoginStatus();
+    try {
+        // 로컬 저장소에서 사용자 목록 가져오기
+        let users = [];
+        try {
+            const stored = localStorage.getItem('users');
+            if (stored) {
+                users = JSON.parse(stored);
+            }
+        } catch (e) {
+            console.error('Error reading users:', e);
+            showError('사용자 데이터를 읽는 중 오류가 발생했습니다.');
+            if ($submitBtn) {
+                $submitBtn.prop('disabled', false).text('로그인');
+            }
+            return;
+        }
+        
+        // 이메일로 사용자 찾기 (대소문자 무시, 공백 제거)
+        const searchEmail = formData.email.trim().toLowerCase();
+        const user = users.find(u => {
+            if (!u.email) return false;
+            return u.email.trim().toLowerCase() === searchEmail;
+        });
+        
+        if (!user) {
+            console.error('User not found:', searchEmail);
+            console.log('Available users:', users.map(u => u.email));
+            showError('등록되지 않은 이메일입니다.');
+            if ($submitBtn) {
+                $submitBtn.prop('disabled', false).text('로그인');
+            }
+            return;
+        }
+        
+        // 비밀번호 확인 (공백 제거)
+        const inputPassword = formData.password.trim();
+        const storedPassword = (user.password || '').trim();
+        
+        if (storedPassword !== inputPassword) {
+            console.error('Password mismatch for:', searchEmail);
+            console.log('Input password length:', inputPassword.length);
+            console.log('Stored password length:', storedPassword.length);
+            showError('비밀번호가 올바르지 않습니다.');
+            if ($submitBtn) {
+                $submitBtn.prop('disabled', false).text('로그인');
+            }
+            return;
+        }
+        
+        // 로그인 성공 - 로컬 저장소에 로그인 정보 저장
+        localStorage.setItem('isLoggedIn', 'true');
+        localStorage.setItem('userEmail', user.email);
+        localStorage.setItem('userName', user.name || '');
+        localStorage.setItem('userId', user.id || '');
+        
+        // 로그인 이력 저장
+        try {
+            let loginHistory = [];
+            const storedHistory = localStorage.getItem('loginHistory');
+            if (storedHistory) {
+                loginHistory = JSON.parse(storedHistory);
+            }
+            
+            const loginRecord = {
+                id: Date.now().toString(),
+                userId: user.id || '',
+                userEmail: user.email,
+                userName: user.name || '',
+                loginAt: new Date().toISOString(),
+                ipAddress: 'N/A', // 클라이언트 사이드에서는 IP를 직접 가져올 수 없음
+                userAgent: navigator.userAgent || 'N/A'
+            };
+            
+            loginHistory.push(loginRecord);
+            
+            // 최근 1000개만 유지
+            if (loginHistory.length > 1000) {
+                loginHistory = loginHistory.slice(-1000);
+            }
+            
+            localStorage.setItem('loginHistory', JSON.stringify(loginHistory));
+        } catch (e) {
+            console.error('Error saving login history:', e);
+        }
+        
+        showSuccessMessage('로그인 성공!');
+        
+        // 헤더 업데이트 (같은 페이지에 있을 경우)
+        if (typeof updateHeaderLoginStatus === 'function') {
+            updateHeaderLoginStatus();
+        }
+        
+        setTimeout(function() {
+            window.location.href = '../index.html';
+        }, 1000);
+    } catch (e) {
+        console.error('Error in handleLoginFallback:', e);
+        showError('로그인 처리 중 오류가 발생했습니다. 다시 시도해주세요.');
+        if ($submitBtn) {
+            $submitBtn.prop('disabled', false).text('로그인');
+        }
     }
-    
-    setTimeout(function() {
-        window.location.href = '../index.html';
-    }, 1000);
 }
 
-// Fallback signup (for development/testing without backend)
+// 로컬 저장소 기반 회원가입 처리
 function handleSignupFallback(formData) {
     const $form = $('#signup-form');
     const $submitBtn = $form ? $form.find('button[type="submit"]') : null;
@@ -342,6 +320,7 @@ function handleSignupFallback(formData) {
             name: formData.name || '',
             phone: formData.phone || '',
             email: formData.email,
+            password: formData.password, // 비밀번호 저장 (실제 환경에서는 해시화 필요)
             registeredAt: new Date().toISOString(),
             status: 'active',
             authMethod: 'normal'
@@ -393,6 +372,7 @@ function handleSignupFallback(formData) {
         localStorage.setItem('isLoggedIn', 'true');
         localStorage.setItem('userEmail', formData.email);
         localStorage.setItem('userName', formData.name || '');
+        localStorage.setItem('userId', userData.id);
         
         showSuccessMessage('회원가입 성공!');
         

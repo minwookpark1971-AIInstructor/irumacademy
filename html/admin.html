@@ -218,6 +218,12 @@
                 <button class="admin-tab" data-tab="users" style="padding: 0.75rem 1.5rem; background: none; border: none; color: var(--text-muted); font-weight: 600; cursor: pointer;">
                     회원 관리
                 </button>
+                <button class="admin-tab" data-tab="inquiries" style="padding: 0.75rem 1.5rem; background: none; border: none; color: var(--text-muted); font-weight: 600; cursor: pointer;">
+                    문의 관리
+                </button>
+                <button class="admin-tab" data-tab="login-history" style="padding: 0.75rem 1.5rem; background: none; border: none; color: var(--text-muted); font-weight: 600; cursor: pointer;">
+                    로그인 이력
+                </button>
             </div>
 
             <!-- Applications Section -->
@@ -244,17 +250,16 @@
 
                 <!-- Filter Bar -->
                 <div class="filter-bar">
+                    <select id="type-filter" class="filter-select">
+                        <option value="">전체 유형</option>
+                        <option value="student">강의신청</option>
+                        <option value="consult">상담신청</option>
+                    </select>
                     <select id="status-filter" class="filter-select">
                         <option value="">전체 상태</option>
                         <option value="pending">대기 중</option>
                         <option value="approved">승인됨</option>
                         <option value="rejected">거절됨</option>
-                    </select>
-                    <select id="type-filter" class="filter-select">
-                        <option value="">전체 유형</option>
-                        <option value="student">학생 신청</option>
-                        <option value="instructor">강사 신청</option>
-                        <option value="consult">상담 신청</option>
                     </select>
                     <input type="text" id="search-input" class="filter-select" placeholder="이름, 이메일 검색..." style="flex: 1; min-width: 200px;">
                 </div>
@@ -313,13 +318,113 @@
                             <thead>
                                 <tr>
                                     <th>가입일시</th>
-                                    <th>이메일 (가입방법)</th>
+                                    <th>이름</th>
+                                    <th>이메일</th>
+                                    <th>전화번호</th>
+                                    <th>가입방법</th>
                                     <th>상태</th>
                                 </tr>
                             </thead>
                             <tbody id="users-tbody">
                                 <tr>
-                                    <td colspan="3" class="no-applications">회원이 없습니다.</td>
+                                    <td colspan="6" class="no-applications">회원이 없습니다.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Inquiries Section -->
+            <div id="inquiries-section" class="admin-section" style="display: none;">
+                <!-- Inquiry Statistics -->
+                <div class="admin-stats">
+                    <div class="stat-card">
+                        <div class="stat-number" id="total-inquiries">0</div>
+                        <div class="stat-label">전체 문의</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="answered-inquiries">0</div>
+                        <div class="stat-label">답변 완료</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="pending-inquiries">0</div>
+                        <div class="stat-label">답변 대기</div>
+                    </div>
+                </div>
+
+                <!-- Inquiry Filter Bar -->
+                <div class="filter-bar">
+                    <input type="text" id="inquiry-search-input" class="filter-select" placeholder="제목, 내용, 작성자 검색..." style="flex: 1; min-width: 200px;">
+                </div>
+
+                <!-- Inquiries Table -->
+                <div class="applications-table">
+                    <div class="table-header">문의 목록</div>
+                    <div class="table-content">
+                        <table id="inquiries-table">
+                            <thead>
+                                <tr>
+                                    <th>작성일시</th>
+                                    <th>제목</th>
+                                    <th>작성자</th>
+                                    <th>이메일</th>
+                                    <th>답변 수</th>
+                                    <th>작업</th>
+                                </tr>
+                            </thead>
+                            <tbody id="inquiries-tbody">
+                                <tr>
+                                    <td colspan="6" class="no-applications">문의가 없습니다.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Login History Section -->
+            <div id="login-history-section" class="admin-section" style="display: none;">
+                <!-- Login History Statistics -->
+                <div class="admin-stats">
+                    <div class="stat-card">
+                        <div class="stat-number" id="total-logins">0</div>
+                        <div class="stat-label">전체 로그인</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="today-logins">0</div>
+                        <div class="stat-label">오늘 로그인</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="unique-users">0</div>
+                        <div class="stat-label">고유 사용자</div>
+                    </div>
+                </div>
+
+                <!-- Login History Filter Bar -->
+                <div class="filter-bar">
+                    <input type="text" id="login-search-input" class="filter-select" placeholder="이메일 또는 이름 검색..." style="flex: 1; min-width: 200px;">
+                    <input type="date" id="login-date-from" class="filter-select" placeholder="시작일">
+                    <input type="date" id="login-date-to" class="filter-select" placeholder="종료일">
+                </div>
+
+                <!-- Login History Table -->
+                <div class="applications-table">
+                    <div class="table-header">로그인 이력</div>
+                    <div class="table-content">
+                        <table id="login-history-table">
+                            <thead>
+                                <tr>
+                                    <th>로그인 일시</th>
+                                    <th>이름</th>
+                                    <th>이메일</th>
+                                    <th>IP 주소</th>
+                                    <th>브라우저</th>
+                                </tr>
+                            </thead>
+                            <tbody id="login-history-tbody">
+                                <tr>
+                                    <td colspan="5" class="no-applications">로그인 이력이 없습니다.</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -359,6 +464,8 @@
         let currentApplicationId = null;
         let applications = [];
         let users = [];
+        let inquiries = [];
+        let loginHistory = [];
 
         // Check if already logged in
         $(document).ready(function() {
@@ -399,8 +506,8 @@
             // Export handlers
             $('#export-applications-btn').on('click', function() {
                 // 필터링된 데이터 가져오기
-                const statusFilter = $('#status-filter').val();
                 const typeFilter = $('#type-filter').val();
+                const statusFilter = $('#status-filter').val();
                 const searchTerm = $('#search-input').val().toLowerCase();
                 
                 let filtered = applications;
@@ -439,9 +546,12 @@
             });
 
             // Filter handlers
-            $('#status-filter, #type-filter').on('change', filterApplications);
+            $('#type-filter, #status-filter').on('change', filterApplications);
             $('#search-input').on('input', filterApplications);
             $('#user-search-input').on('input', filterUsers);
+            $('#inquiry-search-input').on('input', filterInquiries);
+            $('#login-search-input').on('input', filterLoginHistory);
+            $('#login-date-from, #login-date-to').on('change', filterLoginHistory);
 
             // Modal handlers
             function closeModal() {
@@ -481,6 +591,8 @@
             if (isLoggedIn) {
                 loadApplications();
                 loadUsers();
+                loadInquiries();
+                loadLoginHistory();
             }
         });
 
@@ -499,10 +611,26 @@
             if (tab === 'applications') {
                 $('#applications-section').show();
                 $('#users-section').hide();
+                $('#inquiries-section').hide();
+                $('#login-history-section').hide();
             } else if (tab === 'users') {
                 $('#applications-section').hide();
                 $('#users-section').show();
+                $('#inquiries-section').hide();
+                $('#login-history-section').hide();
                 loadUsers();
+            } else if (tab === 'inquiries') {
+                $('#applications-section').hide();
+                $('#users-section').hide();
+                $('#inquiries-section').show();
+                $('#login-history-section').hide();
+                loadInquiries();
+            } else if (tab === 'login-history') {
+                $('#applications-section').hide();
+                $('#users-section').hide();
+                $('#inquiries-section').hide();
+                $('#login-history-section').show();
+                loadLoginHistory();
             }
         }
 
@@ -518,6 +646,8 @@
             $('#admin-dashboard').show();
             loadApplications();
             loadUsers();
+            loadInquiries();
+            loadLoginHistory();
         }
 
         function loadUsers() {
@@ -572,7 +702,7 @@
             tbody.empty();
 
             if (userList.length === 0) {
-                tbody.html('<tr><td colspan="3" class="no-applications">회원이 없습니다.</td></tr>');
+                tbody.html('<tr><td colspan="6" class="no-applications">회원이 없습니다.</td></tr>');
                 return;
             }
 
@@ -584,15 +714,16 @@
                 const statusClass = user.status === 'active' ? 'status-approved' : 'status-rejected';
                 const statusText = user.status === 'active' ? '활성' : '비활성';
                 
-                // 가입 방법 표시
-                const authMethod = user.authMethod === 'social' ? 
-                    `<span style="font-size: 0.75rem; color: var(--text-muted);">(${user.authProvider || '소셜'})</span>` : 
-                    '<span style="font-size: 0.75rem; color: var(--text-muted);">(일반)</span>';
+                // 가입 방법 표시 (소셜 로그인 제거됨)
+                const authMethod = '일반';
 
                 const row = $(`
                     <tr>
                         <td>${dateStr}</td>
-                        <td>${user.email || '-'} ${authMethod}</td>
+                        <td>${user.name || '-'}</td>
+                        <td>${user.email || '-'}</td>
+                        <td>${user.phone || '-'}</td>
+                        <td>${authMethod}</td>
                         <td><span class="status-badge ${statusClass}">${statusText}</span></td>
                     </tr>
                 `);
@@ -639,8 +770,8 @@
         }
 
         function filterApplications() {
-            const statusFilter = $('#status-filter').val();
             const typeFilter = $('#type-filter').val();
+            const statusFilter = $('#status-filter').val();
             const searchTerm = $('#search-input').val().toLowerCase();
 
             let filtered = applications;
@@ -686,9 +817,9 @@
                 }[app.status || 'pending'] || '대기 중';
 
                 const typeText = {
-                    'student': '학생 신청',
+                    'student': '강의신청',
                     'instructor': '강사 신청',
-                    'consult': '상담 신청'
+                    'consult': '상담신청'
                 }[app.applicationType] || app.applicationType;
 
                 const row = $(`
@@ -719,6 +850,9 @@
             if (!app) return;
 
             currentApplicationId = id;
+            
+            // 승인/거절 버튼 표시
+            $('#approve-btn, #reject-btn').show();
 
             const date = new Date(app.submittedAt);
             const dateStr = date.toLocaleDateString('ko-KR') + ' ' + 
@@ -832,19 +966,19 @@
                     ]);
                 });
             } else if (type === 'users') {
-                headers = ['가입일시', '이메일', '이름', '가입방법', '상태'];
+                headers = ['가입일시', '이름', '이메일', '전화번호', '가입방법', '상태'];
                 data.forEach(user => {
                     const date = new Date(user.registeredAt);
                     const dateStr = date.toLocaleDateString('ko-KR') + ' ' + 
                                    date.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' });
-                    const authMethod = user.authMethod === 'social' ? 
-                        `소셜 (${user.authProvider || '알 수 없음'})` : '일반';
+                    const authMethod = '일반';
                     const statusText = user.status === 'active' ? '활성' : '비활성';
                     
                     rows.push([
                         dateStr,
-                        user.email || '',
                         user.name || '',
+                        user.email || '',
+                        user.phone || '',
                         authMethod,
                         statusText
                     ]);
@@ -880,6 +1014,289 @@
             
             // 엑셀 파일 다운로드
             XLSX.writeFile(wb, fileName);
+        }
+
+        // 로그인 이력 관련 함수들
+        function loadLoginHistory() {
+            try {
+                const stored = localStorage.getItem('loginHistory');
+                if (stored) {
+                    const parsed = JSON.parse(stored);
+                    // 데이터 유효성 검사
+                    loginHistory = Array.isArray(parsed) ? parsed.filter(h => {
+                        // 필수 필드 확인
+                        return h && h.id && h.loginAt && h.userEmail;
+                    }) : [];
+                    // Sort by date (newest first)
+                    loginHistory.sort((a, b) => new Date(b.loginAt) - new Date(a.loginAt));
+                } else {
+                    loginHistory = [];
+                }
+                updateLoginHistoryStatistics();
+                filterLoginHistory();
+            } catch (e) {
+                console.error('Error loading login history:', e);
+                loginHistory = [];
+                updateLoginHistoryStatistics();
+                filterLoginHistory();
+            }
+        }
+
+        function updateLoginHistoryStatistics() {
+            const total = loginHistory.length;
+            
+            // 오늘 로그인 수 계산
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            const todayLogins = loginHistory.filter(h => {
+                const loginDate = new Date(h.loginAt);
+                loginDate.setHours(0, 0, 0, 0);
+                return loginDate.getTime() === today.getTime();
+            }).length;
+            
+            // 고유 사용자 수 계산
+            const uniqueEmails = new Set(loginHistory.map(h => h.userEmail));
+            const uniqueUsers = uniqueEmails.size;
+
+            $('#total-logins').text(total);
+            $('#today-logins').text(todayLogins);
+            $('#unique-users').text(uniqueUsers);
+        }
+
+        function filterLoginHistory() {
+            const searchTerm = $('#login-search-input').val().toLowerCase();
+            const dateFrom = $('#login-date-from').val();
+            const dateTo = $('#login-date-to').val();
+
+            let filtered = loginHistory;
+
+            // 검색어 필터
+            if (searchTerm) {
+                filtered = filtered.filter(h => 
+                    (h.userEmail && h.userEmail.toLowerCase().includes(searchTerm)) ||
+                    (h.userName && h.userName.toLowerCase().includes(searchTerm))
+                );
+            }
+
+            // 날짜 필터
+            if (dateFrom) {
+                const fromDate = new Date(dateFrom);
+                fromDate.setHours(0, 0, 0, 0);
+                filtered = filtered.filter(h => {
+                    const loginDate = new Date(h.loginAt);
+                    loginDate.setHours(0, 0, 0, 0);
+                    return loginDate >= fromDate;
+                });
+            }
+
+            if (dateTo) {
+                const toDate = new Date(dateTo);
+                toDate.setHours(23, 59, 59, 999);
+                filtered = filtered.filter(h => {
+                    const loginDate = new Date(h.loginAt);
+                    return loginDate <= toDate;
+                });
+            }
+
+            renderLoginHistory(filtered);
+        }
+
+        function renderLoginHistory(historyList) {
+            const tbody = $('#login-history-tbody');
+            tbody.empty();
+
+            if (historyList.length === 0) {
+                tbody.html('<tr><td colspan="5" class="no-applications">로그인 이력이 없습니다.</td></tr>');
+                return;
+            }
+
+            historyList.forEach(record => {
+                const date = new Date(record.loginAt);
+                const dateStr = date.toLocaleDateString('ko-KR') + ' ' + 
+                               date.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+                
+                // User Agent에서 브라우저 정보 추출
+                let browserInfo = '알 수 없음';
+                if (record.userAgent) {
+                    if (record.userAgent.includes('Chrome') && !record.userAgent.includes('Edg')) {
+                        browserInfo = 'Chrome';
+                    } else if (record.userAgent.includes('Firefox')) {
+                        browserInfo = 'Firefox';
+                    } else if (record.userAgent.includes('Safari') && !record.userAgent.includes('Chrome')) {
+                        browserInfo = 'Safari';
+                    } else if (record.userAgent.includes('Edg')) {
+                        browserInfo = 'Edge';
+                    } else if (record.userAgent.includes('Opera')) {
+                        browserInfo = 'Opera';
+                    } else {
+                        browserInfo = record.userAgent.substring(0, 50) + '...';
+                    }
+                }
+
+                const row = $(`
+                    <tr>
+                        <td>${dateStr}</td>
+                        <td>${record.userName || '-'}</td>
+                        <td>${record.userEmail || '-'}</td>
+                        <td>${record.ipAddress || 'N/A'}</td>
+                        <td>${browserInfo}</td>
+                    </tr>
+                `);
+
+                tbody.append(row);
+            });
+        }
+
+        // 문의하기 관련 함수들
+        function loadInquiries() {
+            try {
+                const stored = localStorage.getItem('inquiries');
+                if (stored) {
+                    const parsed = JSON.parse(stored);
+                    // 데이터 유효성 검사
+                    inquiries = Array.isArray(parsed) ? parsed.filter(i => {
+                        // 필수 필드 확인
+                        return i && i.id && i.title && i.content && i.createdAt;
+                    }) : [];
+                    // Sort by date (newest first)
+                    inquiries.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                } else {
+                    inquiries = [];
+                }
+                updateInquiryStatistics();
+                filterInquiries();
+            } catch (e) {
+                console.error('Error loading inquiries:', e);
+                inquiries = [];
+                updateInquiryStatistics();
+                filterInquiries();
+            }
+        }
+
+        function updateInquiryStatistics() {
+            const total = inquiries.length;
+            const answered = inquiries.filter(i => i.answers && i.answers.length > 0).length;
+            const pending = total - answered;
+
+            $('#total-inquiries').text(total);
+            $('#answered-inquiries').text(answered);
+            $('#pending-inquiries').text(pending);
+        }
+
+        function filterInquiries() {
+            const searchTerm = $('#inquiry-search-input').val().toLowerCase();
+
+            let filtered = inquiries;
+
+            if (searchTerm) {
+                filtered = filtered.filter(i => 
+                    (i.title && i.title.toLowerCase().includes(searchTerm)) ||
+                    (i.content && i.content.toLowerCase().includes(searchTerm)) ||
+                    (i.author && i.author.toLowerCase().includes(searchTerm)) ||
+                    (i.authorEmail && i.authorEmail.toLowerCase().includes(searchTerm))
+                );
+            }
+
+            renderInquiries(filtered);
+        }
+
+        function renderInquiries(inquiryList) {
+            const tbody = $('#inquiries-tbody');
+            tbody.empty();
+
+            if (inquiryList.length === 0) {
+                tbody.html('<tr><td colspan="6" class="no-applications">문의가 없습니다.</td></tr>');
+                return;
+            }
+
+            inquiryList.forEach(inquiry => {
+                const date = new Date(inquiry.createdAt);
+                const dateStr = date.toLocaleDateString('ko-KR') + ' ' + 
+                               date.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' });
+                
+                const answerCount = inquiry.answers ? inquiry.answers.length : 0;
+                const titlePreview = inquiry.title.length > 30 ? inquiry.title.substring(0, 30) + '...' : inquiry.title;
+
+                const row = $(`
+                    <tr>
+                        <td>${dateStr}</td>
+                        <td>${titlePreview}</td>
+                        <td>${inquiry.author || '-'}</td>
+                        <td>${inquiry.authorEmail || '-'}</td>
+                        <td>${answerCount}</td>
+                        <td>
+                            <button class="btn btn-sm btn-outline view-inquiry-detail" data-id="${inquiry.id}">상세보기</button>
+                        </td>
+                    </tr>
+                `);
+
+                row.find('.view-inquiry-detail').on('click', function() {
+                    showInquiryDetail(inquiry.id);
+                });
+
+                tbody.append(row);
+            });
+        }
+
+        function showInquiryDetail(id) {
+            const inquiry = inquiries.find(i => i.id === id);
+            if (!inquiry) return;
+
+            const date = new Date(inquiry.createdAt);
+            const dateStr = date.toLocaleDateString('ko-KR') + ' ' + 
+                           date.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' });
+
+            let answersHtml = '';
+            if (inquiry.answers && inquiry.answers.length > 0) {
+                answersHtml = '<div style="margin-top: 2rem; padding-top: 2rem; border-top: 2px solid var(--border);"><h3 style="margin-bottom: 1rem;">답변</h3>';
+                inquiry.answers.forEach(function(answer) {
+                    const answerDate = new Date(answer.createdAt);
+                    const answerDateStr = answerDate.toLocaleDateString('ko-KR') + ' ' + 
+                                         answerDate.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' });
+                    answersHtml += `
+                        <div style="padding: 1rem; background: #f9fafb; border-radius: 0.5rem; margin-bottom: 1rem;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                                <span style="font-weight: 500;">${answer.author || '익명'}</span>
+                                <span style="font-size: 0.875rem; color: var(--text-muted);">${answerDateStr}</span>
+                            </div>
+                            <p style="line-height: 1.8; color: #171717; margin: 0; white-space: pre-line;">${answer.content}</p>
+                        </div>
+                    `;
+                });
+                answersHtml += '</div>';
+            } else {
+                answersHtml = '<div style="margin-top: 2rem; padding-top: 2rem; border-top: 2px solid var(--border);"><p style="color: var(--text-muted);">아직 답변이 없습니다.</p></div>';
+            }
+
+            const detailHtml = `
+                <div class="detail-row">
+                    <div class="detail-label">작성일시</div>
+                    <div>${dateStr}</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">제목</div>
+                    <div>${inquiry.title}</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">작성자</div>
+                    <div>${inquiry.author || '-'}</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">이메일</div>
+                    <div>${inquiry.authorEmail || '-'}</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">내용</div>
+                    <div style="white-space: pre-line; line-height: 1.8;">${inquiry.content}</div>
+                </div>
+                ${answersHtml}
+            `;
+
+            $('#detail-content').html(detailHtml);
+            $('#detail-modal').css('display', 'flex');
+            
+            // 승인/거절 버튼 숨기기 (문의는 승인/거절이 없음)
+            $('#approve-btn, #reject-btn').hide();
         }
     </script>
 </body>

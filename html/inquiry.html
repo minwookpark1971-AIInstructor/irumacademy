@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>문의하기 | Irum Academy</title>
+    <meta name="description" content="이룸아카데미 문의하기">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/animations.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <div id="header-container"></div>
+
+    <!-- Page Hero -->
+    <section class="page-hero" style="background-image: url('../images/backgrounds/community-banner.png'); background-size: cover; background-position: center; background-repeat: no-repeat; background-attachment: scroll; padding-top: 120px; min-height: calc(50vh - 300px); display: flex; align-items: center; justify-content: center; padding-bottom: 3rem; position: relative; transform: translate3d(0, 0, 0); -webkit-transform: translate3d(0, 0, 0); backface-visibility: hidden; -webkit-backface-visibility: hidden;">
+        <div class="page-hero-overlay" style="position: absolute; inset: 0; background: rgba(255, 255, 255, 0.6); z-index: 0;"></div>
+        <div class="container" style="position: relative; z-index: 1; width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 1.5rem;">
+            <div class="page-hero-content reveal-up" style="text-align: center !important; width: 100% !important; margin: 0 auto !important; padding: 0 !important; color: #000000 !important; max-width: 100% !important;">
+                <h1 class="page-hero-title" style="color: #000000 !important; text-shadow: none !important;">문의하기</h1>
+                <p style="font-size: 1.125rem; margin-top: 1rem; color: var(--text-muted);">
+                    궁금한 점을 질문하고 답변을 받아보세요
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="main-content" style="background-color: #ffffff; padding-top: 2rem; padding-bottom: 3rem;">
+        <section class="section">
+            <div class="container">
+                <!-- Login Banner -->
+                <div class="card card-elevated reveal-up" id="login-banner" style="background: linear-gradient(135deg, rgba(37, 99, 235, 0.05), rgba(37, 99, 235, 0.1)); border: 1px solid rgba(37, 99, 235, 0.2); margin-bottom: 2rem;">
+                    <div class="card-content" style="display: flex; flex-direction: column; gap: 1rem; align-items: center;">
+                        <div style="display: flex; align-items: center; gap: 0.75rem;">
+                            <span style="font-size: 1.25rem;">🔔</span>
+                            <div>
+                                <p style="font-weight: 500;">문의를 작성하려면 회원가입이 필요합니다</p>
+                                <p style="font-size: 0.875rem; color: var(--text-muted);">
+                                    로그인 후 문의를 작성하고 답변을 받을 수 있습니다
+                                </p>
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 0.75rem;">
+                            <a href="auth/login.html" class="btn btn-primary">로그인하기</a>
+                            <a href="auth/signup.html" class="btn btn-outline">회원가입</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Write Inquiry Button (only for logged in users) -->
+                <div id="write-inquiry-section" style="display: none; margin-bottom: 2rem;">
+                    <button id="write-inquiry-btn" class="btn btn-primary btn-lg btn-animated" style="width: 100%; max-width: 500px; margin: 0 auto; display: block;">
+                        문의 작성하기
+                    </button>
+                </div>
+
+                <!-- Write Inquiry Form Modal -->
+                <div id="write-inquiry-modal" style="display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.5); z-index: 1000; align-items: center; justify-content: center;">
+                    <div id="modal-backdrop" style="position: absolute; inset: 0; cursor: pointer;"></div>
+                    <div style="position: relative; z-index: 1001; background: white; border-radius: 0.5rem; padding: 2rem; max-width: 700px; max-height: 90vh; overflow-y: auto; margin: 1rem; width: 90%;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                            <h2 style="margin: 0;">문의 작성</h2>
+                            <button id="close-write-modal" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; padding: 0; width: 2rem; height: 2rem; display: flex; align-items: center; justify-content: center;">×</button>
+                        </div>
+                        <form id="inquiry-form">
+                            <div class="form-group">
+                                <label for="inquiry-title" class="form-label">제목 *</label>
+                                <input type="text" id="inquiry-title" name="title" class="form-input" placeholder="문의 제목을 입력하세요" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="inquiry-content" class="form-label">내용 *</label>
+                                <textarea id="inquiry-content" name="content" class="form-input" rows="8" placeholder="문의 내용을 입력하세요" required style="resize: vertical;"></textarea>
+                            </div>
+                            <div style="display: flex; gap: 1rem; justify-content: flex-end; margin-top: 1.5rem;">
+                                <button type="button" id="cancel-inquiry-btn" class="btn btn-outline">취소</button>
+                                <button type="submit" class="btn btn-primary">작성하기</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Search Bar -->
+                <div class="search-bar reveal-up" style="margin-bottom: 1.5rem;">
+                    <div style="position: relative; max-width: 500px; margin: 0 auto;">
+                        <input 
+                            type="search" 
+                            id="search-input" 
+                            class="form-input" 
+                            placeholder="문의 검색..."
+                            style="padding-left: 2.5rem;"
+                        >
+                        <span style="position: absolute; left: 0.75rem; top: 50%; transform: translateY(-50%);">🔍</span>
+                    </div>
+                </div>
+
+                <!-- Inquiry List -->
+                <div class="inquiry-list reveal-up">
+                    <div id="inquiry-list-container">
+                        <!-- Inquiries will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Inquiry Detail Modal -->
+    <div class="modal-overlay" id="inquiry-modal" style="display: none;">
+        <div class="modal-content" style="max-width: 800px;">
+            <button class="modal-close" style="position: absolute; top: 1rem; right: 1rem; background: none; border: none; font-size: 1.5rem; cursor: pointer;">×</button>
+            <div id="inquiry-detail-content">
+                <!-- Inquiry detail will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div id="footer-container"></div>
+
+    <!-- Scripts -->
+    <script src="../js/components.js"></script>
+    <script src="../js/main.js"></script>
+    <script src="../js/animations.js"></script>
+    
+    <script>
+        let allInquiries = [];
+        let filteredInquiries = [];
+        
+        $(document).ready(function() {
+            // Wait for components to load
+            setTimeout(function() {
+                // Initialize modal
+                if (typeof initModal === 'function') {
+                    initModal();
+                }
+                
+                // Check login status
+                checkLoginStatus();
+                
+                // Load inquiries
+                loadInquiries();
+                
+                // Initialize search
+                initSearch();
+                
+                // Initialize animations
+                if (typeof initRevealAnimations === 'function') {
+                    initRevealAnimations();
+                }
+            }, 200);
+        });
+        
+        function checkLoginStatus() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            if (isLoggedIn) {
+                $('#login-banner').hide();
+                $('#write-inquiry-section').show();
+            } else {
+                $('#login-banner').show();
+                $('#write-inquiry-section').hide();
+            }
+        }
+        
+        function loadInquiries() {
+            try {
+                const stored = localStorage.getItem('inquiries');
+                if (stored) {
+                    const parsed = JSON.parse(stored);
+                    allInquiries = Array.isArray(parsed) ? parsed.filter(i => {
+                        return i && i.id && i.title && i.content;
+                    }) : [];
+                    // Sort by date (newest first)
+                    allInquiries.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                } else {
+                    allInquiries = [];
+                }
+                filteredInquiries = allInquiries;
+                renderInquiries();
+            } catch (e) {
+                console.error('Error loading inquiries:', e);
+                allInquiries = [];
+                filteredInquiries = [];
+                renderInquiries();
+            }
+        }
+        
+        function initSearch() {
+            $('#search-input').on('input', debounce(function() {
+                const query = $(this).val().toLowerCase();
+                filterInquiries(query);
+            }, 300));
+        }
+        
+        function filterInquiries(query) {
+            if (query) {
+                filteredInquiries = allInquiries.filter(function(inquiry) {
+                    return inquiry.title.toLowerCase().includes(query) ||
+                           inquiry.content.toLowerCase().includes(query) ||
+                           (inquiry.author && inquiry.author.toLowerCase().includes(query));
+                });
+            } else {
+                filteredInquiries = allInquiries;
+            }
+            renderInquiries();
+        }
+        
+        function renderInquiries() {
+            const container = $('#inquiry-list-container');
+            container.empty();
+            
+            if (filteredInquiries.length === 0) {
+                container.html('<p class="text-center" style="padding: 3rem; color: var(--text-muted);">문의가 없습니다.</p>');
+                return;
+            }
+            
+            filteredInquiries.forEach(function(inquiry, index) {
+                const $card = createInquiryCard(inquiry, index);
+                container.append($card);
+            });
+        }
+        
+        function createInquiryCard(inquiry, index) {
+            const $card = $('<div>')
+                .addClass('card card-elevated reveal-up')
+                .css({
+                    'cursor': 'pointer',
+                    'margin-bottom': '1rem',
+                    'transition-delay': (index * 0.05) + 's'
+                })
+                .on('click', function() {
+                    showInquiryDetail(inquiry);
+                });
+            
+            const header = $('<div>').addClass('card-header');
+            const title = $('<h3>')
+                .addClass('card-title')
+                .css({
+                    'margin-bottom': '0.5rem',
+                    'display': '-webkit-box',
+                    '-webkit-line-clamp': '2',
+                    '-webkit-box-orient': 'vertical',
+                    'overflow': 'hidden'
+                })
+                .text(inquiry.title);
+            
+            const description = $('<p>')
+                .addClass('card-description')
+                .css({
+                    'display': '-webkit-box',
+                    '-webkit-line-clamp': '2',
+                    '-webkit-box-orient': 'vertical',
+                    'overflow': 'hidden'
+                })
+                .text(inquiry.content);
+            
+            header.append(title, description);
+            
+            const content = $('<div>').addClass('card-content');
+            const meta = $('<div>')
+                .css({
+                    'display': 'flex',
+                    'justify-content': 'space-between',
+                    'align-items': 'center',
+                    'flex-wrap': 'wrap',
+                    'gap': '1rem',
+                    'font-size': '0.875rem',
+                    'color': 'var(--text-muted)'
+                });
+            
+            const authorInfo = $('<div>')
+                .css('display', 'flex')
+                .css('align-items', 'center')
+                .css('gap', '1rem')
+                .html(`
+                    <span>${inquiry.author || '익명'}</span>
+                    <span>${formatDate(inquiry.createdAt)}</span>
+                `);
+            
+            const stats = $('<div>')
+                .css('display', 'flex')
+                .css('gap', '1rem')
+                .html(`
+                    <span>💬 ${inquiry.answers ? inquiry.answers.length : 0}</span>
+                `);
+            
+            meta.append(authorInfo, stats);
+            content.append(meta);
+            
+            $card.append(header, content);
+            return $card;
+        }
+        
+        function showInquiryDetail(inquiry) {
+            const $modal = $('#inquiry-modal');
+            const $content = $('#inquiry-detail-content');
+            
+            const date = new Date(inquiry.createdAt);
+            const dateStr = date.toLocaleDateString('ko-KR') + ' ' + 
+                           date.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' });
+            
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            const userEmail = localStorage.getItem('userEmail') || '';
+            const isAuthor = inquiry.authorEmail === userEmail;
+            
+            let answersHtml = '';
+            if (inquiry.answers && inquiry.answers.length > 0) {
+                answersHtml = '<div style="margin-top: 2rem; padding-top: 2rem; border-top: 2px solid var(--border);"><h3 style="margin-bottom: 1rem;">답변</h3>';
+                inquiry.answers.forEach(function(answer) {
+                    const answerDate = new Date(answer.createdAt);
+                    const answerDateStr = answerDate.toLocaleDateString('ko-KR') + ' ' + 
+                                         answerDate.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' });
+                    answersHtml += `
+                        <div style="padding: 1rem; background: #f9fafb; border-radius: 0.5rem; margin-bottom: 1rem;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                                <span style="font-weight: 500;">${answer.author || '익명'}</span>
+                                <span style="font-size: 0.875rem; color: var(--text-muted);">${answerDateStr}</span>
+                            </div>
+                            <p style="line-height: 1.8; color: #171717; margin: 0; white-space: pre-line;">${answer.content}</p>
+                        </div>
+                    `;
+                });
+                answersHtml += '</div>';
+            }
+            
+            let answerFormHtml = '';
+            if (isLoggedIn && !isAuthor) {
+                answerFormHtml = `
+                    <div style="margin-top: 2rem; padding-top: 2rem; border-top: 2px solid var(--border);">
+                        <h3 style="margin-bottom: 1rem;">답변 작성</h3>
+                        <form id="answer-form">
+                            <div class="form-group">
+                                <textarea id="answer-content" name="content" class="form-input" rows="5" placeholder="답변을 입력하세요" required style="resize: vertical;"></textarea>
+                            </div>
+                            <div style="display: flex; justify-content: flex-end; margin-top: 1rem;">
+                                <button type="submit" class="btn btn-primary">답변 작성</button>
+                            </div>
+                        </form>
+                    </div>
+                `;
+            }
+            
+            $content.html(`
+                <div style="padding: 1rem 0;">
+                    <h2 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem;">${inquiry.title}</h2>
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; font-size: 0.875rem; color: var(--text-muted);">
+                        <span>${inquiry.author || '익명'}</span>
+                        <span>${dateStr}</span>
+                    </div>
+                    <div style="line-height: 1.8; white-space: pre-line; margin-bottom: 2rem; color: #171717;">${inquiry.content}</div>
+                    ${answersHtml}
+                    ${answerFormHtml}
+                </div>
+            `);
+            
+            $modal.css('display', 'flex');
+            
+            // Answer form handler
+            if (isLoggedIn && !isAuthor) {
+                $('#answer-form').on('submit', function(e) {
+                    e.preventDefault();
+                    const answerContent = $('#answer-content').val().trim();
+                    if (!answerContent) {
+                        alert('답변 내용을 입력해주세요.');
+                        return;
+                    }
+                    
+                    const userEmail = localStorage.getItem('userEmail') || '';
+                    const userName = localStorage.getItem('userName') || userEmail.split('@')[0];
+                    
+                    const answer = {
+                        id: Date.now().toString(),
+                        content: answerContent,
+                        author: userName,
+                        authorEmail: userEmail,
+                        createdAt: new Date().toISOString()
+                    };
+                    
+                    if (!inquiry.answers) {
+                        inquiry.answers = [];
+                    }
+                    inquiry.answers.push(answer);
+                    
+                    // Update in storage
+                    const inquiryIndex = allInquiries.findIndex(i => i.id === inquiry.id);
+                    if (inquiryIndex !== -1) {
+                        allInquiries[inquiryIndex] = inquiry;
+                        localStorage.setItem('inquiries', JSON.stringify(allInquiries));
+                    }
+                    
+                    // Refresh display
+                    showInquiryDetail(inquiry);
+                    renderInquiries();
+                });
+            }
+        }
+        
+        // Write inquiry handlers
+        $('#write-inquiry-btn').on('click', function() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            if (!isLoggedIn) {
+                alert('문의를 작성하려면 로그인이 필요합니다.');
+                window.location.href = 'auth/login.html';
+                return;
+            }
+            $('#write-inquiry-modal').css('display', 'flex');
+        });
+        
+        $('#close-write-modal, #modal-backdrop, #cancel-inquiry-btn').on('click', function() {
+            $('#write-inquiry-modal').css('display', 'none');
+            $('#inquiry-form')[0].reset();
+        });
+        
+        $('#inquiry-form').on('submit', function(e) {
+            e.preventDefault();
+            
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            if (!isLoggedIn) {
+                alert('문의를 작성하려면 로그인이 필요합니다.');
+                window.location.href = 'auth/login.html';
+                return;
+            }
+            
+            const title = $('#inquiry-title').val().trim();
+            const content = $('#inquiry-content').val().trim();
+            
+            if (!title || !content) {
+                alert('제목과 내용을 모두 입력해주세요.');
+                return;
+            }
+            
+            const userEmail = localStorage.getItem('userEmail') || '';
+            const userName = localStorage.getItem('userName') || userEmail.split('@')[0];
+            
+            const inquiry = {
+                id: Date.now().toString(),
+                title: title,
+                content: content,
+                author: userName,
+                authorEmail: userEmail,
+                createdAt: new Date().toISOString(),
+                answers: []
+            };
+            
+            allInquiries.push(inquiry);
+            localStorage.setItem('inquiries', JSON.stringify(allInquiries));
+            
+            $('#write-inquiry-modal').css('display', 'none');
+            $('#inquiry-form')[0].reset();
+            
+            loadInquiries();
+            alert('문의가 작성되었습니다.');
+        });
+        
+        // Close inquiry detail modal
+        $('.modal-close').on('click', function() {
+            $('#inquiry-modal').css('display', 'none');
+        });
+        
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('ko-KR', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+        }
+        
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+    </script>
+    
+    <style>
+        .inquiry-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background-color: var(--secondary);
+            color: var(--secondary-foreground);
+            border-radius: var(--radius-full);
+            font-size: var(--font-size-xs);
+            font-weight: 500;
+        }
+    </style>
+</body>
+</html>
+
+
+
+
+
