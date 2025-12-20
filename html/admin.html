@@ -165,8 +165,19 @@
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <div id="header-container"></div>
+    <!-- Admin Header -->
+    <header class="main-header" style="position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: white; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
+        <div class="container">
+            <div class="header-content" style="display: flex; align-items: center; justify-content: space-between; padding: 1rem 0;">
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <a href="../index.html" class="logo">
+                        <img src="../images/logo/이룸아카데미_logo.png" alt="Irum Academy" class="logo-image" style="height: 60px; width: auto; display: block;">
+                    </a>
+                    <h1 style="margin: 0; font-size: 1.25rem; font-weight: 600; color: var(--text);">irumcompany 관리자</h1>
+                </div>
+            </div>
+        </div>
+    </header>
 
     <!-- Login Screen -->
     <div id="login-screen" class="login-container" style="display: none;">
@@ -184,9 +195,6 @@
                 로그인
             </button>
         </form>
-        <p style="text-align: center; margin-top: 1rem; font-size: 0.875rem; color: var(--text-muted);">
-            기본 아이디: admin / 비밀번호: admin123
-        </p>
     </div>
 
     <!-- Admin Dashboard -->
@@ -200,6 +208,12 @@
                     </button>
                     <button id="export-users-btn" class="btn btn-outline" style="margin-right: 0.5rem;">
                         회원 목록 엑셀 내보내기
+                    </button>
+                    <button id="export-inquiries-btn" class="btn btn-outline" style="margin-right: 0.5rem; display: none;">
+                        문의 내역 엑셀 내보내기
+                    </button>
+                    <button id="export-login-history-btn" class="btn btn-outline" style="margin-right: 0.5rem; display: none;">
+                        로그인 이력 엑셀 내보내기
                     </button>
                     <button id="refresh-btn" class="btn btn-outline" style="margin-right: 0.5rem;">
                         새로고침
@@ -403,10 +417,30 @@
                 </div>
 
                 <!-- Login History Filter Bar -->
-                <div class="filter-bar">
+                <div class="filter-bar" style="margin-bottom: 1rem;">
                     <input type="text" id="login-search-input" class="filter-select" placeholder="이메일 또는 이름 검색..." style="flex: 1; min-width: 200px;">
                     <input type="date" id="login-date-from" class="filter-select" placeholder="시작일">
                     <input type="date" id="login-date-to" class="filter-select" placeholder="종료일">
+                </div>
+
+                <!-- Selection Mode and Actions -->
+                <div class="filter-bar" style="margin-bottom: 1rem; align-items: center;">
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                            <input type="radio" name="selection-mode" value="all" checked>
+                            <span>전체선택</span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                            <input type="radio" name="selection-mode" value="partial">
+                            <span>부분선택</span>
+                        </label>
+                    </div>
+                    <div style="display: flex; gap: 0.5rem; margin-left: auto;">
+                        <button id="select-all-logins-btn" class="btn btn-sm btn-outline" style="display: none;">전체 선택</button>
+                        <button id="deselect-all-logins-btn" class="btn btn-sm btn-outline" style="display: none;">전체 해제</button>
+                        <button id="delete-selected-logins-btn" class="btn btn-sm" style="background: #ef4444; color: white; border: none; display: none;">선택 삭제</button>
+                        <button id="delete-period-logins-btn" class="btn btn-sm" style="background: #f59e0b; color: white; border: none;">기간 삭제</button>
+                    </div>
                 </div>
 
                 <!-- Login History Table -->
@@ -416,6 +450,9 @@
                         <table id="login-history-table">
                             <thead>
                                 <tr>
+                                    <th style="width: 50px;">
+                                        <input type="checkbox" id="select-all-logins-checkbox" style="display: none;">
+                                    </th>
                                     <th>로그인 일시</th>
                                     <th>이름</th>
                                     <th>이메일</th>
@@ -425,7 +462,7 @@
                             </thead>
                             <tbody id="login-history-tbody">
                                 <tr>
-                                    <td colspan="5" class="no-applications">로그인 이력이 없습니다.</td>
+                                    <td colspan="6" class="no-applications">로그인 이력이 없습니다.</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -454,12 +491,18 @@
     <!-- Scripts -->
     <!-- SheetJS 라이브러리 (엑셀 파일 생성용) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    <script src="../js/components.js"></script>
+    <script>
+        // Prevent components.js from loading header in admin page
+        $(document).ready(function() {
+            // Remove any header-container that might be created
+            $('#header-container').remove();
+        });
+    </script>
     <script>
         // Admin credentials (in production, this should be server-side)
         const ADMIN_CREDENTIALS = {
             username: 'admin',
-            password: 'admin123'
+            password: 'admin1234'
         };
 
         let currentApplicationId = null;
@@ -501,6 +544,8 @@
             $('#refresh-btn').on('click', function() {
                 loadApplications();
                 loadUsers();
+                loadInquiries();
+                loadLoginHistory();
                 alert('데이터를 새로고침했습니다.');
             });
             
@@ -540,6 +585,58 @@
                 exportToExcel(filtered, 'users');
             });
 
+            $('#export-inquiries-btn').on('click', function() {
+                // 필터링된 데이터 가져오기
+                const searchTerm = $('#inquiry-search-input').val().toLowerCase();
+                let filtered = inquiries;
+                if (searchTerm) {
+                    filtered = filtered.filter(i => 
+                        (i.title && i.title.toLowerCase().includes(searchTerm)) ||
+                        (i.content && i.content.toLowerCase().includes(searchTerm)) ||
+                        (i.author && i.author.toLowerCase().includes(searchTerm)) ||
+                        (i.authorEmail && i.authorEmail.toLowerCase().includes(searchTerm))
+                    );
+                }
+                exportToExcel(filtered, 'inquiries');
+            });
+
+            $('#export-login-history-btn').on('click', function() {
+                // 필터링된 데이터 가져오기
+                const searchTerm = $('#login-search-input').val().toLowerCase();
+                const dateFrom = $('#login-date-from').val();
+                const dateTo = $('#login-date-to').val();
+                
+                let filtered = loginHistory;
+                
+                if (searchTerm) {
+                    filtered = filtered.filter(h => 
+                        (h.userEmail && h.userEmail.toLowerCase().includes(searchTerm)) ||
+                        (h.userName && h.userName.toLowerCase().includes(searchTerm))
+                    );
+                }
+                
+                if (dateFrom) {
+                    const fromDate = new Date(dateFrom);
+                    fromDate.setHours(0, 0, 0, 0);
+                    filtered = filtered.filter(h => {
+                        const loginDate = new Date(h.loginAt);
+                        loginDate.setHours(0, 0, 0, 0);
+                        return loginDate >= fromDate;
+                    });
+                }
+                
+                if (dateTo) {
+                    const toDate = new Date(dateTo);
+                    toDate.setHours(23, 59, 59, 999);
+                    filtered = filtered.filter(h => {
+                        const loginDate = new Date(h.loginAt);
+                        return loginDate <= toDate;
+                    });
+                }
+                
+                exportToExcel(filtered, 'login-history');
+            });
+
             // Tab handlers
             $('.admin-tab').on('click', function() {
                 const tab = $(this).data('tab');
@@ -553,6 +650,78 @@
             $('#inquiry-search-input').on('input', filterInquiries);
             $('#login-search-input').on('input', filterLoginHistory);
             $('#login-date-from, #login-date-to').on('change', filterLoginHistory);
+
+            // Login history selection mode handlers
+            $('input[name="selection-mode"]').on('change', function() {
+                updateSelectionMode();
+            });
+
+            // Login history selection handlers
+            $(document).on('click', '#select-all-logins-btn', function() {
+                $('.login-history-checkbox:visible').prop('checked', true);
+                updateSelectAllCheckbox();
+            });
+
+            $(document).on('click', '#deselect-all-logins-btn', function() {
+                $('.login-history-checkbox:visible').prop('checked', false);
+                $('#select-all-logins-checkbox').prop('checked', false);
+            });
+
+            $(document).on('change', '#select-all-logins-checkbox', function() {
+                const isChecked = $(this).is(':checked');
+                $('.login-history-checkbox:visible').prop('checked', isChecked);
+            });
+
+            $(document).on('change', '.login-history-checkbox', function() {
+                updateSelectAllCheckbox();
+            });
+
+            // Delete selected logins
+            $(document).on('click', '#delete-selected-logins-btn', function() {
+                const selectedIds = $('.login-history-checkbox:checked').map(function() {
+                    return $(this).data('id');
+                }).get();
+
+                if (selectedIds.length === 0) {
+                    alert('삭제할 항목을 선택해주세요.');
+                    return;
+                }
+
+                if (confirm(`선택한 ${selectedIds.length}개의 로그인 이력을 삭제하시겠습니까?`)) {
+                    deleteSelectedLoginHistory(selectedIds);
+                }
+            });
+
+            // Delete period logins
+            $(document).on('click', '#delete-period-logins-btn', function() {
+                const dateFrom = $('#login-date-from').val();
+                const dateTo = $('#login-date-to').val();
+
+                if (!dateFrom || !dateTo) {
+                    alert('삭제할 기간을 선택해주세요. (시작일과 종료일 모두 필요)');
+                    return;
+                }
+
+                const fromDate = new Date(dateFrom);
+                fromDate.setHours(0, 0, 0, 0);
+                const toDate = new Date(dateTo);
+                toDate.setHours(23, 59, 59, 999);
+
+                const periodRecords = loginHistory.filter(h => {
+                    const loginDate = new Date(h.loginAt);
+                    return loginDate >= fromDate && loginDate <= toDate;
+                });
+
+                if (periodRecords.length === 0) {
+                    alert('선택한 기간에 해당하는 로그인 이력이 없습니다.');
+                    return;
+                }
+
+                if (confirm(`선택한 기간(${dateFrom} ~ ${dateTo})의 ${periodRecords.length}개 로그인 이력을 삭제하시겠습니까?`)) {
+                    const periodIds = periodRecords.map(r => r.id);
+                    deleteSelectedLoginHistory(periodIds);
+                }
+            });
 
             // Modal handlers
             function closeModal() {
@@ -608,29 +777,45 @@
                 'color': 'var(--primary)'
             });
 
-            // Show/hide sections
+            // Show/hide sections and export buttons
             if (tab === 'applications') {
                 $('#applications-section').show();
                 $('#users-section').hide();
                 $('#inquiries-section').hide();
                 $('#login-history-section').hide();
+                $('#export-applications-btn').show();
+                $('#export-users-btn').hide();
+                $('#export-inquiries-btn').hide();
+                $('#export-login-history-btn').hide();
             } else if (tab === 'users') {
                 $('#applications-section').hide();
                 $('#users-section').show();
                 $('#inquiries-section').hide();
                 $('#login-history-section').hide();
+                $('#export-applications-btn').hide();
+                $('#export-users-btn').show();
+                $('#export-inquiries-btn').hide();
+                $('#export-login-history-btn').hide();
                 loadUsers();
             } else if (tab === 'inquiries') {
                 $('#applications-section').hide();
                 $('#users-section').hide();
                 $('#inquiries-section').show();
                 $('#login-history-section').hide();
+                $('#export-applications-btn').hide();
+                $('#export-users-btn').hide();
+                $('#export-inquiries-btn').show();
+                $('#export-login-history-btn').hide();
                 loadInquiries();
             } else if (tab === 'login-history') {
                 $('#applications-section').hide();
                 $('#users-section').hide();
                 $('#inquiries-section').hide();
                 $('#login-history-section').show();
+                $('#export-applications-btn').hide();
+                $('#export-users-btn').hide();
+                $('#export-inquiries-btn').hide();
+                $('#export-login-history-btn').show();
                 loadLoginHistory();
             }
         }
@@ -955,7 +1140,10 @@
             
             try {
                 localStorage.setItem('applications', JSON.stringify(applications));
-                loadApplications();
+                // 통계 업데이트
+                updateStatistics();
+                // 현재 필터 상태 유지하면서 다시 필터링
+                filterApplications();
                 alert('신청 내역이 삭제되었습니다.');
             } catch (e) {
                 console.error('Error deleting application:', e);
@@ -975,7 +1163,10 @@
             
             try {
                 localStorage.setItem('users', JSON.stringify(users));
-                loadUsers();
+                // 통계 업데이트
+                updateUserStatistics();
+                // 현재 필터 상태 유지하면서 다시 필터링
+                filterUsers();
                 alert('회원이 삭제되었습니다.');
             } catch (e) {
                 console.error('Error deleting user:', e);
@@ -995,7 +1186,10 @@
             
             try {
                 localStorage.setItem('inquiries', JSON.stringify(inquiries));
-                loadInquiries();
+                // 통계 업데이트
+                updateInquiryStatistics();
+                // 현재 필터 상태 유지하면서 다시 필터링
+                filterInquiries();
                 alert('문의가 삭제되었습니다.');
             } catch (e) {
                 console.error('Error deleting inquiry:', e);
@@ -1062,6 +1256,60 @@
                         statusText
                     ]);
                 });
+            } else if (type === 'inquiries') {
+                headers = ['작성일시', '제목', '작성자', '이메일', '내용', '답변 수'];
+                data.forEach(inquiry => {
+                    const date = new Date(inquiry.createdAt);
+                    const dateStr = date.toLocaleDateString('ko-KR') + ' ' + 
+                                   date.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' });
+                    const answerCount = inquiry.answers ? inquiry.answers.length : 0;
+                    const contentPreview = inquiry.content ? (inquiry.content.length > 100 ? inquiry.content.substring(0, 100) + '...' : inquiry.content) : '';
+                    
+                    rows.push([
+                        dateStr,
+                        inquiry.title || '',
+                        inquiry.author || '',
+                        inquiry.authorEmail || '',
+                        contentPreview,
+                        answerCount
+                    ]);
+                });
+            } else if (type === 'login-history') {
+                headers = ['로그인 일시', '이름', '이메일', 'IP 주소', '브라우저'];
+                data.forEach(record => {
+                    if (!record.loginAt) return;
+                    const date = new Date(record.loginAt);
+                    if (isNaN(date.getTime())) return;
+                    
+                    const dateStr = date.toLocaleDateString('ko-KR') + ' ' + 
+                                   date.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+                    
+                    // User Agent에서 브라우저 정보 추출
+                    let browserInfo = '알 수 없음';
+                    if (record.userAgent) {
+                        if (record.userAgent.includes('Chrome') && !record.userAgent.includes('Edg')) {
+                            browserInfo = 'Chrome';
+                        } else if (record.userAgent.includes('Firefox')) {
+                            browserInfo = 'Firefox';
+                        } else if (record.userAgent.includes('Safari') && !record.userAgent.includes('Chrome')) {
+                            browserInfo = 'Safari';
+                        } else if (record.userAgent.includes('Edg')) {
+                            browserInfo = 'Edge';
+                        } else if (record.userAgent.includes('Opera')) {
+                            browserInfo = 'Opera';
+                        } else {
+                            browserInfo = record.userAgent.substring(0, 50) + '...';
+                        }
+                    }
+                    
+                    rows.push([
+                        dateStr,
+                        record.userName || '',
+                        record.userEmail || '',
+                        record.ipAddress || 'N/A',
+                        browserInfo
+                    ]);
+                });
             }
             
             // 워크북 생성
@@ -1085,11 +1333,22 @@
             ws['!cols'] = colWidths;
             
             // 워크시트를 워크북에 추가
-            const sheetName = type === 'applications' ? '신청 내역' : '회원 목록';
+            let sheetName = '데이터';
+            if (type === 'applications') sheetName = '신청 내역';
+            else if (type === 'users') sheetName = '회원 목록';
+            else if (type === 'inquiries') sheetName = '문의 내역';
+            else if (type === 'login-history') sheetName = '로그인 이력';
+            
             XLSX.utils.book_append_sheet(wb, ws, sheetName);
             
             // 파일명 생성
-            const fileName = `${type === 'applications' ? '신청내역' : '회원목록'}_${new Date().toISOString().split('T')[0]}.xlsx`;
+            let fileName = '데이터';
+            if (type === 'applications') fileName = '신청내역';
+            else if (type === 'users') fileName = '회원목록';
+            else if (type === 'inquiries') fileName = '문의내역';
+            else if (type === 'login-history') fileName = '로그인이력';
+            
+            fileName = `${fileName}_${new Date().toISOString().split('T')[0]}.xlsx`;
             
             // 엑셀 파일 다운로드
             XLSX.writeFile(wb, fileName);
@@ -1200,12 +1459,62 @@
             renderLoginHistory(filtered);
         }
 
+        // 선택 모드 업데이트
+        function updateSelectionMode() {
+            const mode = $('input[name="selection-mode"]:checked').val();
+            const isPartialMode = mode === 'partial';
+            
+            if (isPartialMode) {
+                $('.login-history-checkbox').show();
+                $('#select-all-logins-checkbox').show();
+                $('#select-all-logins-btn').show();
+                $('#deselect-all-logins-btn').show();
+                $('#delete-selected-logins-btn').show();
+            } else {
+                $('.login-history-checkbox').hide();
+                $('#select-all-logins-checkbox').hide();
+                $('#select-all-logins-btn').hide();
+                $('#deselect-all-logins-btn').hide();
+                $('#delete-selected-logins-btn').hide();
+            }
+        }
+
+        // 전체 선택 체크박스 업데이트
+        function updateSelectAllCheckbox() {
+            const totalCheckboxes = $('.login-history-checkbox:visible').length;
+            const checkedCheckboxes = $('.login-history-checkbox:visible:checked').length;
+            $('#select-all-logins-checkbox').prop('checked', totalCheckboxes > 0 && totalCheckboxes === checkedCheckboxes);
+        }
+
+        // 선택된 로그인 이력 삭제
+        function deleteSelectedLoginHistory(ids) {
+            if (!ids || ids.length === 0) {
+                alert('삭제할 항목이 없습니다.');
+                return;
+            }
+
+            // IDs를 Set으로 변환하여 빠른 검색
+            const idsSet = new Set(ids);
+            
+            // 삭제할 항목 제거
+            loginHistory = loginHistory.filter(h => !idsSet.has(h.id));
+            
+            try {
+                localStorage.setItem('loginHistory', JSON.stringify(loginHistory));
+                loadLoginHistory();
+                alert(`${ids.length}개의 로그인 이력이 삭제되었습니다.`);
+            } catch (e) {
+                console.error('Error deleting login history:', e);
+                alert('삭제 중 오류가 발생했습니다.');
+            }
+        }
+
         function renderLoginHistory(historyList) {
             const tbody = $('#login-history-tbody');
             tbody.empty();
 
             if (historyList.length === 0) {
-                tbody.html('<tr><td colspan="5" class="no-applications">로그인 이력이 없습니다.</td></tr>');
+                tbody.html('<tr><td colspan="6" class="no-applications">로그인 이력이 없습니다.</td></tr>');
                 return;
             }
 
@@ -1244,6 +1553,9 @@
 
                 const row = $(`
                     <tr>
+                        <td>
+                            <input type="checkbox" class="login-history-checkbox" data-id="${record.id}" style="display: none;">
+                        </td>
                         <td>${dateStr}</td>
                         <td>${record.userName || '-'}</td>
                         <td>${record.userEmail || '-'}</td>
@@ -1254,6 +1566,9 @@
 
                 tbody.append(row);
             });
+            
+            // 선택 모드에 따라 체크박스 표시/숨김
+            updateSelectionMode();
         }
 
         // 문의하기 관련 함수들
