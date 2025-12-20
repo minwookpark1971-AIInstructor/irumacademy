@@ -195,3 +195,5 @@ $('#detail-modal').css('display', 'none');
 **점검자**: AI Assistant  
 **점검 완료일**: 2024년
 
+
+
