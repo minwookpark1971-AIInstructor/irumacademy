@@ -185,3 +185,5 @@ const API_CONFIG = {
 - Client Secret은 절대 프론트엔드에 노출하지 말 것
 - HTTPS 필수 (OAuth는 HTTPS에서만 동작)
 
+
+

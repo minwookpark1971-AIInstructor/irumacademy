@@ -197,3 +197,5 @@ $('#detail-modal').css('display', 'none');
 
 
 
+
+
