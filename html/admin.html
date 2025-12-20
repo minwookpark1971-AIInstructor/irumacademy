@@ -241,6 +241,15 @@
                 <button class="admin-tab" data-tab="login-history" style="padding: 0.75rem 1.5rem; background: none; border: none; color: var(--text-muted); font-weight: 600; cursor: pointer;">
                     로그인 이력
                 </button>
+                <button class="admin-tab" data-tab="courses" style="padding: 0.75rem 1.5rem; background: none; border: none; color: var(--text-muted); font-weight: 600; cursor: pointer;">
+                    과정 관리
+                </button>
+                <button class="admin-tab" data-tab="schedules" style="padding: 0.75rem 1.5rem; background: none; border: none; color: var(--text-muted); font-weight: 600; cursor: pointer;">
+                    일정 관리
+                </button>
+                <button class="admin-tab" data-tab="instructor-program" style="padding: 0.75rem 1.5rem; background: none; border: none; color: var(--text-muted); font-weight: 600; cursor: pointer;">
+                    강사 프로그램 관리
+                </button>
             </div>
 
             <!-- Applications Section -->
@@ -516,6 +525,136 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Courses Management Section -->
+            <div id="courses-section" class="admin-section" style="display: none;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                    <h2>과정별 가격 관리</h2>
+                </div>
+                <div class="applications-table">
+                    <div class="table-header">과정 가격 목록</div>
+                    <div class="table-content">
+                        <table id="courses-table">
+                            <thead>
+                                <tr>
+                                    <th>과정명</th>
+                                    <th>카테고리</th>
+                                    <th>가격 (원)</th>
+                                    <th>작업</th>
+                                </tr>
+                            </thead>
+                            <tbody id="courses-tbody">
+                                <tr>
+                                    <td colspan="4" class="no-applications">과정이 없습니다.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Schedules Management Section -->
+            <div id="schedules-section" class="admin-section" style="display: none;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                    <h2>일정 관리</h2>
+                    <button id="add-schedule-btn" class="btn btn-primary">일정 추가</button>
+                </div>
+                <div class="applications-table">
+                    <div class="table-header">일정 목록</div>
+                    <div class="table-content">
+                        <table id="schedules-table">
+                            <thead>
+                                <tr>
+                                    <th>일정</th>
+                                    <th>상태</th>
+                                    <th>작업</th>
+                                </tr>
+                            </thead>
+                            <tbody id="schedules-tbody">
+                                <tr>
+                                    <td colspan="3" class="no-applications">일정이 없습니다.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Instructor Program Management Section -->
+            <div id="instructor-program-section" class="admin-section" style="display: none;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                    <h2>강사 성장 프로그램 관리</h2>
+                </div>
+                
+                <!-- Program Info -->
+                <div class="card" style="margin-bottom: 2rem;">
+                    <div class="card-header">
+                        <h3 class="card-title">프로그램 정보</h3>
+                    </div>
+                    <div class="card-content">
+                        <div class="form-group">
+                            <label for="instructor-program-title" class="form-label">프로그램명</label>
+                            <input type="text" id="instructor-program-title" class="form-input" placeholder="강사 성장 프로그램">
+                        </div>
+                        <div class="form-group">
+                            <label for="instructor-program-description" class="form-label">프로그램 설명</label>
+                            <textarea id="instructor-program-description" class="form-input" rows="4" placeholder="프로그램 설명을 입력하세요"></textarea>
+                        </div>
+                        <button id="save-program-info-btn" class="btn btn-primary">프로그램 정보 저장</button>
+                    </div>
+                </div>
+
+                <!-- Program Schedules -->
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                    <h3>프로그램 일정 관리</h3>
+                    <button id="add-instructor-schedule-btn" class="btn btn-primary">일정 추가</button>
+                </div>
+                <div class="applications-table">
+                    <div class="table-header">프로그램 일정 목록</div>
+                    <div class="table-content">
+                        <table id="instructor-schedules-table">
+                            <thead>
+                                <tr>
+                                    <th>일정</th>
+                                    <th>상태</th>
+                                    <th>작업</th>
+                                </tr>
+                            </thead>
+                            <tbody id="instructor-schedules-tbody">
+                                <tr>
+                                    <td colspan="3" class="no-applications">일정이 없습니다.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Consult Schedules -->
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 2rem; margin-bottom: 1.5rem;">
+                    <h3>Zoom 상담 일정 관리</h3>
+                    <button id="add-consult-schedule-btn" class="btn btn-primary">상담 일정 추가</button>
+                </div>
+                <div class="applications-table">
+                    <div class="table-header">상담 일정 목록</div>
+                    <div class="table-content">
+                        <table id="consult-schedules-table">
+                            <thead>
+                                <tr>
+                                    <th>일정</th>
+                                    <th>시간</th>
+                                    <th>상태</th>
+                                    <th>작업</th>
+                                </tr>
+                            </thead>
+                            <tbody id="consult-schedules-tbody">
+                                <tr>
+                                    <td colspan="4" class="no-applications">상담 일정이 없습니다.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
     </main>
 
@@ -571,6 +710,105 @@
         </div>
     </div>
 
+    <!-- Schedule Modal -->
+    <div id="schedule-modal" style="display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.5); z-index: 1000; align-items: center; justify-content: center;">
+        <div id="schedule-modal-backdrop" style="position: absolute; inset: 0; cursor: pointer;"></div>
+        <div style="position: relative; z-index: 1001; background: white; border-radius: 0.5rem; padding: 2rem; max-width: 600px; max-height: 90vh; overflow-y: auto; margin: 1rem; width: 100%;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <h2 style="margin: 0;" id="schedule-modal-title">일정 추가</h2>
+                <button id="close-schedule-modal" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; padding: 0; width: 2rem; height: 2rem; display: flex; align-items: center; justify-content: center;">&times;</button>
+            </div>
+            <form id="schedule-form">
+                <div class="form-group">
+                    <label for="schedule-date" class="form-label">일정 *</label>
+                    <input type="date" id="schedule-date" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                        <input type="checkbox" id="schedule-active">
+                        <span>활성화</span>
+                    </label>
+                </div>
+                <div style="display: flex; gap: 1rem; justify-content: flex-end; margin-top: 1.5rem;">
+                    <button type="button" id="cancel-schedule-btn" class="btn btn-outline">취소</button>
+                    <button type="submit" id="save-schedule-btn" class="btn btn-primary">저장</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Instructor Schedule Modal -->
+    <div id="instructor-schedule-modal" style="display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.5); z-index: 1000; align-items: center; justify-content: center;">
+        <div id="instructor-schedule-modal-backdrop" style="position: absolute; inset: 0; cursor: pointer;"></div>
+        <div style="position: relative; z-index: 1001; background: white; border-radius: 0.5rem; padding: 2rem; max-width: 600px; max-height: 90vh; overflow-y: auto; margin: 1rem; width: 100%;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <h2 style="margin: 0;" id="instructor-schedule-modal-title">프로그램 일정 추가</h2>
+                <button id="close-instructor-schedule-modal" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; padding: 0; width: 2rem; height: 2rem; display: flex; align-items: center; justify-content: center;">&times;</button>
+            </div>
+            <form id="instructor-schedule-form">
+                <div class="form-group">
+                    <label for="instructor-schedule-date" class="form-label">일정 *</label>
+                    <input type="date" id="instructor-schedule-date" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                        <input type="checkbox" id="instructor-schedule-active">
+                        <span>활성화</span>
+                    </label>
+                </div>
+                <div style="display: flex; gap: 1rem; justify-content: flex-end; margin-top: 1.5rem;">
+                    <button type="button" id="cancel-instructor-schedule-btn" class="btn btn-outline">취소</button>
+                    <button type="submit" id="save-instructor-schedule-btn" class="btn btn-primary">저장</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Consult Schedule Modal -->
+    <div id="consult-schedule-modal" style="display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.5); z-index: 1000; align-items: center; justify-content: center;">
+        <div id="consult-schedule-modal-backdrop" style="position: absolute; inset: 0; cursor: pointer;"></div>
+        <div style="position: relative; z-index: 1001; background: white; border-radius: 0.5rem; padding: 2rem; max-width: 600px; max-height: 90vh; overflow-y: auto; margin: 1rem; width: 100%;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <h2 style="margin: 0;" id="consult-schedule-modal-title">상담 일정 추가</h2>
+                <button id="close-consult-schedule-modal" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; padding: 0; width: 2rem; height: 2rem; display: flex; align-items: center; justify-content: center;">&times;</button>
+            </div>
+            <form id="consult-schedule-form">
+                <div class="form-group">
+                    <label for="consult-schedule-date" class="form-label">일정 *</label>
+                    <input type="date" id="consult-schedule-date" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label for="consult-schedule-time" class="form-label">시간 *</label>
+                    <select id="consult-schedule-time" class="form-input" required>
+                        <option value="">시간을 선택하세요</option>
+                        <option value="09:00">09:00</option>
+                        <option value="10:00">10:00</option>
+                        <option value="11:00">11:00</option>
+                        <option value="12:00">12:00</option>
+                        <option value="13:00">13:00</option>
+                        <option value="14:00">14:00</option>
+                        <option value="15:00">15:00</option>
+                        <option value="16:00">16:00</option>
+                        <option value="17:00">17:00</option>
+                        <option value="18:00">18:00</option>
+                        <option value="19:00">19:00</option>
+                        <option value="20:00">20:00</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                        <input type="checkbox" id="consult-schedule-active">
+                        <span>활성화</span>
+                    </label>
+                </div>
+                <div style="display: flex; gap: 1rem; justify-content: flex-end; margin-top: 1.5rem;">
+                    <button type="button" id="cancel-consult-schedule-btn" class="btn btn-outline">취소</button>
+                    <button type="submit" id="save-consult-schedule-btn" class="btn btn-primary">저장</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- Scripts -->
     <!-- SheetJS 라이브러리 (엑셀 파일 생성용) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -619,6 +857,14 @@
         let inquiries = [];
         let notices = [];
         let loginHistory = [];
+        let courses = [];
+        let schedules = [];
+        let instructorProgram = null;
+        let instructorSchedules = [];
+        let consultSchedules = [];
+        let currentScheduleId = null;
+        let currentInstructorScheduleId = null;
+        let currentConsultScheduleId = null;
 
         // Check if already logged in
         $(document).ready(function() {
@@ -921,6 +1167,9 @@
                 $('#inquiries-section').hide();
                 $('#notices-section').hide();
                 $('#login-history-section').hide();
+                $('#courses-section').hide();
+                $('#schedules-section').hide();
+                $('#instructor-program-section').hide();
                 $('#export-applications-btn').show();
                 $('#export-users-btn').hide();
                 $('#export-inquiries-btn').hide();
@@ -931,6 +1180,9 @@
                 $('#inquiries-section').hide();
                 $('#notices-section').hide();
                 $('#login-history-section').hide();
+                $('#courses-section').hide();
+                $('#schedules-section').hide();
+                $('#instructor-program-section').hide();
                 $('#export-applications-btn').hide();
                 $('#export-users-btn').show();
                 $('#export-inquiries-btn').hide();
@@ -942,6 +1194,9 @@
                 $('#inquiries-section').show();
                 $('#notices-section').hide();
                 $('#login-history-section').hide();
+                $('#courses-section').hide();
+                $('#schedules-section').hide();
+                $('#instructor-program-section').hide();
                 $('#export-applications-btn').hide();
                 $('#export-users-btn').hide();
                 $('#export-inquiries-btn').show();
@@ -953,6 +1208,9 @@
                 $('#inquiries-section').hide();
                 $('#notices-section').show();
                 $('#login-history-section').hide();
+                $('#courses-section').hide();
+                $('#schedules-section').hide();
+                $('#instructor-program-section').hide();
                 $('#export-applications-btn').hide();
                 $('#export-users-btn').hide();
                 $('#export-inquiries-btn').hide();
@@ -964,11 +1222,56 @@
                 $('#inquiries-section').hide();
                 $('#notices-section').hide();
                 $('#login-history-section').show();
+                $('#courses-section').hide();
+                $('#schedules-section').hide();
+                $('#instructor-program-section').hide();
                 $('#export-applications-btn').hide();
                 $('#export-users-btn').hide();
                 $('#export-inquiries-btn').hide();
                 $('#export-login-history-btn').show();
                 loadLoginHistory();
+            } else if (tab === 'courses') {
+                $('#applications-section').hide();
+                $('#users-section').hide();
+                $('#inquiries-section').hide();
+                $('#notices-section').hide();
+                $('#login-history-section').hide();
+                $('#courses-section').show();
+                $('#schedules-section').hide();
+                $('#instructor-program-section').hide();
+                $('#export-applications-btn').hide();
+                $('#export-users-btn').hide();
+                $('#export-inquiries-btn').hide();
+                $('#export-login-history-btn').hide();
+                loadCourses();
+            } else if (tab === 'schedules') {
+                $('#applications-section').hide();
+                $('#users-section').hide();
+                $('#inquiries-section').hide();
+                $('#notices-section').hide();
+                $('#login-history-section').hide();
+                $('#courses-section').hide();
+                $('#schedules-section').show();
+                $('#instructor-program-section').hide();
+                $('#export-applications-btn').hide();
+                $('#export-users-btn').hide();
+                $('#export-inquiries-btn').hide();
+                $('#export-login-history-btn').hide();
+                loadSchedules();
+            } else if (tab === 'instructor-program') {
+                $('#applications-section').hide();
+                $('#users-section').hide();
+                $('#inquiries-section').hide();
+                $('#notices-section').hide();
+                $('#login-history-section').hide();
+                $('#courses-section').hide();
+                $('#schedules-section').hide();
+                $('#instructor-program-section').show();
+                $('#export-applications-btn').hide();
+                $('#export-users-btn').hide();
+                $('#export-inquiries-btn').hide();
+                $('#export-login-history-btn').hide();
+                loadInstructorProgram();
             }
         }
 
@@ -2238,6 +2541,540 @@
                 alert('삭제 중 오류가 발생했습니다.');
             }
         }
+
+        // Courses Management Functions
+        function loadCourses() {
+            try {
+                // Load courses from courses-data.js
+                const coursesData = typeof COURSES_DATA !== 'undefined' ? COURSES_DATA : [];
+                
+                // Load prices from localStorage
+                const storedPrices = localStorage.getItem('coursePrices');
+                const prices = storedPrices ? JSON.parse(storedPrices) : {};
+                
+                // Merge courses with prices
+                courses = coursesData.map(course => ({
+                    ...course,
+                    price: prices[course.slug] || 0
+                }));
+                
+                renderCourses();
+            } catch (e) {
+                console.error('Error loading courses:', e);
+                courses = [];
+                renderCourses();
+            }
+        }
+
+        function renderCourses() {
+            const tbody = $('#courses-tbody');
+            tbody.empty();
+
+            if (courses.length === 0) {
+                tbody.html('<tr><td colspan="4" class="no-applications">과정이 없습니다.</td></tr>');
+                return;
+            }
+
+            courses.forEach(course => {
+                const row = $(`
+                    <tr>
+                        <td>${course.title}</td>
+                        <td>${course.category}</td>
+                        <td>
+                            <input type="number" 
+                                   class="form-input" 
+                                   style="width: 150px; padding: 0.5rem;" 
+                                   value="${course.price || 0}" 
+                                   data-slug="${course.slug}"
+                                   onchange="updateCoursePrice('${course.slug}', this.value)">
+                            <span style="margin-left: 0.5rem;">원</span>
+                        </td>
+                        <td>
+                            <button class="btn btn-sm btn-primary" onclick="saveCoursePrice('${course.slug}')">저장</button>
+                        </td>
+                    </tr>
+                `);
+                tbody.append(row);
+            });
+        }
+
+        function updateCoursePrice(slug, price) {
+            const course = courses.find(c => c.slug === slug);
+            if (course) {
+                course.price = parseInt(price) || 0;
+            }
+        }
+
+        function saveCoursePrice(slug) {
+            try {
+                const course = courses.find(c => c.slug === slug);
+                if (!course) {
+                    alert('과정을 찾을 수 없습니다.');
+                    return;
+                }
+
+                const storedPrices = localStorage.getItem('coursePrices');
+                const prices = storedPrices ? JSON.parse(storedPrices) : {};
+                prices[slug] = course.price || 0;
+                localStorage.setItem('coursePrices', JSON.stringify(prices));
+                
+                alert('가격이 저장되었습니다.');
+            } catch (e) {
+                console.error('Error saving course price:', e);
+                alert('가격 저장 중 오류가 발생했습니다.');
+            }
+        }
+
+        // Schedules Management Functions
+        function loadSchedules() {
+            try {
+                const stored = localStorage.getItem('courseSchedules');
+                if (stored) {
+                    schedules = JSON.parse(stored);
+                } else {
+                    schedules = [];
+                }
+                renderSchedules();
+            } catch (e) {
+                console.error('Error loading schedules:', e);
+                schedules = [];
+                renderSchedules();
+            }
+        }
+
+        function renderSchedules() {
+            const tbody = $('#schedules-tbody');
+            tbody.empty();
+
+            if (schedules.length === 0) {
+                tbody.html('<tr><td colspan="3" class="no-applications">일정이 없습니다.</td></tr>');
+                return;
+            }
+
+            schedules.forEach(schedule => {
+                const date = new Date(schedule.date);
+                const dateStr = date.toLocaleDateString('ko-KR');
+                const statusClass = schedule.active ? 'status-approved' : 'status-pending';
+                const statusText = schedule.active ? '활성' : '비활성';
+
+                const row = $(`
+                    <tr>
+                        <td>${dateStr}</td>
+                        <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                        <td>
+                            <button class="btn btn-sm btn-outline" onclick="editSchedule('${schedule.id}')" style="margin-right: 0.5rem;">수정</button>
+                            <button class="btn btn-sm" style="background: #ef4444; color: white; border: none;" onclick="deleteSchedule('${schedule.id}')">삭제</button>
+                        </td>
+                    </tr>
+                `);
+                tbody.append(row);
+            });
+        }
+
+        function addSchedule() {
+            currentScheduleId = null;
+            $('#schedule-modal-title').text('일정 추가');
+            $('#schedule-date').val('');
+            $('#schedule-active').prop('checked', true);
+            $('#schedule-modal').css('display', 'flex');
+        }
+
+        function editSchedule(id) {
+            const schedule = schedules.find(s => s.id === id);
+            if (!schedule) {
+                alert('일정을 찾을 수 없습니다.');
+                return;
+            }
+
+            currentScheduleId = id;
+            $('#schedule-modal-title').text('일정 수정');
+            $('#schedule-date').val(schedule.date);
+            $('#schedule-active').prop('checked', schedule.active);
+            $('#schedule-modal').css('display', 'flex');
+        }
+
+        function deleteSchedule(id) {
+            if (!confirm('정말로 이 일정을 삭제하시겠습니까?')) {
+                return;
+            }
+
+            try {
+                const index = schedules.findIndex(s => s.id === id);
+                if (index === -1) {
+                    alert('일정을 찾을 수 없습니다.');
+                    return;
+                }
+
+                schedules.splice(index, 1);
+                localStorage.setItem('courseSchedules', JSON.stringify(schedules));
+                renderSchedules();
+                alert('일정이 삭제되었습니다.');
+            } catch (e) {
+                console.error('Error deleting schedule:', e);
+                alert('삭제 중 오류가 발생했습니다.');
+            }
+        }
+
+        function saveSchedule() {
+            try {
+                const date = $('#schedule-date').val();
+                const active = $('#schedule-active').is(':checked');
+
+                if (!date) {
+                    alert('일정을 입력해주세요.');
+                    return;
+                }
+
+                if (currentScheduleId) {
+                    // Update existing schedule
+                    const schedule = schedules.find(s => s.id === currentScheduleId);
+                    if (schedule) {
+                        schedule.date = date;
+                        schedule.active = active;
+                    }
+                } else {
+                    // Add new schedule
+                    const newSchedule = {
+                        id: Date.now().toString(),
+                        date: date,
+                        active: active,
+                        createdAt: new Date().toISOString()
+                    };
+                    schedules.push(newSchedule);
+                }
+
+                localStorage.setItem('courseSchedules', JSON.stringify(schedules));
+                renderSchedules();
+                $('#schedule-modal').hide();
+                alert('일정이 저장되었습니다.');
+            } catch (e) {
+                console.error('Error saving schedule:', e);
+                alert('일정 저장 중 오류가 발생했습니다.');
+            }
+        }
+
+        // Instructor Program Management Functions
+        function loadInstructorProgram() {
+            try {
+                // Load program info
+                const storedProgram = localStorage.getItem('instructorProgram');
+                if (storedProgram) {
+                    instructorProgram = JSON.parse(storedProgram);
+                    $('#instructor-program-title').val(instructorProgram.title || '강사 성장 프로그램');
+                    $('#instructor-program-description').val(instructorProgram.description || '');
+                } else {
+                    instructorProgram = {
+                        title: '강사 성장 프로그램',
+                        description: '전문 강사로 성장하기 위한 체계적인 프로그램입니다.'
+                    };
+                }
+
+                // Load schedules
+                const storedSchedules = localStorage.getItem('instructorSchedules');
+                if (storedSchedules) {
+                    instructorSchedules = JSON.parse(storedSchedules);
+                } else {
+                    instructorSchedules = [];
+                }
+
+                // Load consult schedules
+                const storedConsultSchedules = localStorage.getItem('consultSchedules');
+                if (storedConsultSchedules) {
+                    consultSchedules = JSON.parse(storedConsultSchedules);
+                } else {
+                    consultSchedules = [];
+                }
+
+                renderInstructorSchedules();
+                renderConsultSchedules();
+            } catch (e) {
+                console.error('Error loading instructor program:', e);
+                instructorProgram = { title: '강사 성장 프로그램', description: '' };
+                instructorSchedules = [];
+                consultSchedules = [];
+                renderInstructorSchedules();
+                renderConsultSchedules();
+            }
+        }
+
+        function saveProgramInfo() {
+            try {
+                instructorProgram = {
+                    title: $('#instructor-program-title').val() || '강사 성장 프로그램',
+                    description: $('#instructor-program-description').val() || ''
+                };
+                localStorage.setItem('instructorProgram', JSON.stringify(instructorProgram));
+                alert('프로그램 정보가 저장되었습니다.');
+            } catch (e) {
+                console.error('Error saving program info:', e);
+                alert('프로그램 정보 저장 중 오류가 발생했습니다.');
+            }
+        }
+
+        function renderInstructorSchedules() {
+            const tbody = $('#instructor-schedules-tbody');
+            tbody.empty();
+
+            if (instructorSchedules.length === 0) {
+                tbody.html('<tr><td colspan="3" class="no-applications">일정이 없습니다.</td></tr>');
+                return;
+            }
+
+            instructorSchedules.forEach(schedule => {
+                const date = new Date(schedule.date);
+                const dateStr = date.toLocaleDateString('ko-KR');
+                const statusClass = schedule.active ? 'status-approved' : 'status-pending';
+                const statusText = schedule.active ? '활성' : '비활성';
+
+                const row = $(`
+                    <tr>
+                        <td>${dateStr}</td>
+                        <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                        <td>
+                            <button class="btn btn-sm btn-outline" onclick="editInstructorSchedule('${schedule.id}')" style="margin-right: 0.5rem;">수정</button>
+                            <button class="btn btn-sm" style="background: #ef4444; color: white; border: none;" onclick="deleteInstructorSchedule('${schedule.id}')">삭제</button>
+                        </td>
+                    </tr>
+                `);
+                tbody.append(row);
+            });
+        }
+
+        function renderConsultSchedules() {
+            const tbody = $('#consult-schedules-tbody');
+            tbody.empty();
+
+            if (consultSchedules.length === 0) {
+                tbody.html('<tr><td colspan="4" class="no-applications">상담 일정이 없습니다.</td></tr>');
+                return;
+            }
+
+            consultSchedules.forEach(schedule => {
+                const date = new Date(schedule.date);
+                const dateStr = date.toLocaleDateString('ko-KR');
+                const statusClass = schedule.active ? 'status-approved' : 'status-pending';
+                const statusText = schedule.active ? '활성' : '비활성';
+
+                const row = $(`
+                    <tr>
+                        <td>${dateStr}</td>
+                        <td>${schedule.time || '-'}</td>
+                        <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                        <td>
+                            <button class="btn btn-sm btn-outline" onclick="editConsultSchedule('${schedule.id}')" style="margin-right: 0.5rem;">수정</button>
+                            <button class="btn btn-sm" style="background: #ef4444; color: white; border: none;" onclick="deleteConsultSchedule('${schedule.id}')">삭제</button>
+                        </td>
+                    </tr>
+                `);
+                tbody.append(row);
+            });
+        }
+
+        function addInstructorSchedule() {
+            currentInstructorScheduleId = null;
+            $('#instructor-schedule-modal-title').text('프로그램 일정 추가');
+            $('#instructor-schedule-date').val('');
+            $('#instructor-schedule-active').prop('checked', true);
+            $('#instructor-schedule-modal').css('display', 'flex');
+        }
+
+        function editInstructorSchedule(id) {
+            const schedule = instructorSchedules.find(s => s.id === id);
+            if (!schedule) {
+                alert('일정을 찾을 수 없습니다.');
+                return;
+            }
+
+            currentInstructorScheduleId = id;
+            $('#instructor-schedule-modal-title').text('프로그램 일정 수정');
+            $('#instructor-schedule-date').val(schedule.date);
+            $('#instructor-schedule-active').prop('checked', schedule.active);
+            $('#instructor-schedule-modal').css('display', 'flex');
+        }
+
+        function deleteInstructorSchedule(id) {
+            if (!confirm('정말로 이 일정을 삭제하시겠습니까?')) {
+                return;
+            }
+
+            try {
+                const index = instructorSchedules.findIndex(s => s.id === id);
+                if (index === -1) {
+                    alert('일정을 찾을 수 없습니다.');
+                    return;
+                }
+
+                instructorSchedules.splice(index, 1);
+                localStorage.setItem('instructorSchedules', JSON.stringify(instructorSchedules));
+                renderInstructorSchedules();
+                alert('일정이 삭제되었습니다.');
+            } catch (e) {
+                console.error('Error deleting instructor schedule:', e);
+                alert('삭제 중 오류가 발생했습니다.');
+            }
+        }
+
+        function saveInstructorSchedule() {
+            try {
+                const date = $('#instructor-schedule-date').val();
+                const active = $('#instructor-schedule-active').is(':checked');
+
+                if (!date) {
+                    alert('일정을 입력해주세요.');
+                    return;
+                }
+
+                if (currentInstructorScheduleId) {
+                    const schedule = instructorSchedules.find(s => s.id === currentInstructorScheduleId);
+                    if (schedule) {
+                        schedule.date = date;
+                        schedule.active = active;
+                    }
+                } else {
+                    const newSchedule = {
+                        id: Date.now().toString(),
+                        date: date,
+                        active: active,
+                        createdAt: new Date().toISOString()
+                    };
+                    instructorSchedules.push(newSchedule);
+                }
+
+                localStorage.setItem('instructorSchedules', JSON.stringify(instructorSchedules));
+                renderInstructorSchedules();
+                $('#instructor-schedule-modal').hide();
+                alert('일정이 저장되었습니다.');
+            } catch (e) {
+                console.error('Error saving instructor schedule:', e);
+                alert('일정 저장 중 오류가 발생했습니다.');
+            }
+        }
+
+        function addConsultSchedule() {
+            currentConsultScheduleId = null;
+            $('#consult-schedule-modal-title').text('상담 일정 추가');
+            $('#consult-schedule-date').val('');
+            $('#consult-schedule-time').val('');
+            $('#consult-schedule-active').prop('checked', true);
+            $('#consult-schedule-modal').css('display', 'flex');
+        }
+
+        function editConsultSchedule(id) {
+            const schedule = consultSchedules.find(s => s.id === id);
+            if (!schedule) {
+                alert('일정을 찾을 수 없습니다.');
+                return;
+            }
+
+            currentConsultScheduleId = id;
+            $('#consult-schedule-modal-title').text('상담 일정 수정');
+            $('#consult-schedule-date').val(schedule.date);
+            $('#consult-schedule-time').val(schedule.time || '');
+            $('#consult-schedule-active').prop('checked', schedule.active);
+            $('#consult-schedule-modal').css('display', 'flex');
+        }
+
+        function deleteConsultSchedule(id) {
+            if (!confirm('정말로 이 일정을 삭제하시겠습니까?')) {
+                return;
+            }
+
+            try {
+                const index = consultSchedules.findIndex(s => s.id === id);
+                if (index === -1) {
+                    alert('일정을 찾을 수 없습니다.');
+                    return;
+                }
+
+                consultSchedules.splice(index, 1);
+                localStorage.setItem('consultSchedules', JSON.stringify(consultSchedules));
+                renderConsultSchedules();
+                alert('일정이 삭제되었습니다.');
+            } catch (e) {
+                console.error('Error deleting consult schedule:', e);
+                alert('삭제 중 오류가 발생했습니다.');
+            }
+        }
+
+        function saveConsultSchedule() {
+            try {
+                const date = $('#consult-schedule-date').val();
+                const time = $('#consult-schedule-time').val();
+                const active = $('#consult-schedule-active').is(':checked');
+
+                if (!date) {
+                    alert('일정을 입력해주세요.');
+                    return;
+                }
+
+                if (!time) {
+                    alert('시간을 선택해주세요.');
+                    return;
+                }
+
+                if (currentConsultScheduleId) {
+                    const schedule = consultSchedules.find(s => s.id === currentConsultScheduleId);
+                    if (schedule) {
+                        schedule.date = date;
+                        schedule.time = time;
+                        schedule.active = active;
+                    }
+                } else {
+                    const newSchedule = {
+                        id: Date.now().toString(),
+                        date: date,
+                        time: time,
+                        active: active,
+                        createdAt: new Date().toISOString()
+                    };
+                    consultSchedules.push(newSchedule);
+                }
+
+                localStorage.setItem('consultSchedules', JSON.stringify(consultSchedules));
+                renderConsultSchedules();
+                $('#consult-schedule-modal').hide();
+                alert('일정이 저장되었습니다.');
+            } catch (e) {
+                console.error('Error saving consult schedule:', e);
+                alert('일정 저장 중 오류가 발생했습니다.');
+            }
+        }
+
+        // Event handlers for modals
+        $(document).ready(function() {
+            // Schedule modal handlers
+            $('#add-schedule-btn').on('click', addSchedule);
+            $('#schedule-form').on('submit', function(e) {
+                e.preventDefault();
+                saveSchedule();
+            });
+            $('#cancel-schedule-btn, #close-schedule-modal, #schedule-modal-backdrop').on('click', function() {
+                $('#schedule-modal').hide();
+            });
+
+            // Instructor schedule modal handlers
+            $('#add-instructor-schedule-btn').on('click', addInstructorSchedule);
+            $('#instructor-schedule-form').on('submit', function(e) {
+                e.preventDefault();
+                saveInstructorSchedule();
+            });
+            $('#cancel-instructor-schedule-btn, #close-instructor-schedule-modal, #instructor-schedule-modal-backdrop').on('click', function() {
+                $('#instructor-schedule-modal').hide();
+            });
+
+            // Consult schedule modal handlers
+            $('#add-consult-schedule-btn').on('click', addConsultSchedule);
+            $('#consult-schedule-form').on('submit', function(e) {
+                e.preventDefault();
+                saveConsultSchedule();
+            });
+            $('#cancel-consult-schedule-btn, #close-consult-schedule-modal, #consult-schedule-modal-backdrop').on('click', function() {
+                $('#consult-schedule-modal').hide();
+            });
+
+            // Program info save handler
+            $('#save-program-info-btn').on('click', saveProgramInfo);
+        });
     </script>
 </body>
 </html>
