@@ -81,11 +81,12 @@
                                                 name="preferredSchedule" 
                                                 class="form-input" 
                                                 required
+                                                disabled
                                             >
-                                                <option value="">일정을 선택해주세요</option>
+                                                <option value="">먼저 강의를 선택해주세요</option>
                                             </select>
                                             <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.5rem;">
-                                                원하시는 수강 일정을 선택해주세요
+                                                강의를 선택하면 해당 강의의 일정이 표시됩니다
                                             </p>
                                         </div>
                                     </div>
@@ -248,6 +249,12 @@
                 } else if (courseParam) {
                     if (typeof loadCourseSelection === 'function') {
                         loadCourseSelection(courseParam);
+                        // 강의가 미리 선택된 경우 일정 로드
+                        setTimeout(function() {
+                            if (selectedCourse && selectedCourse.slug) {
+                                loadSchedulesForCourse(selectedCourse.slug);
+                            }
+                        }, 100);
                     }
                     loadSchedules();
                 } else {
@@ -284,14 +291,28 @@
                         // Load consult schedules
                         updateScheduleLabelForConsult();
                         const stored = localStorage.getItem('consultSchedules');
+                        const coursesData = typeof COURSES_DATA !== 'undefined' ? COURSES_DATA : [];
+                        
                         if (stored) {
                             const schedules = JSON.parse(stored);
                             const activeSchedules = schedules.filter(s => s.active);
                             activeSchedules.forEach(schedule => {
                                 const date = new Date(schedule.date);
                                 const dateStr = date.toLocaleDateString('ko-KR');
-                                const optionText = `${dateStr} ${schedule.time || ''}`;
-                                $scheduleSelect.append(`<option value="${schedule.date}|${schedule.time || ''}">${optionText}</option>`);
+                                
+                                // 과정 정보 가져오기
+                                let courseName = '';
+                                if (schedule.courseSlug) {
+                                    const course = coursesData.find(c => c.slug === schedule.courseSlug);
+                                    if (course) {
+                                        courseName = course.title;
+                                    }
+                                } else if (schedule.courseName) {
+                                    courseName = schedule.courseName;
+                                }
+                                
+                                const optionText = courseName ? `${courseName} - ${dateStr} ${schedule.time || ''}` : `${dateStr} ${schedule.time || ''}`;
+                                $scheduleSelect.append(`<option value="${schedule.date}|${schedule.time || ''}" data-course="${courseName}">${optionText}</option>`);
                             });
                         }
                     } else {
@@ -308,17 +329,9 @@
                         }
                     }
                 } else {
-                    // Load regular course schedules
-                    const stored = localStorage.getItem('courseSchedules');
-                    if (stored) {
-                        const schedules = JSON.parse(stored);
-                        const activeSchedules = schedules.filter(s => s.active);
-                        activeSchedules.forEach(schedule => {
-                            const date = new Date(schedule.date);
-                            const dateStr = date.toLocaleDateString('ko-KR');
-                            $scheduleSelect.append(`<option value="${schedule.date}">${dateStr}</option>`);
-                        });
-                    }
+                    // Load regular course schedules - 강의 선택 시에만 로드됨
+                    // 여기서는 초기화만 수행
+                    $scheduleSelect.prop('disabled', true);
                 }
             } catch (e) {
                 console.error('Error loading schedules:', e);
@@ -333,6 +346,41 @@
             }
             if ($helpText.length) {
                 $helpText.text('원하시는 Zoom 상담 일정을 선택해주세요');
+            }
+        }
+        
+        function loadSchedulesForCourse(courseSlug) {
+            try {
+                const $scheduleSelect = $('#preferredSchedule');
+                $scheduleSelect.empty();
+                $scheduleSelect.append('<option value="">일정을 선택해주세요</option>');
+                
+                // 강의 일정 로드
+                const stored = localStorage.getItem('courseSchedules');
+                if (stored) {
+                    const schedules = JSON.parse(stored);
+                    // 활성화된 일정 중에서 선택된 강의코스와 일치하는 일정만 필터링
+                    const activeSchedules = schedules.filter(s => 
+                        s.active && s.courseSlug === courseSlug
+                    );
+                    
+                    if (activeSchedules.length === 0) {
+                        $scheduleSelect.append('<option value="" disabled>등록된 일정이 없습니다</option>');
+                    } else {
+                        activeSchedules.forEach(schedule => {
+                            const date = new Date(schedule.date);
+                            const dateStr = date.toLocaleDateString('ko-KR');
+                            $scheduleSelect.append(`<option value="${schedule.date}">${dateStr}</option>`);
+                        });
+                        $scheduleSelect.prop('disabled', false);
+                    }
+                } else {
+                    $scheduleSelect.append('<option value="" disabled>등록된 일정이 없습니다</option>');
+                }
+            } catch (e) {
+                console.error('Error loading schedules for course:', e);
+                const $scheduleSelect = $('#preferredSchedule');
+                $scheduleSelect.empty().append('<option value="" disabled>일정을 불러오는 중 오류가 발생했습니다</option>');
             }
         }
         
@@ -374,10 +422,15 @@
                         selectedCourse = courses.find(c => c.slug === slug);
                         updateSummary();
                         updateCoursePrice();
+                        // 선택된 강의의 일정만 로드
+                        loadSchedulesForCourse(slug);
                     } else {
                         selectedCourse = null;
                         updateSummary();
                         $('#course-price-group').hide();
+                        // 일정 드롭다운 초기화
+                        const $scheduleSelect = $('#preferredSchedule');
+                        $scheduleSelect.empty().append('<option value="">먼저 강의를 선택해주세요</option>').prop('disabled', true);
                     }
                 });
                 });
@@ -413,10 +466,15 @@
                         selectedCourse = courses.find(c => c.slug === slug);
                         updateSummary();
                         updateCoursePrice();
+                        // 선택된 강의의 일정만 로드
+                        loadSchedulesForCourse(slug);
                     } else {
                         selectedCourse = null;
                         updateSummary();
                         $('#course-price-group').hide();
+                        // 일정 드롭다운 초기화
+                        const $scheduleSelect = $('#preferredSchedule');
+                        $scheduleSelect.empty().append('<option value="">먼저 강의를 선택해주세요</option>').prop('disabled', true);
                     }
                 });
             }
@@ -424,16 +482,57 @@
         
         function loadInstructorMode() {
             const $group = $('#course-selection-group');
-            $group.html(`
-                <div style="padding: 1rem; border: 1px solid var(--border); border-radius: var(--radius-lg); background: rgba(255,255,255,0.5);">
-                    <p style="font-weight: 500;">강사 성장 프로그램</p>
-                    <p style="font-size: 0.875rem; color: var(--text-muted); margin-top: 0.5rem;">
-                        전문 강사로 성장하기 위한 체계적인 프로그램입니다.
-                    </p>
-                </div>
-            `);
-            selectedCourse = { title: '강사 성장 프로그램', category: '강사 성장' };
-            updateSummary();
+            
+            // 등록된 프로그램 정보 로드
+            try {
+                const storedProgram = localStorage.getItem('instructorProgram');
+                let programInfo = {
+                    title: '강사 성장 프로그램',
+                    description: '전문 강사로 성장하기 위한 체계적인 프로그램입니다.'
+                };
+                
+                if (storedProgram) {
+                    const program = JSON.parse(storedProgram);
+                    programInfo = {
+                        title: program.title || '강사 성장 프로그램',
+                        description: program.description || '전문 강사로 성장하기 위한 체계적인 프로그램입니다.'
+                    };
+                }
+                
+                // 프로그램 정보 표시
+                let programHtml = `
+                    <div style="padding: 1.5rem; border: 1px solid var(--border); border-radius: var(--radius-lg); background: rgba(255,255,255,0.5);">
+                        <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
+                            <span style="font-size: 1.5rem;">📚</span>
+                            <div>
+                                <p style="font-weight: 600; font-size: 1.125rem; margin: 0;">${programInfo.title}</p>
+                            </div>
+                        </div>
+                        <p style="font-size: 0.875rem; color: var(--text-muted); margin: 0; line-height: 1.6;">
+                            ${programInfo.description}
+                        </p>
+                    </div>
+                `;
+                
+                $group.html(programHtml);
+                selectedCourse = { 
+                    title: programInfo.title, 
+                    category: '강사 성장'
+                };
+                updateSummary();
+            } catch (e) {
+                console.error('Error loading instructor program:', e);
+                $group.html(`
+                    <div style="padding: 1rem; border: 1px solid var(--border); border-radius: var(--radius-lg); background: rgba(255,255,255,0.5);">
+                        <p style="font-weight: 500;">강사 성장 프로그램</p>
+                        <p style="font-size: 0.875rem; color: var(--text-muted); margin-top: 0.5rem;">
+                            전문 강사로 성장하기 위한 체계적인 프로그램입니다.
+                        </p>
+                    </div>
+                `);
+                selectedCourse = { title: '강사 성장 프로그램', category: '강사 성장' };
+                updateSummary();
+            }
         }
         
         function nextStep() {
@@ -561,19 +660,23 @@
         
         function generateConfirmation() {
             const scheduleValue = $('#preferredSchedule').val();
+            const $selectedOption = $('#preferredSchedule option:selected');
             let scheduleDisplay = scheduleValue;
             let timeDisplay = '';
+            let courseName = '';
             
             if (isConsultMode && scheduleValue.includes('|')) {
                 const parts = scheduleValue.split('|');
                 scheduleDisplay = parts[0];
                 timeDisplay = parts[1] || '';
+                courseName = $selectedOption.data('course') || '';
             }
             
             const formData = {
-                course: selectedCourse ? selectedCourse.title : (isConsultMode ? 'Zoom 상담 신청' : '강사 성장 프로그램'),
+                course: selectedCourse ? selectedCourse.title : (isConsultMode ? (courseName || 'Zoom 상담 신청') : '강사 성장 프로그램'),
                 schedule: scheduleDisplay,
                 time: timeDisplay,
+                courseName: courseName,
                 name: $('#name').val(),
                 email: $('#email').val(),
                 phone: $('#phone').val(),
@@ -597,6 +700,12 @@
                             <span class="confirmation-label">${isConsultMode ? '신청 유형' : '선택한 과정'}</span>
                             <span class="confirmation-value">${formData.course}</span>
                         </div>
+                        ${isConsultMode && courseName ? `
+                        <div class="confirmation-item">
+                            <span class="confirmation-label">과정</span>
+                            <span class="confirmation-value">${courseName}</span>
+                        </div>
+                        ` : ''}
                         <div class="confirmation-item">
                             <span class="confirmation-label">${scheduleLabel}</span>
                             <span class="confirmation-value">${scheduleDisplayFinal}</span>
@@ -702,12 +811,37 @@
                     </div>
                 `);
             } else if (isInstructorMode) {
-                $summary.html(`
-                    <div>
-                        <label style="font-size: 0.75rem; color: var(--text-muted);">프로그램</label>
-                        <p style="font-weight: 500; margin-top: 0.25rem;">강사 성장 프로그램</p>
-                    </div>
-                `);
+                // 등록된 프로그램 정보 표시
+                try {
+                    const storedProgram = localStorage.getItem('instructorProgram');
+                    let programInfo = {
+                        title: '강사 성장 프로그램'
+                    };
+                    
+                    if (storedProgram) {
+                        const program = JSON.parse(storedProgram);
+                        programInfo = {
+                            title: program.title || '강사 성장 프로그램'
+                        };
+                    }
+                    
+                    let summaryHtml = `
+                        <div style="display: flex; flex-direction: column; gap: 1rem;">
+                            <div>
+                                <label style="font-size: 0.75rem; color: var(--text-muted);">프로그램</label>
+                                <p style="font-weight: 500; margin-top: 0.25rem;">${programInfo.title}</p>
+                            </div>
+                        </div>
+                    `;
+                    $summary.html(summaryHtml);
+                } catch (e) {
+                    $summary.html(`
+                        <div>
+                            <label style="font-size: 0.75rem; color: var(--text-muted);">프로그램</label>
+                            <p style="font-weight: 500; margin-top: 0.25rem;">강사 성장 프로그램</p>
+                        </div>
+                    `);
+                }
             } else {
                 $summary.html('<p style="color: var(--text-muted);">과정을 선택해주세요</p>');
             }
