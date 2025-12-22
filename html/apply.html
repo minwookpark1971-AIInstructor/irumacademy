@@ -222,9 +222,6 @@
         let isConsultMode = false;
         
         $(document).ready(function() {
-            // Load schedules from localStorage
-            loadSchedules();
-            
             // Wait for components to load
             setTimeout(function() {
                 // Check URL parameters
@@ -245,7 +242,10 @@
                     if (typeof loadInstructorMode === 'function') {
                         loadInstructorMode();
                     }
-                    loadSchedules();
+                    // 일정 로드는 loadInstructorMode 완료 후 실행
+                    setTimeout(function() {
+                        loadSchedules();
+                    }, 300);
                 } else if (courseParam) {
                     if (typeof loadCourseSelection === 'function') {
                         loadCourseSelection(courseParam);
@@ -256,12 +256,13 @@
                             }
                         }, 100);
                     }
-                    loadSchedules();
                 } else {
                     if (typeof loadCourseSelection === 'function') {
                         loadCourseSelection();
                     }
-                    loadSchedules();
+                    // 일반 모드에서는 일정 드롭다운 비활성화
+                    const $scheduleSelect = $('#preferredSchedule');
+                    $scheduleSelect.prop('disabled', true);
                 }
                 
                 // Initialize form validation
@@ -325,27 +326,61 @@
                             programs = JSON.parse(storedPrograms);
                         }
                         
+                        // 일정 드롭다운 활성화
+                        $scheduleSelect.prop('disabled', false);
+                        
                         if (stored) {
-                            const schedules = JSON.parse(stored);
-                            const activeSchedules = schedules.filter(s => s.active !== false);
-                            activeSchedules.forEach(schedule => {
-                                const date = new Date(schedule.date);
-                                const dateStr = date.toLocaleDateString('ko-KR');
+                            try {
+                                const schedules = JSON.parse(stored);
+                                const activeSchedules = schedules.filter(s => s.active !== false);
                                 
-                                // 프로그램 이름 가져오기
-                                let programName = '';
-                                if (schedule.programId && programs.length > 0) {
-                                    const program = programs.find(p => p.id === schedule.programId);
-                                    if (program) {
-                                        programName = program.title;
+                                if (activeSchedules.length === 0) {
+                                    $scheduleSelect.append('<option value="" disabled>등록된 일정이 없습니다</option>');
+                                    $scheduleSelect.prop('disabled', true);
+                                } else {
+                                    // 일정을 날짜순으로 정렬
+                                    activeSchedules.sort((a, b) => new Date(a.date) - new Date(b.date));
+                                    
+                                    activeSchedules.forEach(schedule => {
+                                        try {
+                                            const date = new Date(schedule.date);
+                                            if (isNaN(date.getTime())) {
+                                                console.warn('Invalid date:', schedule.date);
+                                                return;
+                                            }
+                                            const dateStr = date.toLocaleDateString('ko-KR');
+                                            
+                                            // 프로그램 이름 가져오기
+                                            let programName = '';
+                                            if (schedule.programId && programs.length > 0) {
+                                                const program = programs.find(p => p.id === schedule.programId);
+                                                if (program) {
+                                                    programName = program.title;
+                                                }
+                                            } else if (schedule.programName) {
+                                                programName = schedule.programName;
+                                            }
+                                            
+                                            const optionText = programName ? `${programName} - ${dateStr}` : dateStr;
+                                            $scheduleSelect.append(`<option value="${schedule.date}" data-program="${programName}">${optionText}</option>`);
+                                        } catch (e) {
+                                            console.error('Error processing schedule:', e, schedule);
+                                        }
+                                    });
+                                    
+                                    // 일정이 추가되었으면 드롭다운 활성화 확인
+                                    if ($scheduleSelect.find('option').length > 1) {
+                                        $scheduleSelect.prop('disabled', false);
                                     }
-                                } else if (schedule.programName) {
-                                    programName = schedule.programName;
                                 }
-                                
-                                const optionText = programName ? `${programName} - ${dateStr}` : dateStr;
-                                $scheduleSelect.append(`<option value="${schedule.date}" data-program="${programName}">${optionText}</option>`);
-                            });
+                            } catch (e) {
+                                console.error('Error parsing schedules:', e);
+                                $scheduleSelect.append('<option value="" disabled>일정을 불러오는 중 오류가 발생했습니다</option>');
+                                $scheduleSelect.prop('disabled', true);
+                            }
+                        } else {
+                            $scheduleSelect.append('<option value="" disabled>등록된 일정이 없습니다</option>');
+                            $scheduleSelect.prop('disabled', true);
                         }
                     }
                 } else {
@@ -555,6 +590,11 @@
                     category: '강사 성장'
                 };
                 updateSummary();
+                
+                // 프로그램 로드 후 일정도 다시 로드 (더 긴 지연 시간으로 확실히 로드)
+                setTimeout(function() {
+                    loadSchedules();
+                }, 200);
             } catch (e) {
                 console.error('Error loading instructor program:', e);
                 $group.html(`

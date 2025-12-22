@@ -1413,22 +1413,67 @@
         function loadUsers() {
             try {
                 const stored = localStorage.getItem('users');
+                console.log('Loading users from localStorage:', stored ? 'found' : 'not found');
                 if (stored) {
-                    const parsed = JSON.parse(stored);
+                    let parsed;
+                    try {
+                        parsed = JSON.parse(stored);
+                    } catch (parseError) {
+                        console.error('Error parsing users JSON:', parseError);
+                        console.error('Raw data:', stored);
+                        users = [];
+                        updateUserStatistics();
+                        filterUsers();
+                        return;
+                    }
+                    
+                    console.log('Parsed users:', parsed);
+                    console.log('Is array?', Array.isArray(parsed));
+                    
                     // 데이터 유효성 검사
-                    users = Array.isArray(parsed) ? parsed.filter(u => {
-                        // 필수 필드 확인
-                        return u && u.email && u.registeredAt;
-                    }) : [];
+                    if (Array.isArray(parsed)) {
+                        users = parsed.filter(u => {
+                            // 필수 필드 확인
+                            const isValid = u && typeof u === 'object' && u.email && u.registeredAt;
+                            if (!isValid) {
+                                console.warn('Invalid user data filtered out:', u);
+                            }
+                            return isValid;
+                        });
+                    } else {
+                        console.error('Users data is not an array:', typeof parsed);
+                        users = [];
+                    }
+                    
+                    console.log('Filtered users count:', users.length);
+                    
                     // Sort by date (newest first)
-                    users.sort((a, b) => new Date(b.registeredAt) - new Date(a.registeredAt));
+                    users.sort((a, b) => {
+                        try {
+                            const dateA = new Date(a.registeredAt);
+                            const dateB = new Date(b.registeredAt);
+                            if (isNaN(dateA.getTime()) || isNaN(dateB.getTime())) {
+                                console.warn('Invalid date found:', { a: a.registeredAt, b: b.registeredAt });
+                                return 0;
+                            }
+                            return dateB - dateA;
+                        } catch (e) {
+                            console.error('Error sorting users:', e);
+                            return 0;
+                        }
+                    });
+                    
+                    console.log('Final users array:', users);
                 } else {
                     users = [];
+                    console.log('No users found in localStorage');
                 }
+                
                 updateUserStatistics();
                 filterUsers();
             } catch (e) {
                 console.error('Error loading users:', e);
+                console.error('Error stack:', e.stack);
                 users = [];
                 updateUserStatistics();
                 filterUsers();

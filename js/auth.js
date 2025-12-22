@@ -359,6 +359,15 @@ function handleSignupFallback(formData) {
         try {
             localStorage.setItem('users', JSON.stringify(users));
             console.log('User registered:', userData);
+            console.log('Total users saved:', users.length);
+            console.log('Users array:', users);
+            
+            // 저장 확인
+            const verifyStored = localStorage.getItem('users');
+            if (verifyStored) {
+                const verifyParsed = JSON.parse(verifyStored);
+                console.log('Verified stored users:', verifyParsed.length);
+            }
         } catch (e) {
             console.error('Error saving user:', e);
             showError('사용자 데이터를 저장하는 중 오류가 발생했습니다.');
