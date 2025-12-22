@@ -3141,6 +3141,12 @@
                     instructorPrograms = [];
                 }
                 
+                // 가장 최신 프로그램을 instructorProgram(단수)로도 저장 (하위 호환성)
+                if (instructorPrograms.length > 0) {
+                    const latestProgram = instructorPrograms[instructorPrograms.length - 1];
+                    localStorage.setItem('instructorProgram', JSON.stringify(latestProgram));
+                }
+                
                 renderInstructorPrograms();
 
                 // Load schedules
@@ -3203,6 +3209,15 @@
             try {
                 instructorPrograms.splice(index, 1);
                 localStorage.setItem('instructorPrograms', JSON.stringify(instructorPrograms));
+                
+                // 가장 최신 프로그램을 instructorProgram(단수)로도 업데이트
+                if (instructorPrograms.length > 0) {
+                    const latestProgram = instructorPrograms[instructorPrograms.length - 1];
+                    localStorage.setItem('instructorProgram', JSON.stringify(latestProgram));
+                } else {
+                    localStorage.removeItem('instructorProgram');
+                }
+                
                 renderInstructorPrograms();
                 alert('프로그램이 삭제되었습니다.');
             } catch (e) {
@@ -3230,6 +3245,9 @@
                 
                 instructorPrograms.push(newProgram);
                 localStorage.setItem('instructorPrograms', JSON.stringify(instructorPrograms));
+                
+                // 가장 최신 프로그램을 instructorProgram(단수)로도 저장 (하위 호환성)
+                localStorage.setItem('instructorProgram', JSON.stringify(newProgram));
                 
                 // 입력 필드 초기화
                 $('#instructor-program-title').val('');
