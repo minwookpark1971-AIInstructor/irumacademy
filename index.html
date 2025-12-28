@@ -52,7 +52,7 @@
                         <span class="curriculum-hero__highlight-text">AI 전문강사 실전 완성</span>
                     </div>
                     <div class="curriculum-hero__info">
-                        <span class="curriculum-hero__badge">1월 14일 개강</span>
+                        <span class="curriculum-hero__badge">1월 3주차 개강</span>
                         <span class="curriculum-hero__badge">온/오프라인 병행</span>
                         <span class="curriculum-hero__badge">선착순 20명</span>
                     </div>
@@ -285,7 +285,7 @@
         const curriculumAccordionData = [
             {
                 week: 'Week 01',
-                title: '진정한 고수를 위한 AI 프롬프트 엔지니어링',
+                title: '진정한 고수를 위한<br>AI 프롬프트 엔지니어링',
                 content: 'LLM 원리 이해, 구조화된 프롬프트(Task, Context, Persona 등) 작성법',
                 practice: '직무별 프롬프트 최적화 및 답변 품질 개선 실습'
             },
@@ -309,7 +309,7 @@
             },
             {
                 week: 'Week 05',
-                title: '2026년 바이브코딩(Vibe Coding) 입문',
+                title: '2026년 바이브코딩<br>(VibeCoding) 입문',
                 content: '자연어 코딩 기법, Cursor AI 및 Genspark 활용법, 웹사이트 기획',
                 practice: 'AI와 함께하는 웹사이트 기획서 작성 및 기본 구조 설계'
             },
@@ -332,6 +332,57 @@
                 practice: '개인/팀 프로젝트 시연, 피드백 및 수료식'
             }
         ];
+
+        // 텍스트를 2행으로 균등하게 나누는 함수
+        function splitTextIntoTwoLines(text, cardWidth) {
+            // 이미 <br> 태그가 있으면 그대로 반환
+            if (text.includes('<br>')) {
+                return text;
+            }
+            
+            const words = text.split(' ');
+            if (words.length <= 1) return text;
+            
+            // 임시 요소를 생성하여 텍스트 너비 측정
+            const $temp = $('<span>').css({
+                'font-size': '1.125rem',
+                'font-weight': '600',
+                'visibility': 'hidden',
+                'position': 'absolute',
+                'white-space': 'nowrap',
+                'font-family': 'inherit'
+            }).appendTo('body');
+            
+            // 중간 지점에서 시작
+            let splitIndex = Math.floor(words.length / 2);
+            let bestSplit = splitIndex;
+            let bestDiff = Infinity;
+            
+            // 중간 지점 주변(-3 ~ +3)에서 최적의 분할점 찾기
+            for (let offset = -3; offset <= 3; offset++) {
+                const testSplit = splitIndex + offset;
+                if (testSplit > 0 && testSplit < words.length) {
+                    const testFirst = words.slice(0, testSplit).join(' ');
+                    const testSecond = words.slice(testSplit).join(' ');
+                    
+                    const firstWidth = $temp.text(testFirst).width();
+                    const secondWidth = $temp.text(testSecond).width();
+                    const diff = Math.abs(firstWidth - secondWidth);
+                    
+                    if (diff < bestDiff) {
+                        bestDiff = diff;
+                        bestSplit = testSplit;
+                    }
+                }
+            }
+            
+            $temp.remove();
+            
+            const firstLine = words.slice(0, bestSplit).join(' ');
+            const secondLine = words.slice(bestSplit).join(' ');
+            
+            return firstLine + '<br>' + secondLine;
+        }
 
         function renderCurriculumAccordion() {
             const $list = $('#curriculum-accordion-list');
@@ -368,6 +419,15 @@
                 
                 $card.append($badge, $title, $content);
                 $list.append($card);
+                
+                // 카드가 렌더링된 후 너비를 측정하여 텍스트 재분할
+                setTimeout(function() {
+                    const cardWidth = $card.width();
+                    if (cardWidth > 0) {
+                        const formattedTitle = splitTextIntoTwoLines(item.title, cardWidth);
+                        $title.html(formattedTitle);
+                    }
+                }, 0);
             });
         }
 
@@ -743,27 +803,30 @@
 
         .curriculum-card__badge {
             display: inline-block;
-            background: #D1D5DB;
-            color: var(--heading);
+            background: #3B82F6;
+            color: white;
             padding: 0.5rem 1rem;
             border-radius: 0.5rem;
-            font-size: 0.8125rem;
+            font-size: 0.89375rem;
             font-weight: 700;
             margin-bottom: 1.25rem;
             width: fit-content;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
         }
 
         .curriculum-card__title {
-            font-size: 0.9375rem;
+            font-size: 1.125rem;
             font-weight: 600;
             color: var(--heading);
             margin: 0 0 0 0;
-            line-height: 1.4;
-            text-align: left;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            line-height: 1.5;
+            text-align: justify;
+            text-align-last: center;
+            white-space: normal;
+            overflow: visible;
+            text-overflow: clip;
+            word-break: keep-all;
+            display: block;
         }
 
         .curriculum-card__content {
@@ -1144,7 +1207,7 @@
             }
 
             .curriculum-card__title {
-                font-size: 0.875rem;
+                font-size: 1.05rem;
                 white-space: normal;
                 text-overflow: clip;
                 overflow: visible;
