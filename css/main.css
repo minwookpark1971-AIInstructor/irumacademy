@@ -962,3 +962,305 @@ body {
     }
 }
 
+/* ============================================
+   AI Workshop Section
+   ============================================ */
+.aiw-features-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--spacing-6);
+}
+
+@media (min-width: 768px) {
+    .aiw-features-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: var(--spacing-8);
+    }
+}
+
+.aiw-info-schedule {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-8);
+}
+
+@media (min-width: 768px) {
+    .aiw-info-schedule {
+        flex-direction: row;
+        gap: var(--spacing-12);
+    }
+}
+
+.aiw-schedule-section {
+    flex: 1;
+}
+
+.aiw-point-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-4);
+}
+
+.aiw-point-list li {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-2);
+    padding-left: var(--spacing-6);
+    position: relative;
+}
+
+.aiw-point-list li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: var(--primary);
+    font-weight: 700;
+    font-size: var(--font-size-lg);
+}
+
+.aiw-point-list li strong {
+    color: var(--heading);
+    font-weight: 600;
+}
+
+.aiw-checklist {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-3);
+}
+
+.aiw-checklist li {
+    padding-left: var(--spacing-6);
+    position: relative;
+}
+
+.aiw-checklist li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: var(--success);
+    font-weight: 700;
+}
+
+.aiw-summary-card {
+    background: linear-gradient(135deg, rgba(37, 99, 235, 0.05), rgba(37, 99, 235, 0.1));
+    border: 1px solid rgba(37, 99, 235, 0.2);
+}
+
+#ai-workshop .card-header {
+    border-bottom: 2px solid var(--primary);
+    padding-bottom: var(--spacing-3);
+    margin-bottom: var(--spacing-4);
+}
+
+.aiw-summary-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--spacing-4);
+}
+
+.aiw-summary-item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-1);
+    padding: var(--spacing-3);
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: var(--radius-lg);
+}
+
+.aiw-summary-label {
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.aiw-summary-value {
+    font-size: var(--font-size-base);
+    font-weight: 500;
+    color: var(--heading);
+}
+
+.aiw-schedule-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-3);
+}
+
+.aiw-schedule-item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-1);
+    padding: var(--spacing-3);
+    background-color: #f9fafb;
+    border-radius: var(--radius-lg);
+    border-left: 3px solid var(--primary);
+}
+
+.aiw-schedule-date {
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    color: var(--heading);
+}
+
+.aiw-schedule-time {
+    font-size: var(--font-size-sm);
+    color: var(--primary);
+    font-weight: 500;
+}
+
+.aiw-schedule-label {
+    font-size: var(--font-size-sm);
+    color: var(--text-muted);
+}
+
+
+/* Curriculum Grid: 2x4 Layout */
+.aiw-curriculum-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--spacing-6);
+}
+
+@media (min-width: 640px) {
+    .aiw-curriculum-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    .aiw-curriculum-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+.aiw-curriculum-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 200px;
+}
+
+.aiw-curriculum-card-header {
+    margin-bottom: var(--spacing-3);
+}
+
+.aiw-curriculum-week {
+    display: inline-block;
+    font-size: var(--font-size-sm);
+    font-weight: 700;
+    color: var(--primary);
+    padding: var(--spacing-1) var(--spacing-3);
+    background-color: rgba(37, 99, 235, 0.1);
+    border-radius: var(--radius-base);
+}
+
+.aiw-curriculum-card-title {
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    color: var(--heading);
+    margin-bottom: var(--spacing-3);
+    line-height: 1.4;
+}
+
+/* Modal */
+.aiw-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-4);
+}
+
+.aiw-modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+}
+
+.aiw-modal-content {
+    position: relative;
+    z-index: 1001;
+    background-color: var(--surface);
+    border-radius: var(--radius-xl);
+    padding: var(--spacing-8);
+    max-width: 500px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: var(--shadow-xl);
+}
+
+.aiw-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-6);
+    padding-bottom: var(--spacing-4);
+    border-bottom: 1px solid var(--border);
+}
+
+.aiw-modal-header h3 {
+    font-size: var(--font-size-2xl);
+    font-weight: 700;
+    color: var(--heading);
+    margin: 0;
+}
+
+.aiw-modal-close {
+    background: none;
+    border: none;
+    font-size: var(--font-size-3xl);
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 0;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-base);
+    transition: all var(--transition-base);
+    line-height: 1;
+}
+
+.aiw-modal-close:hover {
+    background-color: #f5f5f5;
+    color: var(--text);
+}
+
+.aiw-modal-actions {
+    display: flex;
+    gap: var(--spacing-4);
+    justify-content: flex-end;
+    margin-top: var(--spacing-6);
+}
+
+@media (max-width: 767px) {
+    .aiw-features-grid {
+        gap: var(--spacing-6);
+    }
+    
+    .aiw-info-schedule {
+        flex-direction: column;
+        gap: var(--spacing-6);
+    }
+    
+    .aiw-curriculum-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .aiw-modal-content {
+        padding: var(--spacing-6);
+    }
+}
+

@@ -245,10 +245,13 @@
                     과정 관리
                 </button>
                 <button class="admin-tab" data-tab="schedules" style="padding: 0.75rem 1.5rem; background: none; border: none; color: var(--text-muted); font-weight: 600; cursor: pointer;">
-                    온라인강의 일정관리
+                    일정 관리
                 </button>
                 <button class="admin-tab" data-tab="instructor-program" style="padding: 0.75rem 1.5rem; background: none; border: none; color: var(--text-muted); font-weight: 600; cursor: pointer;">
-                    전문강사 성장 프로그램 관리
+                    강사 프로그램 관리
+                </button>
+                <button class="admin-tab" data-tab="workshop-applications" style="padding: 0.75rem 1.5rem; background: none; border: none; color: var(--text-muted); font-weight: 600; cursor: pointer;">
+                    설명회 신청 관리
                 </button>
             </div>
 
@@ -280,6 +283,7 @@
                         <option value="">전체 유형</option>
                         <option value="student">강의신청</option>
                         <option value="consult">상담신청</option>
+                        <option value="aiw-workshop">AI Workshop 설명회</option>
                     </select>
                     <input type="text" id="search-input" class="filter-select" placeholder="이름, 이메일 검색..." style="flex: 1; min-width: 200px;">
                 </div>
@@ -530,22 +534,7 @@
             <div id="courses-section" class="admin-section" style="display: none;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
                     <h2>과정별 가격 관리</h2>
-                    <button id="add-course-price-btn" class="btn btn-primary">+ 과정 가격 추가</button>
                 </div>
-                
-                <!-- Course Price Filter -->
-                <div style="margin-bottom: 1.5rem; display: flex; gap: 1rem; align-items: center;">
-                    <label style="font-weight: 500;">표시 옵션:</label>
-                    <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
-                        <input type="radio" name="course-price-filter" value="all" checked>
-                        <span>전체 과정</span>
-                    </label>
-                    <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
-                        <input type="radio" name="course-price-filter" value="priced">
-                        <span>가격 설정된 과정만</span>
-                    </label>
-                </div>
-                
                 <div class="applications-table">
                     <div class="table-header">과정 가격 목록</div>
                     <div class="table-content">
@@ -571,10 +560,9 @@
             <!-- Schedules Management Section -->
             <div id="schedules-section" class="admin-section" style="display: none;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-                    <h2>온라인강의 일정관리</h2>
+                    <h2>일정 관리</h2>
                     <button id="add-schedule-btn" class="btn btn-primary">일정 추가</button>
                 </div>
-                
                 <div class="applications-table">
                     <div class="table-header">일정 목록</div>
                     <div class="table-content">
@@ -582,14 +570,13 @@
                             <thead>
                                 <tr>
                                     <th>일정</th>
-                                    <th>강의코스</th>
                                     <th>상태</th>
                                     <th>작업</th>
                                 </tr>
                             </thead>
                             <tbody id="schedules-tbody">
                                 <tr>
-                                    <td colspan="4" class="no-applications">일정이 없습니다.</td>
+                                    <td colspan="3" class="no-applications">일정이 없습니다.</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -600,7 +587,7 @@
             <!-- Instructor Program Management Section -->
             <div id="instructor-program-section" class="admin-section" style="display: none;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-                    <h2>전문강사 성장 프로그램 관리</h2>
+                    <h2>강사 성장 프로그램 관리</h2>
                 </div>
                 
                 <!-- Program Info -->
@@ -610,41 +597,14 @@
                     </div>
                     <div class="card-content">
                         <div class="form-group">
-                            <label for="instructor-program-title" class="form-label">프로그램명 *</label>
-                            <input type="text" id="instructor-program-title" class="form-input" placeholder="강사 성장 프로그램" required>
+                            <label for="instructor-program-title" class="form-label">프로그램명</label>
+                            <input type="text" id="instructor-program-title" class="form-input" placeholder="강사 성장 프로그램">
                         </div>
                         <div class="form-group">
-                            <label for="instructor-program-description" class="form-label">프로그램 설명 *</label>
-                            <textarea id="instructor-program-description" class="form-input" rows="4" placeholder="프로그램 설명을 입력하세요" required></textarea>
+                            <label for="instructor-program-description" class="form-label">프로그램 설명</label>
+                            <textarea id="instructor-program-description" class="form-input" rows="4" placeholder="프로그램 설명을 입력하세요"></textarea>
                         </div>
-                        <button id="save-program-info-btn" class="btn btn-primary">프로그램 추가</button>
-                    </div>
-                </div>
-                
-                <!-- Program List -->
-                <div class="card" style="margin-bottom: 2rem;">
-                    <div class="card-header">
-                        <h3 class="card-title">등록된 프로그램 목록</h3>
-                    </div>
-                    <div class="card-content">
-                        <div class="applications-table">
-                            <div class="table-content">
-                                <table id="instructor-programs-table">
-                                    <thead>
-                                        <tr>
-                                            <th>프로그램명</th>
-                                            <th>설명</th>
-                                            <th>작업</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="instructor-programs-tbody">
-                                        <tr>
-                                            <td colspan="3" class="no-applications">등록된 프로그램이 없습니다.</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+                        <button id="save-program-info-btn" class="btn btn-primary">프로그램 정보 저장</button>
                     </div>
                 </div>
 
@@ -659,7 +619,6 @@
                         <table id="instructor-schedules-table">
                             <thead>
                                 <tr>
-                                    <th>프로그램</th>
                                     <th>일정</th>
                                     <th>상태</th>
                                     <th>작업</th>
@@ -667,7 +626,7 @@
                             </thead>
                             <tbody id="instructor-schedules-tbody">
                                 <tr>
-                                    <td colspan="4" class="no-applications">일정이 없습니다.</td>
+                                    <td colspan="3" class="no-applications">일정이 없습니다.</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -685,7 +644,6 @@
                         <table id="consult-schedules-table">
                             <thead>
                                 <tr>
-                                    <th>과정</th>
                                     <th>일정</th>
                                     <th>시간</th>
                                     <th>상태</th>
@@ -694,7 +652,70 @@
                             </thead>
                             <tbody id="consult-schedules-tbody">
                                 <tr>
-                                    <td colspan="5" class="no-applications">상담 일정이 없습니다.</td>
+                                    <td colspan="4" class="no-applications">상담 일정이 없습니다.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Workshop Applications Section -->
+            <div id="workshop-applications-section" class="admin-section" style="display: none;">
+                <!-- Workshop Statistics -->
+                <div class="admin-stats">
+                    <div class="stat-card">
+                        <div class="stat-number" id="total-workshop-applications">0</div>
+                        <div class="stat-label">전체 설명회 신청</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="pending-workshop-applications">0</div>
+                        <div class="stat-label">대기 중</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="approved-workshop-applications">0</div>
+                        <div class="stat-label">승인됨</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="curriculum-request-count">0</div>
+                        <div class="stat-label">커리큘럼 요청</div>
+                    </div>
+                </div>
+
+                <!-- Workshop Filter Bar -->
+                <div class="filter-bar">
+                    <input type="text" id="workshop-search-input" class="filter-select" placeholder="이름, 연락처 검색..." style="flex: 1; min-width: 200px;">
+                    <select id="workshop-status-filter" class="filter-select">
+                        <option value="">전체 상태</option>
+                        <option value="pending">대기 중</option>
+                        <option value="approved">승인됨</option>
+                        <option value="rejected">거절됨</option>
+                    </select>
+                    <select id="workshop-curriculum-filter" class="filter-select">
+                        <option value="">커리큘럼 요청</option>
+                        <option value="true">요청함</option>
+                        <option value="false">요청 안함</option>
+                    </select>
+                </div>
+
+                <!-- Workshop Applications Table -->
+                <div class="applications-table">
+                    <div class="table-header">설명회 신청 내역</div>
+                    <div class="table-content">
+                        <table id="workshop-applications-table">
+                            <thead>
+                                <tr>
+                                    <th>신청일시</th>
+                                    <th>이름</th>
+                                    <th>연락처</th>
+                                    <th>커리큘럼 요청</th>
+                                    <th>상태</th>
+                                    <th>작업</th>
+                                </tr>
+                            </thead>
+                            <tbody id="workshop-applications-tbody">
+                                <tr>
+                                    <td colspan="6" class="no-applications">설명회 신청 내역이 없습니다.</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -709,7 +730,7 @@
         <div id="modal-backdrop" style="position: absolute; inset: 0; cursor: pointer;"></div>
         <div style="position: relative; z-index: 1001; background: white; border-radius: 0.5rem; padding: 2rem; max-width: 800px; max-height: 90vh; overflow-y: auto; margin: 1rem;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-                <h2 id="detail-modal-title" style="margin: 0;">신청 상세 정보</h2>
+                <h2 style="margin: 0;">신청 상세 정보</h2>
                 <button id="close-modal" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; padding: 0; width: 2rem; height: 2rem; display: flex; align-items: center; justify-content: center;">&times;</button>
             </div>
             <div id="detail-content"></div>
@@ -770,12 +791,6 @@
                     <input type="date" id="schedule-date" class="form-input" required>
                 </div>
                 <div class="form-group">
-                    <label for="schedule-course" class="form-label">강의코스 *</label>
-                    <select id="schedule-course" class="form-input" required>
-                        <option value="">강의코스 선택</option>
-                    </select>
-                </div>
-                <div class="form-group">
                     <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
                         <input type="checkbox" id="schedule-active">
                         <span>활성화</span>
@@ -792,31 +807,19 @@
     <!-- Instructor Schedule Modal -->
     <div id="instructor-schedule-modal" style="display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.5); z-index: 1000; align-items: center; justify-content: center;">
         <div id="instructor-schedule-modal-backdrop" style="position: absolute; inset: 0; cursor: pointer;"></div>
-        <div style="position: relative; z-index: 1001; background: white; border-radius: 0.5rem; padding: 2rem; max-width: 700px; max-height: 90vh; overflow-y: auto; margin: 1rem; width: 100%;">
+        <div style="position: relative; z-index: 1001; background: white; border-radius: 0.5rem; padding: 2rem; max-width: 600px; max-height: 90vh; overflow-y: auto; margin: 1rem; width: 100%;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
                 <h2 style="margin: 0;" id="instructor-schedule-modal-title">프로그램 일정 추가</h2>
                 <button id="close-instructor-schedule-modal" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; padding: 0; width: 2rem; height: 2rem; display: flex; align-items: center; justify-content: center;">&times;</button>
             </div>
             <form id="instructor-schedule-form">
                 <div class="form-group">
-                    <label for="instructor-schedule-program" class="form-label">프로그램 선택 *</label>
-                    <select id="instructor-schedule-program" class="form-input" required>
-                        <option value="">프로그램을 선택하세요</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">일정 추가 (여러 일정을 한 번에 추가할 수 있습니다) *</label>
-                    <div id="instructor-schedule-dates-container">
-                        <div class="schedule-date-item" style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem; align-items: center;">
-                            <input type="date" class="form-input instructor-schedule-date-input" required style="flex: 1;">
-                            <button type="button" class="btn btn-sm" style="background: #ef4444; color: white; border: none; display: none;" onclick="removeInstructorScheduleDate(this)">삭제</button>
-                        </div>
-                    </div>
-                    <button type="button" class="btn btn-outline btn-sm" onclick="addInstructorScheduleDate()" style="margin-top: 0.5rem;">+ 일정 추가</button>
+                    <label for="instructor-schedule-date" class="form-label">일정 *</label>
+                    <input type="date" id="instructor-schedule-date" class="form-input" required>
                 </div>
                 <div class="form-group">
                     <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
-                        <input type="checkbox" id="instructor-schedule-active" checked>
+                        <input type="checkbox" id="instructor-schedule-active">
                         <span>활성화</span>
                     </label>
                 </div>
@@ -831,46 +834,37 @@
     <!-- Consult Schedule Modal -->
     <div id="consult-schedule-modal" style="display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.5); z-index: 1000; align-items: center; justify-content: center;">
         <div id="consult-schedule-modal-backdrop" style="position: absolute; inset: 0; cursor: pointer;"></div>
-        <div style="position: relative; z-index: 1001; background: white; border-radius: 0.5rem; padding: 2rem; max-width: 700px; max-height: 90vh; overflow-y: auto; margin: 1rem; width: 100%;">
+        <div style="position: relative; z-index: 1001; background: white; border-radius: 0.5rem; padding: 2rem; max-width: 600px; max-height: 90vh; overflow-y: auto; margin: 1rem; width: 100%;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
                 <h2 style="margin: 0;" id="consult-schedule-modal-title">상담 일정 추가</h2>
                 <button id="close-consult-schedule-modal" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; padding: 0; width: 2rem; height: 2rem; display: flex; align-items: center; justify-content: center;">&times;</button>
             </div>
             <form id="consult-schedule-form">
                 <div class="form-group">
-                    <label for="consult-schedule-course" class="form-label">과정 선택 *</label>
-                    <select id="consult-schedule-course" class="form-input" required>
-                        <option value="">과정을 선택하세요</option>
+                    <label for="consult-schedule-date" class="form-label">일정 *</label>
+                    <input type="date" id="consult-schedule-date" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label for="consult-schedule-time" class="form-label">시간 *</label>
+                    <select id="consult-schedule-time" class="form-input" required>
+                        <option value="">시간을 선택하세요</option>
+                        <option value="09:00">09:00</option>
+                        <option value="10:00">10:00</option>
+                        <option value="11:00">11:00</option>
+                        <option value="12:00">12:00</option>
+                        <option value="13:00">13:00</option>
+                        <option value="14:00">14:00</option>
+                        <option value="15:00">15:00</option>
+                        <option value="16:00">16:00</option>
+                        <option value="17:00">17:00</option>
+                        <option value="18:00">18:00</option>
+                        <option value="19:00">19:00</option>
+                        <option value="20:00">20:00</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label class="form-label">일정 및 시간 추가 (여러 일정을 한 번에 추가할 수 있습니다) *</label>
-                    <div id="consult-schedule-items-container">
-                        <div class="consult-schedule-item" style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem; align-items: center;">
-                            <input type="date" class="form-input consult-schedule-date-input" required style="flex: 1;">
-                            <select class="form-input consult-schedule-time-input" required style="width: 120px;">
-                                <option value="">시간 선택</option>
-                                <option value="09:00">09:00</option>
-                                <option value="10:00">10:00</option>
-                                <option value="11:00">11:00</option>
-                                <option value="12:00">12:00</option>
-                                <option value="13:00">13:00</option>
-                                <option value="14:00">14:00</option>
-                                <option value="15:00">15:00</option>
-                                <option value="16:00">16:00</option>
-                                <option value="17:00">17:00</option>
-                                <option value="18:00">18:00</option>
-                                <option value="19:00">19:00</option>
-                                <option value="20:00">20:00</option>
-                            </select>
-                            <button type="button" class="btn btn-sm" style="background: #ef4444; color: white; border: none; display: none;" onclick="removeConsultScheduleItem(this)">삭제</button>
-                        </div>
-                    </div>
-                    <button type="button" class="btn btn-outline btn-sm" onclick="addConsultScheduleItem()" style="margin-top: 0.5rem;">+ 일정 추가</button>
-                </div>
-                <div class="form-group">
                     <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
-                        <input type="checkbox" id="consult-schedule-active" checked>
+                        <input type="checkbox" id="consult-schedule-active">
                         <span>활성화</span>
                     </label>
                 </div>
@@ -882,36 +876,7 @@
         </div>
     </div>
 
-    <!-- Course Price Modal -->
-    <div id="course-price-modal" style="display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.5); z-index: 1000; align-items: center; justify-content: center;">
-        <div id="course-price-modal-backdrop" style="position: absolute; inset: 0; cursor: pointer;"></div>
-        <div style="position: relative; z-index: 1001; background: white; border-radius: 0.5rem; padding: 2rem; max-width: 600px; max-height: 90vh; overflow-y: auto; margin: 1rem; width: 100%;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-                <h2 style="margin: 0;" id="course-price-modal-title">과정 가격 설정</h2>
-                <button id="close-course-price-modal" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; padding: 0; width: 2rem; height: 2rem; display: flex; align-items: center; justify-content: center;">&times;</button>
-            </div>
-            <form id="course-price-form">
-                <div class="form-group">
-                    <label for="course-price-select" class="form-label">과정 선택 *</label>
-                    <select id="course-price-select" class="form-input" required>
-                        <option value="">과정을 선택하세요</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="course-price-amount" class="form-label">가격 (원) *</label>
-                    <input type="number" id="course-price-amount" class="form-input" min="0" step="1000" placeholder="가격을 입력하세요" required>
-                </div>
-                <div style="display: flex; gap: 1rem; justify-content: flex-end; margin-top: 1.5rem;">
-                    <button type="button" id="cancel-course-price-btn" class="btn btn-outline">취소</button>
-                    <button type="submit" id="save-course-price-btn" class="btn btn-primary">저장</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
     <!-- Scripts -->
-    <!-- Courses Data -->
-    <script src="../js/courses-data.js"></script>
     <!-- SheetJS 라이브러리 (엑셀 파일 생성용) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script>
@@ -953,7 +918,6 @@
         };
 
         let currentApplicationId = null;
-        let currentInquiryId = null;
         let currentNoticeId = null;
         let applications = [];
         let users = [];
@@ -962,11 +926,10 @@
         let loginHistory = [];
         let courses = [];
         let schedules = [];
-        let instructorPrograms = [];
+        let instructorProgram = null;
         let instructorSchedules = [];
         let consultSchedules = [];
         let currentScheduleId = null;
-        let currentScheduleType = null;
         let currentInstructorScheduleId = null;
         let currentConsultScheduleId = null;
 
@@ -1010,15 +973,6 @@
                 loadInquiries();
                 loadNotices();
                 loadLoginHistory();
-                // 현재 탭에 따라 해당 데이터도 새로고침
-                const currentTab = $('.admin-tab.active').data('tab');
-                if (currentTab === 'courses') {
-                    loadCourses();
-                } else if (currentTab === 'schedules') {
-                    loadSchedules();
-                } else if (currentTab === 'instructor-program') {
-                    loadInstructorProgram();
-                }
                 alert('데이터를 새로고침했습니다.');
             });
             
@@ -1029,10 +983,6 @@
                 const searchTerm = $('#search-input').val().toLowerCase();
                 
                 let filtered = applications;
-                
-                // 거절된 항목은 목록에서 제외
-                filtered = filtered.filter(a => a.status !== 'rejected');
-                
                 if (typeFilter) {
                     filtered = filtered.filter(a => a.applicationType === typeFilter);
                 }
@@ -1200,7 +1150,6 @@
             function closeModal() {
                 $('#detail-modal').css('display', 'none');
                 currentApplicationId = null;
-                currentInquiryId = null;
             }
             
             $('#close-modal').on('click', function(e) {
@@ -1288,6 +1237,7 @@
                 $('#courses-section').hide();
                 $('#schedules-section').hide();
                 $('#instructor-program-section').hide();
+                $('#workshop-applications-section').hide();
                 $('#export-applications-btn').show();
                 $('#export-users-btn').hide();
                 $('#export-inquiries-btn').hide();
@@ -1301,6 +1251,7 @@
                 $('#courses-section').hide();
                 $('#schedules-section').hide();
                 $('#instructor-program-section').hide();
+                $('#workshop-applications-section').hide();
                 $('#export-applications-btn').hide();
                 $('#export-users-btn').show();
                 $('#export-inquiries-btn').hide();
@@ -1315,6 +1266,7 @@
                 $('#courses-section').hide();
                 $('#schedules-section').hide();
                 $('#instructor-program-section').hide();
+                $('#workshop-applications-section').hide();
                 $('#export-applications-btn').hide();
                 $('#export-users-btn').hide();
                 $('#export-inquiries-btn').show();
@@ -1329,6 +1281,7 @@
                 $('#courses-section').hide();
                 $('#schedules-section').hide();
                 $('#instructor-program-section').hide();
+                $('#workshop-applications-section').hide();
                 $('#export-applications-btn').hide();
                 $('#export-users-btn').hide();
                 $('#export-inquiries-btn').hide();
@@ -1343,6 +1296,7 @@
                 $('#courses-section').hide();
                 $('#schedules-section').hide();
                 $('#instructor-program-section').hide();
+                $('#workshop-applications-section').hide();
                 $('#export-applications-btn').hide();
                 $('#export-users-btn').hide();
                 $('#export-inquiries-btn').hide();
@@ -1357,6 +1311,7 @@
                 $('#courses-section').show();
                 $('#schedules-section').hide();
                 $('#instructor-program-section').hide();
+                $('#workshop-applications-section').hide();
                 $('#export-applications-btn').hide();
                 $('#export-users-btn').hide();
                 $('#export-inquiries-btn').hide();
@@ -1371,6 +1326,7 @@
                 $('#courses-section').hide();
                 $('#schedules-section').show();
                 $('#instructor-program-section').hide();
+                $('#workshop-applications-section').hide();
                 $('#export-applications-btn').hide();
                 $('#export-users-btn').hide();
                 $('#export-inquiries-btn').hide();
@@ -1385,11 +1341,27 @@
                 $('#courses-section').hide();
                 $('#schedules-section').hide();
                 $('#instructor-program-section').show();
+                $('#workshop-applications-section').hide();
                 $('#export-applications-btn').hide();
                 $('#export-users-btn').hide();
                 $('#export-inquiries-btn').hide();
                 $('#export-login-history-btn').hide();
                 loadInstructorProgram();
+            } else if (tab === 'workshop-applications') {
+                $('#applications-section').hide();
+                $('#users-section').hide();
+                $('#inquiries-section').hide();
+                $('#notices-section').hide();
+                $('#login-history-section').hide();
+                $('#courses-section').hide();
+                $('#schedules-section').hide();
+                $('#instructor-program-section').hide();
+                $('#workshop-applications-section').show();
+                $('#export-applications-btn').hide();
+                $('#export-users-btn').hide();
+                $('#export-inquiries-btn').hide();
+                $('#export-login-history-btn').hide();
+                loadWorkshopApplications();
             }
         }
 
@@ -1413,67 +1385,22 @@
         function loadUsers() {
             try {
                 const stored = localStorage.getItem('users');
-                console.log('Loading users from localStorage:', stored ? 'found' : 'not found');
                 if (stored) {
-                    let parsed;
-                    try {
-                        parsed = JSON.parse(stored);
-                    } catch (parseError) {
-                        console.error('Error parsing users JSON:', parseError);
-                        console.error('Raw data:', stored);
-                        users = [];
-                        updateUserStatistics();
-                        filterUsers();
-                        return;
-                    }
-                    
-                    console.log('Parsed users:', parsed);
-                    console.log('Is array?', Array.isArray(parsed));
-                    
+                    const parsed = JSON.parse(stored);
                     // 데이터 유효성 검사
-                    if (Array.isArray(parsed)) {
-                        users = parsed.filter(u => {
-                            // 필수 필드 확인
-                            const isValid = u && typeof u === 'object' && u.email && u.registeredAt;
-                            if (!isValid) {
-                                console.warn('Invalid user data filtered out:', u);
-                            }
-                            return isValid;
-                        });
-                    } else {
-                        console.error('Users data is not an array:', typeof parsed);
-                        users = [];
-                    }
-                    
-                    console.log('Filtered users count:', users.length);
-                    
+                    users = Array.isArray(parsed) ? parsed.filter(u => {
+                        // 필수 필드 확인
+                        return u && u.email && u.registeredAt;
+                    }) : [];
                     // Sort by date (newest first)
-                    users.sort((a, b) => {
-                        try {
-                            const dateA = new Date(a.registeredAt);
-                            const dateB = new Date(b.registeredAt);
-                            if (isNaN(dateA.getTime()) || isNaN(dateB.getTime())) {
-                                console.warn('Invalid date found:', { a: a.registeredAt, b: b.registeredAt });
-                                return 0;
-                            }
-                            return dateB - dateA;
-                        } catch (e) {
-                            console.error('Error sorting users:', e);
-                            return 0;
-                        }
-                    });
-                    
-                    console.log('Final users array:', users);
+                    users.sort((a, b) => new Date(b.registeredAt) - new Date(a.registeredAt));
                 } else {
                     users = [];
-                    console.log('No users found in localStorage');
                 }
-                
                 updateUserStatistics();
                 filterUsers();
             } catch (e) {
                 console.error('Error loading users:', e);
-                console.error('Error stack:', e.stack);
                 users = [];
                 updateUserStatistics();
                 filterUsers();
@@ -1613,19 +1540,42 @@
 
         function loadApplications() {
             try {
+                // Load regular applications
                 const stored = localStorage.getItem('applications');
+                let regularApps = [];
                 if (stored) {
                     const parsed = JSON.parse(stored);
-                    // 데이터 유효성 검사
-                    applications = Array.isArray(parsed) ? parsed.filter(a => {
-                        // 필수 필드 확인
+                    regularApps = Array.isArray(parsed) ? parsed.filter(a => {
                         return a && a.id && a.submittedAt && a.email;
                     }) : [];
-                    // Sort by date (newest first)
-                    applications.sort((a, b) => new Date(b.submittedAt) - new Date(a.submittedAt));
-                } else {
-                    applications = [];
                 }
+                
+                // Load AI Workshop applications
+                const aiwStored = localStorage.getItem('aiw-applications');
+                let aiwApps = [];
+                if (aiwStored) {
+                    const aiwParsed = JSON.parse(aiwStored);
+                    aiwApps = Array.isArray(aiwParsed) ? aiwParsed.map(a => {
+                        // Convert AI Workshop format to standard application format
+                        return {
+                            id: a.id,
+                            name: a.name,
+                            email: '', // AI Workshop doesn't have email
+                            phone: a.phone,
+                            submittedAt: a.createdAt,
+                            applicationType: 'aiw-workshop',
+                            courseTitle: '2026 AI Instructor Workshop',
+                            preferredSchedule: a.curriculumRequest ? '커리큘럼 요청 포함' : '',
+                            status: a.status || 'pending',
+                            curriculumRequest: a.curriculumRequest || false
+                        };
+                    }).filter(a => a && a.id && a.submittedAt) : [];
+                }
+                
+                // Combine and sort
+                applications = [...regularApps, ...aiwApps];
+                applications.sort((a, b) => new Date(b.submittedAt) - new Date(a.submittedAt));
+                
                 updateStatistics();
                 filterApplications();
             } catch (e) {
@@ -1653,9 +1603,6 @@
             const searchTerm = $('#search-input').val().toLowerCase();
 
             let filtered = applications;
-
-            // 거절된 항목은 목록에서 제외
-            filtered = filtered.filter(a => a.status !== 'rejected');
 
             if (typeFilter) {
                 filtered = filtered.filter(a => a.applicationType === typeFilter);
@@ -1696,7 +1643,8 @@
                 const typeText = {
                     'student': '강의신청',
                     'instructor': '강사 신청',
-                    'consult': '상담신청'
+                    'consult': '상담신청',
+                    'aiw-workshop': 'AI Workshop 설명회'
                 }[app.applicationType] || app.applicationType;
 
                 const row = $(`
@@ -1706,7 +1654,7 @@
                         <td>${app.email}</td>
                         <td>${app.phone || '-'}</td>
                         <td>${app.courseTitle || typeText}</td>
-                        <td>${app.preferredSchedule || '-'} ${app.preferredTime || ''}</td>
+                        <td>${app.preferredSchedule || app.preferredTime || '-'}</td>
                         <td>
                             <button class="btn btn-sm btn-outline view-detail" data-id="${app.id}" style="margin-right: 0.5rem;">상세보기</button>
                             <button class="btn btn-sm delete-application-btn" style="background: #ef4444; color: white; border: none;" data-id="${app.id}" data-action="delete-application">삭제</button>
@@ -1738,15 +1686,8 @@
 
             currentApplicationId = id;
             
-            // 모달 제목 설정
-            $('#detail-modal-title').text('신청 상세 정보');
-            
-            // 승인/거절 버튼 표시 (대기 중인 경우에만)
-            if (app.status === 'pending') {
-                $('#approve-btn, #reject-btn').show();
-            } else {
-                $('#approve-btn, #reject-btn').hide();
-            }
+            // 승인/거절 버튼 표시
+            $('#approve-btn, #reject-btn').show();
 
             const date = new Date(app.submittedAt);
             const dateStr = date.toLocaleDateString('ko-KR') + ' ' + 
@@ -1759,20 +1700,30 @@
                 </div>
                 <div class="detail-row">
                     <div class="detail-label">신청 유형</div>
-                    <div>${app.courseTitle || (app.applicationType === 'consult' ? 'Zoom 상담 신청' : app.applicationType === 'instructor' ? '강사 성장 프로그램' : '학생 신청')}</div>
+                    <div>${app.applicationType === 'aiw-workshop' ? '2026 AI Instructor Workshop 설명회' : (app.courseTitle || (app.applicationType === 'consult' ? 'Zoom 상담 신청' : app.applicationType === 'instructor' ? '강사 성장 프로그램' : '학생 신청'))}</div>
                 </div>
+                ${app.applicationType === 'aiw-workshop' && app.curriculumRequest ? `
+                <div class="detail-row">
+                    <div class="detail-label">커리큘럼 요청</div>
+                    <div>예</div>
+                </div>
+                ` : ''}
+                ${app.preferredSchedule || app.preferredTime ? `
                 <div class="detail-row">
                     <div class="detail-label">희망 일정</div>
-                    <div>${app.preferredSchedule || '-'} ${app.preferredTime || ''}</div>
+                    <div>${app.preferredSchedule || ''} ${app.preferredTime || ''}</div>
                 </div>
+                ` : ''}
                 <div class="detail-row">
                     <div class="detail-label">이름</div>
                     <div>${app.name}</div>
                 </div>
+                ${app.email ? `
                 <div class="detail-row">
                     <div class="detail-label">이메일</div>
                     <div>${app.email}</div>
                 </div>
+                ` : ''}
                 <div class="detail-row">
                     <div class="detail-label">연락처</div>
                     <div>${app.phone || '-'}</div>
@@ -1822,34 +1773,44 @@
         function deleteApplication(id) {
             console.log('deleteApplication called with id:', id, 'type:', typeof id);
             try {
-                // localStorage에서 직접 읽어와서 삭제
-                const stored = localStorage.getItem('applications');
-                if (!stored) {
-                    alert('신청 내역을 찾을 수 없습니다.');
+                // Find the application to determine its type
+                const app = applications.find(a => String(a.id) === String(id));
+                if (!app) {
+                    alert('신청을 찾을 수 없습니다.');
                     return;
                 }
                 
-                let apps = JSON.parse(stored);
-                console.log('Current applications:', apps.length);
-                
-                // ID를 문자열로 변환하여 비교
-                const appIndex = apps.findIndex(a => {
-                    if (!a || !a.id) return false;
-                    return String(a.id) === String(id);
-                });
-                console.log('Found index:', appIndex);
-                
-                if (appIndex === -1) {
-                    alert('신청을 찾을 수 없습니다. ID: ' + id);
-                    return;
-                }
+                // Check if it's an AI Workshop application
+                if (app.applicationType === 'aiw-workshop') {
+                    // Delete from AI Workshop applications
+                    const aiwStored = localStorage.getItem('aiw-applications');
+                    if (aiwStored) {
+                        let aiwApps = JSON.parse(aiwStored);
+                        aiwApps = aiwApps.filter(a => String(a.id) !== String(id));
+                        localStorage.setItem('aiw-applications', JSON.stringify(aiwApps));
+                    }
+                } else {
+                    // Delete from regular applications
+                    const stored = localStorage.getItem('applications');
+                    if (!stored) {
+                        alert('신청 내역을 찾을 수 없습니다.');
+                        return;
+                    }
+                    
+                    let apps = JSON.parse(stored);
+                    const appIndex = apps.findIndex(a => {
+                        if (!a || !a.id) return false;
+                        return String(a.id) === String(id);
+                    });
+                    
+                    if (appIndex === -1) {
+                        alert('신청을 찾을 수 없습니다. ID: ' + id);
+                        return;
+                    }
 
-                // 배열에서 삭제
-                apps.splice(appIndex, 1);
-                console.log('After delete, applications:', apps.length);
-                
-                // localStorage에 저장
-                localStorage.setItem('applications', JSON.stringify(apps));
+                    apps.splice(appIndex, 1);
+                    localStorage.setItem('applications', JSON.stringify(apps));
+                }
                 
                 // 데이터 다시 로드하여 화면 갱신 (가장 확실한 방법)
                 loadApplications();
@@ -2452,18 +2413,13 @@
             const inquiry = inquiries.find(i => i.id === id);
             if (!inquiry) return;
 
-            currentInquiryId = id;
-            
-            // 모달 제목 설정
-            $('#detail-modal-title').text('문의 상세 정보');
-
             const date = new Date(inquiry.createdAt);
             const dateStr = date.toLocaleDateString('ko-KR') + ' ' + 
                            date.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' });
 
             let answersHtml = '';
             if (inquiry.answers && inquiry.answers.length > 0) {
-                answersHtml = '<div style="margin-top: 2rem; padding-top: 2rem; border-top: 2px solid var(--border);"><h3 style="margin-bottom: 1rem; font-size: 1.125rem; font-weight: 600;">답변</h3>';
+                answersHtml = '<div style="margin-top: 2rem; padding-top: 2rem; border-top: 2px solid var(--border);"><h3 style="margin-bottom: 1rem;">답변</h3>';
                 inquiry.answers.forEach(function(answer) {
                     const answerDate = new Date(answer.createdAt);
                     const answerDateStr = answerDate.toLocaleDateString('ko-KR') + ' ' + 
@@ -2471,7 +2427,7 @@
                     answersHtml += `
                         <div style="padding: 1rem; background: #f9fafb; border-radius: 0.5rem; margin-bottom: 1rem;">
                             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-                                <span style="font-weight: 500;">${answer.author || '관리자'}</span>
+                                <span style="font-weight: 500;">${answer.author || '익명'}</span>
                                 <span style="font-size: 0.875rem; color: var(--text-muted);">${answerDateStr}</span>
                             </div>
                             <p style="line-height: 1.8; color: #171717; margin: 0; white-space: pre-line;">${answer.content}</p>
@@ -2482,21 +2438,6 @@
             } else {
                 answersHtml = '<div style="margin-top: 2rem; padding-top: 2rem; border-top: 2px solid var(--border);"><p style="color: var(--text-muted);">아직 답변이 없습니다.</p></div>';
             }
-
-            // 답변 작성 폼
-            const answerFormHtml = `
-                <div style="margin-top: 2rem; padding-top: 2rem; border-top: 2px solid var(--border);">
-                    <h3 style="margin-bottom: 1rem; font-size: 1.125rem; font-weight: 600;">답변 작성</h3>
-                    <form id="inquiry-answer-form">
-                        <div style="margin-bottom: 1rem;">
-                            <textarea id="inquiry-answer-content" name="content" class="form-input" rows="5" placeholder="답변을 입력하세요" required style="resize: vertical; width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: 0.375rem; font-family: inherit;"></textarea>
-                        </div>
-                        <div style="display: flex; justify-content: flex-end; gap: 0.5rem;">
-                            <button type="submit" class="btn btn-primary">답변 작성</button>
-                        </div>
-                    </form>
-                </div>
-            `;
 
             const detailHtml = `
                 <div class="detail-row">
@@ -2520,7 +2461,6 @@
                     <div style="white-space: pre-line; line-height: 1.8;">${inquiry.content}</div>
                 </div>
                 ${answersHtml}
-                ${answerFormHtml}
             `;
 
             $('#detail-content').html(detailHtml);
@@ -2528,75 +2468,6 @@
             
             // 승인/거절 버튼 숨기기 (문의는 승인/거절이 없음)
             $('#approve-btn, #reject-btn').hide();
-
-            // 답변 작성 폼 이벤트 핸들러
-            $('#inquiry-answer-form').off('submit').on('submit', function(e) {
-                e.preventDefault();
-                const answerContent = $('#inquiry-answer-content').val().trim();
-                if (!answerContent) {
-                    alert('답변 내용을 입력해주세요.');
-                    return;
-                }
-                saveInquiryAnswer(id, answerContent);
-            });
-        }
-
-        // 문의 답변 저장 함수
-        function saveInquiryAnswer(inquiryId, answerContent) {
-            try {
-                const inquiryIndex = inquiries.findIndex(i => i.id === inquiryId);
-                if (inquiryIndex === -1) {
-                    alert('문의를 찾을 수 없습니다.');
-                    return;
-                }
-
-                const inquiry = inquiries[inquiryIndex];
-                
-                // 답변 객체 생성
-                const answer = {
-                    id: Date.now().toString(),
-                    content: answerContent,
-                    author: '관리자',
-                    authorEmail: 'admin@irumcompany.co.kr',
-                    createdAt: new Date().toISOString()
-                };
-
-                // 답변 배열 초기화 (없는 경우)
-                if (!inquiry.answers) {
-                    inquiry.answers = [];
-                }
-                
-                // 답변 추가
-                inquiry.answers.push(answer);
-                
-                // localStorage 업데이트
-                const stored = localStorage.getItem('inquiries');
-                if (stored) {
-                    let inquiryList = JSON.parse(stored);
-                    const storedIndex = inquiryList.findIndex(i => String(i.id) === String(inquiryId));
-                    if (storedIndex !== -1) {
-                        inquiryList[storedIndex] = inquiry;
-                        localStorage.setItem('inquiries', JSON.stringify(inquiryList));
-                    }
-                }
-
-                // 로컬 배열 업데이트
-                inquiries[inquiryIndex] = inquiry;
-
-                // 통계 업데이트
-                updateInquiryStatistics();
-
-                // 목록 다시 렌더링
-                filterInquiries();
-
-                // 상세보기 다시 표시
-                showInquiryDetail(inquiryId);
-
-                alert('답변이 작성되었습니다.');
-            } catch (e) {
-                console.error('Error saving inquiry answer:', e);
-                alert('답변 저장 중 오류가 발생했습니다.');
-            }
         }
 
         // 공지사항 관련 함수들
@@ -2833,49 +2704,31 @@
             const tbody = $('#courses-tbody');
             tbody.empty();
 
-            // 필터 옵션 확인
-            const filterOption = $('input[name="course-price-filter"]:checked').val();
-            let filteredCourses = courses;
-
-            if (filterOption === 'priced') {
-                // 가격이 설정된 과정만 표시 (가격이 0보다 큰 경우)
-                filteredCourses = courses.filter(c => c.price && c.price > 0);
-            }
-
-            if (filteredCourses.length === 0) {
+            if (courses.length === 0) {
                 tbody.html('<tr><td colspan="4" class="no-applications">과정이 없습니다.</td></tr>');
                 return;
             }
 
-            filteredCourses.forEach(course => {
-                const priceValue = course.price || 0;
+            courses.forEach(course => {
                 const row = $(`
                     <tr>
                         <td>${course.title}</td>
                         <td>${course.category}</td>
                         <td>
                             <input type="number" 
-                                   class="form-input course-price-input" 
+                                   class="form-input" 
                                    style="width: 150px; padding: 0.5rem;" 
-                                   value="${priceValue}" 
-                                   data-slug="${course.slug}">
+                                   value="${course.price || 0}" 
+                                   data-slug="${course.slug}"
+                                   onchange="updateCoursePrice('${course.slug}', this.value)">
                             <span style="margin-left: 0.5rem;">원</span>
                         </td>
                         <td>
-                            <button class="btn btn-sm btn-primary save-course-price-btn" data-slug="${course.slug}" style="margin-right: 0.5rem;">수정</button>
-                            ${priceValue > 0 ? `<button class="btn btn-sm" style="background: #ef4444; color: white; border: none;" onclick="deleteCoursePrice('${course.slug}')">삭제</button>` : ''}
+                            <button class="btn btn-sm btn-primary" onclick="saveCoursePrice('${course.slug}')">저장</button>
                         </td>
                     </tr>
                 `);
                 tbody.append(row);
-            });
-
-            // 저장 버튼 이벤트 핸들러
-            $('.save-course-price-btn').off('click').on('click', function() {
-                const slug = $(this).data('slug');
-                const input = $(`.course-price-input[data-slug="${slug}"]`);
-                const price = parseInt(input.val()) || 0;
-                saveCoursePrice(slug, price);
             });
         }
 
@@ -2886,37 +2739,18 @@
             }
         }
 
-        function saveCoursePrice(slug, price) {
+        function saveCoursePrice(slug) {
             try {
-                if (price === undefined) {
-                    // 기존 방식 호환성 유지
-                    const course = courses.find(c => c.slug === slug);
-                    if (!course) {
-                        alert('과정을 찾을 수 없습니다.');
-                        return;
-                    }
-                    price = course.price || 0;
-                } else {
-                    // 가격이 파라미터로 전달된 경우
-                    const course = courses.find(c => c.slug === slug);
-                    if (course) {
-                        course.price = parseInt(price) || 0;
-                    }
+                const course = courses.find(c => c.slug === slug);
+                if (!course) {
+                    alert('과정을 찾을 수 없습니다.');
+                    return;
                 }
 
                 const storedPrices = localStorage.getItem('coursePrices');
                 const prices = storedPrices ? JSON.parse(storedPrices) : {};
-                prices[slug] = parseInt(price) || 0;
+                prices[slug] = course.price || 0;
                 localStorage.setItem('coursePrices', JSON.stringify(prices));
-                
-                // 과정 목록 업데이트
-                const courseIndex = courses.findIndex(c => c.slug === slug);
-                if (courseIndex !== -1) {
-                    courses[courseIndex].price = parseInt(price) || 0;
-                }
-                
-                // 목록 다시 렌더링
-                renderCourses();
                 
                 alert('가격이 저장되었습니다.');
             } catch (e) {
@@ -2925,78 +2759,7 @@
             }
         }
 
-        function deleteCoursePrice(slug) {
-            if (!confirm('이 과정의 가격 정보를 삭제하시겠습니까?')) {
-                return;
-            }
-
-            try {
-                const storedPrices = localStorage.getItem('coursePrices');
-                const prices = storedPrices ? JSON.parse(storedPrices) : {};
-                delete prices[slug];
-                localStorage.setItem('coursePrices', JSON.stringify(prices));
-                
-                // 과정 목록 업데이트
-                const courseIndex = courses.findIndex(c => c.slug === slug);
-                if (courseIndex !== -1) {
-                    courses[courseIndex].price = 0;
-                }
-                
-                // 목록 다시 렌더링
-                renderCourses();
-                
-                alert('가격 정보가 삭제되었습니다.');
-            } catch (e) {
-                console.error('Error deleting course price:', e);
-                alert('가격 삭제 중 오류가 발생했습니다.');
-            }
-        }
-
-        function addCoursePrice() {
-            // 과정 선택 드롭다운 채우기
-            const select = $('#course-price-select');
-            select.empty();
-            select.append('<option value="">과정을 선택하세요</option>');
-            
-            // COURSES_DATA에서 과정 목록 가져오기
-            const coursesData = typeof COURSES_DATA !== 'undefined' ? COURSES_DATA : [];
-            coursesData.forEach(course => {
-                select.append(`<option value="${course.slug}">${course.title} (${course.category})</option>`);
-            });
-            
-            // 모달 초기화
-            $('#course-price-modal-title').text('과정 가격 설정');
-            $('#course-price-amount').val('');
-            $('#course-price-modal').css('display', 'flex');
-        }
-
-        function saveCoursePriceFromModal() {
-            try {
-                const slug = $('#course-price-select').val();
-                const price = parseInt($('#course-price-amount').val()) || 0;
-
-                if (!slug) {
-                    alert('과정을 선택해주세요.');
-                    return;
-                }
-
-                if (price <= 0) {
-                    alert('가격을 올바르게 입력해주세요.');
-                    return;
-                }
-
-                // 가격 저장
-                saveCoursePrice(slug, price);
-                
-                // 모달 닫기
-                $('#course-price-modal').hide();
-            } catch (e) {
-                console.error('Error saving course price from modal:', e);
-                alert('가격 저장 중 오류가 발생했습니다.');
-            }
-        }
-
-        // Schedules Management Functions (온라인강의 일정만 관리)
+        // Schedules Management Functions
         function loadSchedules() {
             try {
                 const stored = localStorage.getItem('courseSchedules');
@@ -3018,32 +2781,19 @@
             tbody.empty();
 
             if (schedules.length === 0) {
-                tbody.html('<tr><td colspan="4" class="no-applications">일정이 없습니다.</td></tr>');
+                tbody.html('<tr><td colspan="3" class="no-applications">일정이 없습니다.</td></tr>');
                 return;
             }
-
-            // COURSES_DATA에서 과정 목록 가져오기
-            const coursesData = typeof COURSES_DATA !== 'undefined' ? COURSES_DATA : [];
 
             schedules.forEach(schedule => {
                 const date = new Date(schedule.date);
                 const dateStr = date.toLocaleDateString('ko-KR');
                 const statusClass = schedule.active ? 'status-approved' : 'status-pending';
                 const statusText = schedule.active ? '활성' : '비활성';
-                
-                // 강의코스 정보 가져오기
-                let courseName = schedule.courseName || '미지정';
-                if (schedule.courseSlug) {
-                    const course = coursesData.find(c => c.slug === schedule.courseSlug);
-                    if (course) {
-                        courseName = course.title;
-                    }
-                }
 
                 const row = $(`
                     <tr>
                         <td>${dateStr}</td>
-                        <td>${courseName}</td>
                         <td><span class="status-badge ${statusClass}">${statusText}</span></td>
                         <td>
                             <button class="btn btn-sm btn-outline" onclick="editSchedule('${schedule.id}')" style="margin-right: 0.5rem;">수정</button>
@@ -3060,17 +2810,6 @@
             $('#schedule-modal-title').text('일정 추가');
             $('#schedule-date').val('');
             $('#schedule-active').prop('checked', true);
-            
-            // 강의코스 선택 옵션 로드
-            const courseSelect = $('#schedule-course');
-            courseSelect.empty();
-            courseSelect.append('<option value="">강의코스 선택</option>');
-            
-            const coursesData = typeof COURSES_DATA !== 'undefined' ? COURSES_DATA : [];
-            coursesData.forEach(course => {
-                courseSelect.append(`<option value="${course.slug}">${course.title}</option>`);
-            });
-            
             $('#schedule-modal').css('display', 'flex');
         }
 
@@ -3084,19 +2823,7 @@
             currentScheduleId = id;
             $('#schedule-modal-title').text('일정 수정');
             $('#schedule-date').val(schedule.date);
-            $('#schedule-active').prop('checked', schedule.active !== false);
-            
-            // 강의코스 선택 옵션 로드
-            const courseSelect = $('#schedule-course');
-            courseSelect.empty();
-            courseSelect.append('<option value="">강의코스 선택</option>');
-            
-            const coursesData = typeof COURSES_DATA !== 'undefined' ? COURSES_DATA : [];
-            coursesData.forEach(course => {
-                const selected = schedule.courseSlug === course.slug ? 'selected' : '';
-                courseSelect.append(`<option value="${course.slug}" ${selected}>${course.title}</option>`);
-            });
-            
+            $('#schedule-active').prop('checked', schedule.active);
             $('#schedule-modal').css('display', 'flex');
         }
 
@@ -3125,7 +2852,6 @@
         function saveSchedule() {
             try {
                 const date = $('#schedule-date').val();
-                const courseSlug = $('#schedule-course').val();
                 const active = $('#schedule-active').is(':checked');
 
                 if (!date) {
@@ -3133,32 +2859,18 @@
                     return;
                 }
 
-                if (!courseSlug) {
-                    alert('강의코스를 선택해주세요.');
-                    return;
-                }
-
-                // 강의코스 정보 가져오기
-                const coursesData = typeof COURSES_DATA !== 'undefined' ? COURSES_DATA : [];
-                const selectedCourse = coursesData.find(c => c.slug === courseSlug);
-                const courseName = selectedCourse ? selectedCourse.title : '';
-
                 if (currentScheduleId) {
-                    // 기존 일정 수정
-                    const index = schedules.findIndex(s => s.id === currentScheduleId);
-                    if (index !== -1) {
-                        schedules[index].date = date;
-                        schedules[index].courseSlug = courseSlug;
-                        schedules[index].courseName = courseName;
-                        schedules[index].active = active;
+                    // Update existing schedule
+                    const schedule = schedules.find(s => s.id === currentScheduleId);
+                    if (schedule) {
+                        schedule.date = date;
+                        schedule.active = active;
                     }
                 } else {
-                    // 새 일정 추가
+                    // Add new schedule
                     const newSchedule = {
                         id: Date.now().toString(),
                         date: date,
-                        courseSlug: courseSlug,
-                        courseName: courseName,
                         active: active,
                         createdAt: new Date().toISOString()
                     };
@@ -3178,21 +2890,18 @@
         // Instructor Program Management Functions
         function loadInstructorProgram() {
             try {
-                // Load programs list
-                const storedPrograms = localStorage.getItem('instructorPrograms');
-                if (storedPrograms) {
-                    instructorPrograms = JSON.parse(storedPrograms);
+                // Load program info
+                const storedProgram = localStorage.getItem('instructorProgram');
+                if (storedProgram) {
+                    instructorProgram = JSON.parse(storedProgram);
+                    $('#instructor-program-title').val(instructorProgram.title || '강사 성장 프로그램');
+                    $('#instructor-program-description').val(instructorProgram.description || '');
                 } else {
-                    instructorPrograms = [];
+                    instructorProgram = {
+                        title: '강사 성장 프로그램',
+                        description: '전문 강사로 성장하기 위한 체계적인 프로그램입니다.'
+                    };
                 }
-                
-                // 가장 최신 프로그램을 instructorProgram(단수)로도 저장 (하위 호환성)
-                if (instructorPrograms.length > 0) {
-                    const latestProgram = instructorPrograms[instructorPrograms.length - 1];
-                    localStorage.setItem('instructorProgram', JSON.stringify(latestProgram));
-                }
-                
-                renderInstructorPrograms();
 
                 // Load schedules
                 const storedSchedules = localStorage.getItem('instructorSchedules');
@@ -3214,92 +2923,22 @@
                 renderConsultSchedules();
             } catch (e) {
                 console.error('Error loading instructor program:', e);
-                instructorPrograms = [];
+                instructorProgram = { title: '강사 성장 프로그램', description: '' };
                 instructorSchedules = [];
                 consultSchedules = [];
-                renderInstructorPrograms();
                 renderInstructorSchedules();
                 renderConsultSchedules();
-            }
-        }
-        
-        function renderInstructorPrograms() {
-            const tbody = $('#instructor-programs-tbody');
-            tbody.empty();
-            
-            if (instructorPrograms.length === 0) {
-                tbody.html('<tr><td colspan="3" class="no-applications">등록된 프로그램이 없습니다.</td></tr>');
-                return;
-            }
-            
-            instructorPrograms.forEach((program, index) => {
-                const row = $(`
-                    <tr>
-                        <td>${program.title}</td>
-                        <td style="max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${program.description}</td>
-                        <td>
-                            <button class="btn btn-sm" style="background: #ef4444; color: white; border: none;" onclick="deleteInstructorProgram(${index})">삭제</button>
-                        </td>
-                    </tr>
-                `);
-                tbody.append(row);
-            });
-        }
-        
-        function deleteInstructorProgram(index) {
-            if (!confirm('정말로 이 프로그램을 삭제하시겠습니까?')) {
-                return;
-            }
-            
-            try {
-                instructorPrograms.splice(index, 1);
-                localStorage.setItem('instructorPrograms', JSON.stringify(instructorPrograms));
-                
-                // 가장 최신 프로그램을 instructorProgram(단수)로도 업데이트
-                if (instructorPrograms.length > 0) {
-                    const latestProgram = instructorPrograms[instructorPrograms.length - 1];
-                    localStorage.setItem('instructorProgram', JSON.stringify(latestProgram));
-                } else {
-                    localStorage.removeItem('instructorProgram');
-                }
-                
-                renderInstructorPrograms();
-                alert('프로그램이 삭제되었습니다.');
-            } catch (e) {
-                console.error('Error deleting program:', e);
-                alert('삭제 중 오류가 발생했습니다.');
             }
         }
 
         function saveProgramInfo() {
             try {
-                const title = $('#instructor-program-title').val();
-                const description = $('#instructor-program-description').val();
-                
-                if (!title || !description) {
-                    alert('프로그램명과 프로그램 설명을 모두 입력해주세요.');
-                    return;
-                }
-                
-                const newProgram = {
-                    id: Date.now().toString(),
-                    title: title,
-                    description: description,
-                    createdAt: new Date().toISOString()
+                instructorProgram = {
+                    title: $('#instructor-program-title').val() || '강사 성장 프로그램',
+                    description: $('#instructor-program-description').val() || ''
                 };
-                
-                instructorPrograms.push(newProgram);
-                localStorage.setItem('instructorPrograms', JSON.stringify(instructorPrograms));
-                
-                // 가장 최신 프로그램을 instructorProgram(단수)로도 저장 (하위 호환성)
-                localStorage.setItem('instructorProgram', JSON.stringify(newProgram));
-                
-                // 입력 필드 초기화
-                $('#instructor-program-title').val('');
-                $('#instructor-program-description').val('');
-                
-                renderInstructorPrograms();
-                alert('프로그램이 추가되었습니다.');
+                localStorage.setItem('instructorProgram', JSON.stringify(instructorProgram));
+                alert('프로그램 정보가 저장되었습니다.');
             } catch (e) {
                 console.error('Error saving program info:', e);
                 alert('프로그램 정보 저장 중 오류가 발생했습니다.');
@@ -3311,7 +2950,7 @@
             tbody.empty();
 
             if (instructorSchedules.length === 0) {
-                tbody.html('<tr><td colspan="4" class="no-applications">일정이 없습니다.</td></tr>');
+                tbody.html('<tr><td colspan="3" class="no-applications">일정이 없습니다.</td></tr>');
                 return;
             }
 
@@ -3320,19 +2959,9 @@
                 const dateStr = date.toLocaleDateString('ko-KR');
                 const statusClass = schedule.active ? 'status-approved' : 'status-pending';
                 const statusText = schedule.active ? '활성' : '비활성';
-                
-                // 프로그램 정보 가져오기
-                let programName = schedule.programName || '미지정';
-                if (schedule.programId) {
-                    const program = instructorPrograms.find(p => p.id === schedule.programId);
-                    if (program) {
-                        programName = program.title;
-                    }
-                }
 
                 const row = $(`
                     <tr>
-                        <td>${programName}</td>
                         <td>${dateStr}</td>
                         <td><span class="status-badge ${statusClass}">${statusText}</span></td>
                         <td>
@@ -3350,30 +2979,18 @@
             tbody.empty();
 
             if (consultSchedules.length === 0) {
-                tbody.html('<tr><td colspan="5" class="no-applications">상담 일정이 없습니다.</td></tr>');
+                tbody.html('<tr><td colspan="4" class="no-applications">상담 일정이 없습니다.</td></tr>');
                 return;
             }
-
-            const coursesData = typeof COURSES_DATA !== 'undefined' ? COURSES_DATA : [];
 
             consultSchedules.forEach(schedule => {
                 const date = new Date(schedule.date);
                 const dateStr = date.toLocaleDateString('ko-KR');
                 const statusClass = schedule.active ? 'status-approved' : 'status-pending';
                 const statusText = schedule.active ? '활성' : '비활성';
-                
-                // 강의코스 정보 가져오기
-                let courseName = schedule.courseName || '미지정';
-                if (schedule.courseSlug) {
-                    const course = coursesData.find(c => c.slug === schedule.courseSlug);
-                    if (course) {
-                        courseName = course.title;
-                    }
-                }
 
                 const row = $(`
                     <tr>
-                        <td>${courseName}</td>
                         <td>${dateStr}</td>
                         <td>${schedule.time || '-'}</td>
                         <td><span class="status-badge ${statusClass}">${statusText}</span></td>
@@ -3390,49 +3007,9 @@
         function addInstructorSchedule() {
             currentInstructorScheduleId = null;
             $('#instructor-schedule-modal-title').text('프로그램 일정 추가');
-            
-            // 프로그램 선택 옵션 로드
-            const programSelect = $('#instructor-schedule-program');
-            programSelect.empty();
-            programSelect.append('<option value="">프로그램을 선택하세요</option>');
-            
-            instructorPrograms.forEach(program => {
-                programSelect.append(`<option value="${program.id}">${program.title}</option>`);
-            });
-            
-            if (instructorPrograms.length === 0) {
-                alert('먼저 프로그램을 등록해주세요.');
-                return;
-            }
-            
-            $('#instructor-schedule-dates-container').html(`
-                <div class="schedule-date-item" style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem; align-items: center;">
-                    <input type="date" class="form-input instructor-schedule-date-input" required style="flex: 1;">
-                    <button type="button" class="btn btn-sm" style="background: #ef4444; color: white; border: none; display: none;" onclick="removeInstructorScheduleDate(this)">삭제</button>
-                </div>
-            `);
+            $('#instructor-schedule-date').val('');
             $('#instructor-schedule-active').prop('checked', true);
             $('#instructor-schedule-modal').css('display', 'flex');
-        }
-
-        function addInstructorScheduleDate() {
-            const container = $('#instructor-schedule-dates-container');
-            const newItem = $(`
-                <div class="schedule-date-item" style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem; align-items: center;">
-                    <input type="date" class="form-input instructor-schedule-date-input" required style="flex: 1;">
-                    <button type="button" class="btn btn-sm" style="background: #ef4444; color: white; border: none;" onclick="removeInstructorScheduleDate(this)">삭제</button>
-                </div>
-            `);
-            container.append(newItem);
-            // 첫 번째 항목의 삭제 버튼도 표시
-            container.find('.schedule-date-item').first().find('button').show();
-        }
-
-        function removeInstructorScheduleDate(btn) {
-            const container = $('#instructor-schedule-dates-container');
-            if (container.find('.schedule-date-item').length > 1) {
-                $(btn).closest('.schedule-date-item').remove();
-            }
         }
 
         function editInstructorSchedule(id) {
@@ -3444,25 +3021,8 @@
 
             currentInstructorScheduleId = id;
             $('#instructor-schedule-modal-title').text('프로그램 일정 수정');
-            
-            // 프로그램 선택 옵션 로드
-            const programSelect = $('#instructor-schedule-program');
-            programSelect.empty();
-            programSelect.append('<option value="">프로그램을 선택하세요</option>');
-            
-            instructorPrograms.forEach(program => {
-                const selected = schedule.programId === program.id ? 'selected' : '';
-                programSelect.append(`<option value="${program.id}" ${selected}>${program.title}</option>`);
-            });
-            
-            // 수정 시에는 단일 일정만 표시
-            $('#instructor-schedule-dates-container').html(`
-                <div class="schedule-date-item" style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem; align-items: center;">
-                    <input type="date" class="form-input instructor-schedule-date-input" required style="flex: 1;" value="${schedule.date}">
-                    <button type="button" class="btn btn-sm" style="background: #ef4444; color: white; border: none; display: none;" onclick="removeInstructorScheduleDate(this)">삭제</button>
-                </div>
-            `);
-            $('#instructor-schedule-active').prop('checked', schedule.active !== false);
+            $('#instructor-schedule-date').val(schedule.date);
+            $('#instructor-schedule-active').prop('checked', schedule.active);
             $('#instructor-schedule-modal').css('display', 'flex');
         }
 
@@ -3490,61 +3050,34 @@
 
         function saveInstructorSchedule() {
             try {
-                const programId = $('#instructor-schedule-program').val();
-                if (!programId) {
-                    alert('프로그램을 선택해주세요.');
-                    return;
-                }
-                
-                const selectedProgram = instructorPrograms.find(p => p.id === programId);
-                if (!selectedProgram) {
-                    alert('선택한 프로그램을 찾을 수 없습니다.');
-                    return;
-                }
-                
-                const dates = [];
-                $('.instructor-schedule-date-input').each(function() {
-                    const date = $(this).val();
-                    if (date) {
-                        dates.push(date);
-                    }
-                });
-
-                if (dates.length === 0) {
-                    alert('최소 하나의 일정을 입력해주세요.');
-                    return;
-                }
-
+                const date = $('#instructor-schedule-date').val();
                 const active = $('#instructor-schedule-active').is(':checked');
 
+                if (!date) {
+                    alert('일정을 입력해주세요.');
+                    return;
+                }
+
                 if (currentInstructorScheduleId) {
-                    // 기존 일정 수정 (단일 일정)
                     const schedule = instructorSchedules.find(s => s.id === currentInstructorScheduleId);
-                    if (schedule && dates.length > 0) {
-                        schedule.date = dates[0];
-                        schedule.programId = programId;
-                        schedule.programName = selectedProgram.title;
+                    if (schedule) {
+                        schedule.date = date;
                         schedule.active = active;
                     }
                 } else {
-                    // 새 일정 추가 (복수 일정 가능)
-                    dates.forEach((date, index) => {
-                        const newSchedule = {
-                            id: (Date.now() + index).toString(),
-                            programId: programId,
-                            programName: selectedProgram.title,
-                            date: date,
-                            active: active,
-                            createdAt: new Date().toISOString()
-                        };
-                        instructorSchedules.push(newSchedule);
-                    });
+                    const newSchedule = {
+                        id: Date.now().toString(),
+                        date: date,
+                        active: active,
+                        createdAt: new Date().toISOString()
+                    };
+                    instructorSchedules.push(newSchedule);
                 }
 
                 localStorage.setItem('instructorSchedules', JSON.stringify(instructorSchedules));
                 renderInstructorSchedules();
                 $('#instructor-schedule-modal').hide();
-                alert(`${dates.length}개의 일정이 저장되었습니다.`);
+                alert('일정이 저장되었습니다.');
             } catch (e) {
                 console.error('Error saving instructor schedule:', e);
                 alert('일정 저장 중 오류가 발생했습니다.');
@@ -3554,75 +3087,10 @@
         function addConsultSchedule() {
             currentConsultScheduleId = null;
             $('#consult-schedule-modal-title').text('상담 일정 추가');
-            
-            // 강의코스 선택 옵션 로드
-            const courseSelect = $('#consult-schedule-course');
-            courseSelect.empty();
-            courseSelect.append('<option value="">과정을 선택하세요</option>');
-            
-            const coursesData = typeof COURSES_DATA !== 'undefined' ? COURSES_DATA : [];
-            coursesData.forEach(course => {
-                courseSelect.append(`<option value="${course.slug}">${course.title}</option>`);
-            });
-            
-            $('#consult-schedule-items-container').html(`
-                <div class="consult-schedule-item" style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem; align-items: center;">
-                    <input type="date" class="form-input consult-schedule-date-input" required style="flex: 1;">
-                    <select class="form-input consult-schedule-time-input" required style="width: 120px;">
-                        <option value="">시간 선택</option>
-                        <option value="09:00">09:00</option>
-                        <option value="10:00">10:00</option>
-                        <option value="11:00">11:00</option>
-                        <option value="12:00">12:00</option>
-                        <option value="13:00">13:00</option>
-                        <option value="14:00">14:00</option>
-                        <option value="15:00">15:00</option>
-                        <option value="16:00">16:00</option>
-                        <option value="17:00">17:00</option>
-                        <option value="18:00">18:00</option>
-                        <option value="19:00">19:00</option>
-                        <option value="20:00">20:00</option>
-                    </select>
-                    <button type="button" class="btn btn-sm" style="background: #ef4444; color: white; border: none; display: none;" onclick="removeConsultScheduleItem(this)">삭제</button>
-                </div>
-            `);
+            $('#consult-schedule-date').val('');
+            $('#consult-schedule-time').val('');
             $('#consult-schedule-active').prop('checked', true);
             $('#consult-schedule-modal').css('display', 'flex');
-        }
-
-        function addConsultScheduleItem() {
-            const container = $('#consult-schedule-items-container');
-            const newItem = $(`
-                <div class="consult-schedule-item" style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem; align-items: center;">
-                    <input type="date" class="form-input consult-schedule-date-input" required style="flex: 1;">
-                    <select class="form-input consult-schedule-time-input" required style="width: 120px;">
-                        <option value="">시간 선택</option>
-                        <option value="09:00">09:00</option>
-                        <option value="10:00">10:00</option>
-                        <option value="11:00">11:00</option>
-                        <option value="12:00">12:00</option>
-                        <option value="13:00">13:00</option>
-                        <option value="14:00">14:00</option>
-                        <option value="15:00">15:00</option>
-                        <option value="16:00">16:00</option>
-                        <option value="17:00">17:00</option>
-                        <option value="18:00">18:00</option>
-                        <option value="19:00">19:00</option>
-                        <option value="20:00">20:00</option>
-                    </select>
-                    <button type="button" class="btn btn-sm" style="background: #ef4444; color: white; border: none;" onclick="removeConsultScheduleItem(this)">삭제</button>
-                </div>
-            `);
-            container.append(newItem);
-            // 첫 번째 항목의 삭제 버튼도 표시
-            container.find('.consult-schedule-item').first().find('button').show();
-        }
-
-        function removeConsultScheduleItem(btn) {
-            const container = $('#consult-schedule-items-container');
-            if (container.find('.consult-schedule-item').length > 1) {
-                $(btn).closest('.consult-schedule-item').remove();
-            }
         }
 
         function editConsultSchedule(id) {
@@ -3634,41 +3102,9 @@
 
             currentConsultScheduleId = id;
             $('#consult-schedule-modal-title').text('상담 일정 수정');
-            
-            // 강의코스 선택 옵션 로드
-            const courseSelect = $('#consult-schedule-course');
-            courseSelect.empty();
-            courseSelect.append('<option value="">과정을 선택하세요</option>');
-            
-            const coursesData = typeof COURSES_DATA !== 'undefined' ? COURSES_DATA : [];
-            coursesData.forEach(course => {
-                const selected = schedule.courseSlug === course.slug ? 'selected' : '';
-                courseSelect.append(`<option value="${course.slug}" ${selected}>${course.title}</option>`);
-            });
-            
-            // 수정 시에는 단일 일정만 표시
-            $('#consult-schedule-items-container').html(`
-                <div class="consult-schedule-item" style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem; align-items: center;">
-                    <input type="date" class="form-input consult-schedule-date-input" required style="flex: 1;" value="${schedule.date}">
-                    <select class="form-input consult-schedule-time-input" required style="width: 120px;">
-                        <option value="">시간 선택</option>
-                        <option value="09:00" ${schedule.time === '09:00' ? 'selected' : ''}>09:00</option>
-                        <option value="10:00" ${schedule.time === '10:00' ? 'selected' : ''}>10:00</option>
-                        <option value="11:00" ${schedule.time === '11:00' ? 'selected' : ''}>11:00</option>
-                        <option value="12:00" ${schedule.time === '12:00' ? 'selected' : ''}>12:00</option>
-                        <option value="13:00" ${schedule.time === '13:00' ? 'selected' : ''}>13:00</option>
-                        <option value="14:00" ${schedule.time === '14:00' ? 'selected' : ''}>14:00</option>
-                        <option value="15:00" ${schedule.time === '15:00' ? 'selected' : ''}>15:00</option>
-                        <option value="16:00" ${schedule.time === '16:00' ? 'selected' : ''}>16:00</option>
-                        <option value="17:00" ${schedule.time === '17:00' ? 'selected' : ''}>17:00</option>
-                        <option value="18:00" ${schedule.time === '18:00' ? 'selected' : ''}>18:00</option>
-                        <option value="19:00" ${schedule.time === '19:00' ? 'selected' : ''}>19:00</option>
-                        <option value="20:00" ${schedule.time === '20:00' ? 'selected' : ''}>20:00</option>
-                    </select>
-                    <button type="button" class="btn btn-sm" style="background: #ef4444; color: white; border: none; display: none;" onclick="removeConsultScheduleItem(this)">삭제</button>
-                </div>
-            `);
-            $('#consult-schedule-active').prop('checked', schedule.active !== false);
+            $('#consult-schedule-date').val(schedule.date);
+            $('#consult-schedule-time').val(schedule.time || '');
+            $('#consult-schedule-active').prop('checked', schedule.active);
             $('#consult-schedule-modal').css('display', 'flex');
         }
 
@@ -3696,62 +3132,42 @@
 
         function saveConsultSchedule() {
             try {
-                const courseSlug = $('#consult-schedule-course').val();
-                if (!courseSlug) {
-                    alert('과정을 선택해주세요.');
-                    return;
-                }
-                
-                const coursesData = typeof COURSES_DATA !== 'undefined' ? COURSES_DATA : [];
-                const selectedCourse = coursesData.find(c => c.slug === courseSlug);
-                const courseName = selectedCourse ? selectedCourse.title : '';
-                
-                const scheduleItems = [];
-                $('.consult-schedule-item').each(function() {
-                    const date = $(this).find('.consult-schedule-date-input').val();
-                    const time = $(this).find('.consult-schedule-time-input').val();
-                    if (date && time) {
-                        scheduleItems.push({ date, time });
-                    }
-                });
-
-                if (scheduleItems.length === 0) {
-                    alert('최소 하나의 일정과 시간을 입력해주세요.');
-                    return;
-                }
-
+                const date = $('#consult-schedule-date').val();
+                const time = $('#consult-schedule-time').val();
                 const active = $('#consult-schedule-active').is(':checked');
 
+                if (!date) {
+                    alert('일정을 입력해주세요.');
+                    return;
+                }
+
+                if (!time) {
+                    alert('시간을 선택해주세요.');
+                    return;
+                }
+
                 if (currentConsultScheduleId) {
-                    // 기존 일정 수정 (단일 일정)
                     const schedule = consultSchedules.find(s => s.id === currentConsultScheduleId);
-                    if (schedule && scheduleItems.length > 0) {
-                        schedule.date = scheduleItems[0].date;
-                        schedule.time = scheduleItems[0].time;
-                        schedule.courseSlug = courseSlug;
-                        schedule.courseName = courseName;
+                    if (schedule) {
+                        schedule.date = date;
+                        schedule.time = time;
                         schedule.active = active;
                     }
                 } else {
-                    // 새 일정 추가 (복수 일정 가능)
-                    scheduleItems.forEach((item, index) => {
-                        const newSchedule = {
-                            id: (Date.now() + index).toString(),
-                            courseSlug: courseSlug,
-                            courseName: courseName,
-                            date: item.date,
-                            time: item.time,
-                            active: active,
-                            createdAt: new Date().toISOString()
-                        };
-                        consultSchedules.push(newSchedule);
-                    });
+                    const newSchedule = {
+                        id: Date.now().toString(),
+                        date: date,
+                        time: time,
+                        active: active,
+                        createdAt: new Date().toISOString()
+                    };
+                    consultSchedules.push(newSchedule);
                 }
 
                 localStorage.setItem('consultSchedules', JSON.stringify(consultSchedules));
                 renderConsultSchedules();
                 $('#consult-schedule-modal').hide();
-                alert(`${scheduleItems.length}개의 일정이 저장되었습니다.`);
+                alert('일정이 저장되었습니다.');
             } catch (e) {
                 console.error('Error saving consult schedule:', e);
                 alert('일정 저장 중 오류가 발생했습니다.');
@@ -3769,7 +3185,6 @@
             $('#cancel-schedule-btn, #close-schedule-modal, #schedule-modal-backdrop').on('click', function() {
                 $('#schedule-modal').hide();
             });
-            
 
             // Instructor schedule modal handlers
             $('#add-instructor-schedule-btn').on('click', addInstructorSchedule);
@@ -3791,26 +3206,246 @@
                 $('#consult-schedule-modal').hide();
             });
 
-            // Course price modal handlers
-            $('#add-course-price-btn').on('click', addCoursePrice);
-            $('#course-price-form').on('submit', function(e) {
-                e.preventDefault();
-                saveCoursePriceFromModal();
-            });
-            $('#cancel-course-price-btn, #close-course-price-modal, #course-price-modal-backdrop').on('click', function() {
-                $('#course-price-modal').hide();
-            });
-
-            // Course price filter handlers
-            $('input[name="course-price-filter"]').on('change', function() {
-                renderCourses();
-            });
-
             // Program info save handler
             $('#save-program-info-btn').on('click', saveProgramInfo);
+
+            // Workshop applications handlers
+            $('#workshop-search-input').on('input', filterWorkshopApplications);
+            $('#workshop-status-filter, #workshop-curriculum-filter').on('change', filterWorkshopApplications);
         });
+
+        // Workshop Applications Management Functions
+        let workshopApplications = [];
+
+        function loadWorkshopApplications() {
+            try {
+                const stored = localStorage.getItem('aiw-applications');
+                workshopApplications = stored ? JSON.parse(stored) : [];
+                if (!Array.isArray(workshopApplications)) {
+                    workshopApplications = [];
+                }
+                updateWorkshopStatistics();
+                renderWorkshopApplications();
+            } catch (e) {
+                console.error('Error loading workshop applications:', e);
+                workshopApplications = [];
+                updateWorkshopStatistics();
+                renderWorkshopApplications();
+            }
+        }
+
+        function updateWorkshopStatistics() {
+            const total = workshopApplications.length;
+            const pending = workshopApplications.filter(a => a.status === 'pending').length;
+            const approved = workshopApplications.filter(a => a.status === 'approved').length;
+            const curriculumRequest = workshopApplications.filter(a => a.curriculumRequest).length;
+
+            $('#total-workshop-applications').text(total);
+            $('#pending-workshop-applications').text(pending);
+            $('#approved-workshop-applications').text(approved);
+            $('#curriculum-request-count').text(curriculumRequest);
+        }
+
+        function renderWorkshopApplications() {
+            const $tbody = $('#workshop-applications-tbody');
+            $tbody.empty();
+
+            if (workshopApplications.length === 0) {
+                $tbody.html('<tr><td colspan="6" class="no-applications">설명회 신청 내역이 없습니다.</td></tr>');
+                return;
+            }
+
+            workshopApplications.forEach(function(app) {
+                const date = new Date(app.createdAt);
+                const dateStr = date.toLocaleDateString('ko-KR', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+
+                const statusClass = app.status === 'approved' ? 'status-approved' : 
+                                   app.status === 'rejected' ? 'status-rejected' : 'status-pending';
+                const statusText = app.status === 'approved' ? '승인됨' : 
+                                  app.status === 'rejected' ? '거절됨' : '대기 중';
+
+                const $row = $('<tr>').html(`
+                    <td>${dateStr}</td>
+                    <td>${app.name || '-'}</td>
+                    <td>${app.phone || '-'}</td>
+                    <td>${app.curriculumRequest ? '예' : '아니오'}</td>
+                    <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                    <td>
+                        <button class="btn btn-sm" onclick="showWorkshopDetail('${app.id}')" style="margin-right: 0.5rem;">상세보기</button>
+                        <button class="btn btn-sm" onclick="deleteWorkshopApplication('${app.id}')" style="background: #ef4444; color: white;">삭제</button>
+                    </td>
+                `);
+                $tbody.append($row);
+            });
+        }
+
+        function filterWorkshopApplications() {
+            const searchTerm = $('#workshop-search-input').val().toLowerCase();
+            const statusFilter = $('#workshop-status-filter').val();
+            const curriculumFilter = $('#workshop-curriculum-filter').val();
+
+            const filtered = workshopApplications.filter(function(app) {
+                const matchesSearch = !searchTerm || 
+                    (app.name && app.name.toLowerCase().includes(searchTerm)) ||
+                    (app.phone && app.phone.includes(searchTerm));
+                const matchesStatus = !statusFilter || app.status === statusFilter;
+                const matchesCurriculum = !curriculumFilter || 
+                    (curriculumFilter === 'true' && app.curriculumRequest) ||
+                    (curriculumFilter === 'false' && !app.curriculumRequest);
+
+                return matchesSearch && matchesStatus && matchesCurriculum;
+            });
+
+            const $tbody = $('#workshop-applications-tbody');
+            $tbody.empty();
+
+            if (filtered.length === 0) {
+                $tbody.html('<tr><td colspan="6" class="no-applications">검색 결과가 없습니다.</td></tr>');
+                return;
+            }
+
+            filtered.forEach(function(app) {
+                const date = new Date(app.createdAt);
+                const dateStr = date.toLocaleDateString('ko-KR', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+
+                const statusClass = app.status === 'approved' ? 'status-approved' : 
+                                   app.status === 'rejected' ? 'status-rejected' : 'status-pending';
+                const statusText = app.status === 'approved' ? '승인됨' : 
+                                  app.status === 'rejected' ? '거절됨' : '대기 중';
+
+                const $row = $('<tr>').html(`
+                    <td>${dateStr}</td>
+                    <td>${app.name || '-'}</td>
+                    <td>${app.phone || '-'}</td>
+                    <td>${app.curriculumRequest ? '예' : '아니오'}</td>
+                    <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                    <td>
+                        <button class="btn btn-sm" onclick="showWorkshopDetail('${app.id}')" style="margin-right: 0.5rem;">상세보기</button>
+                        <button class="btn btn-sm" onclick="deleteWorkshopApplication('${app.id}')" style="background: #ef4444; color: white;">삭제</button>
+                    </td>
+                `);
+                $tbody.append($row);
+            });
+        }
+
+        function showWorkshopDetail(id) {
+            const app = workshopApplications.find(a => a.id === id);
+            if (!app) {
+                alert('신청 내역을 찾을 수 없습니다.');
+                return;
+            }
+
+            const date = new Date(app.createdAt);
+            const dateStr = date.toLocaleDateString('ko-KR', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+
+            const statusClass = app.status === 'approved' ? 'status-approved' : 
+                               app.status === 'rejected' ? 'status-rejected' : 'status-pending';
+            const statusText = app.status === 'approved' ? '승인됨' : 
+                              app.status === 'rejected' ? '거절됨' : '대기 중';
+
+            $('#detail-content').html(`
+                <div class="detail-row">
+                    <div class="detail-label">신청일시</div>
+                    <div>${dateStr}</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">신청 유형</div>
+                    <div>2026 AI Instructor Workshop 설명회</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">이름</div>
+                    <div>${app.name || '-'}</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">연락처</div>
+                    <div>${app.phone || '-'}</div>
+                </div>
+                ${app.curriculumRequest ? `
+                <div class="detail-row">
+                    <div class="detail-label">커리큘럼 요청</div>
+                    <div>예</div>
+                </div>
+                ` : ''}
+                <div class="detail-row">
+                    <div class="detail-label">상태</div>
+                    <div><span class="status-badge ${statusClass}">${statusText}</span></div>
+                </div>
+            `);
+
+            $('#approve-btn').off('click').on('click', function() {
+                updateWorkshopApplicationStatus(id, 'approved');
+            });
+
+            $('#reject-btn').off('click').on('click', function() {
+                updateWorkshopApplicationStatus(id, 'rejected');
+            });
+
+            $('#detail-modal').css('display', 'flex');
+        }
+
+        function updateWorkshopApplicationStatus(id, status) {
+            try {
+                const index = workshopApplications.findIndex(a => a.id === id);
+                if (index === -1) {
+                    alert('신청 내역을 찾을 수 없습니다.');
+                    return;
+                }
+
+                workshopApplications[index].status = status;
+                localStorage.setItem('aiw-applications', JSON.stringify(workshopApplications));
+                
+                updateWorkshopStatistics();
+                renderWorkshopApplications();
+                $('#detail-modal').hide();
+                alert('상태가 업데이트되었습니다.');
+            } catch (e) {
+                console.error('Error updating workshop application status:', e);
+                alert('상태 업데이트 중 오류가 발생했습니다.');
+            }
+        }
+
+        function deleteWorkshopApplication(id) {
+            if (!confirm('정말로 이 신청 내역을 삭제하시겠습니까?')) {
+                return;
+            }
+
+            try {
+                const index = workshopApplications.findIndex(a => a.id === id);
+                if (index === -1) {
+                    alert('신청 내역을 찾을 수 없습니다.');
+                    return;
+                }
+
+                workshopApplications.splice(index, 1);
+                localStorage.setItem('aiw-applications', JSON.stringify(workshopApplications));
+                
+                updateWorkshopStatistics();
+                renderWorkshopApplications();
+                alert('신청 내역이 삭제되었습니다.');
+            } catch (e) {
+                console.error('Error deleting workshop application:', e);
+                alert('삭제 중 오류가 발생했습니다.');
+            }
+        }
     </script>
 </body>
 </html>
-
 
