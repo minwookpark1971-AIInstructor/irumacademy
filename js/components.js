@@ -57,6 +57,7 @@ function generateHeader() {
             <!-- Desktop Navigation -->
             <nav class="desktop-nav">
                 <a href="${pathInfo.coursesUrl}" class="nav-link">강의코스</a>
+                <a href="${pathInfo.vibecodingUrl}" class="nav-link">바이브코딩 통합과정</a>
                 <a href="${pathInfo.instructorUrl}" class="nav-link">전문강사 성장 프로그램</a>
                 <a href="${pathInfo.applyUrl}" class="nav-link">강의신청하기</a>
                 <a href="${pathInfo.communityUrl}" class="nav-link">강사커뮤니티</a>
@@ -77,6 +78,7 @@ function generateHeader() {
         <!-- Mobile Navigation -->
         <nav class="mobile-nav" id="mobile-nav">
             <a href="${pathInfo.coursesUrl}" class="mobile-nav-link">강의코스</a>
+            <a href="${pathInfo.vibecodingUrl}" class="mobile-nav-link">바이브코딩 통합과정</a>
             <a href="${pathInfo.instructorUrl}" class="mobile-nav-link">전문강사 성장 프로그램</a>
             <a href="${pathInfo.applyUrl}" class="mobile-nav-link">강의신청하기</a>
             <a href="${pathInfo.communityUrl}" class="mobile-nav-link">강사커뮤니티</a>
@@ -167,12 +169,13 @@ function getPathInfo() {
     const isInAuth = pathParts.includes('auth');
     
     // Determine relative paths based on current location
-    let homeUrl, coursesUrl, instructorUrl, applyUrl, communityUrl, inquiryUrl, loginUrl, signupUrl, logoUrl, privacyUrl, termsUrl;
+    let homeUrl, coursesUrl, vibecodingUrl, instructorUrl, applyUrl, communityUrl, inquiryUrl, loginUrl, signupUrl, logoUrl, privacyUrl, termsUrl;
     
     if (isRoot) {
         // From root: html files are in html/ folder
         homeUrl = 'index.html';
         coursesUrl = 'html/courses.html';
+        vibecodingUrl = 'html/vibecoding.html';
         instructorUrl = 'html/instructor-growth.html';
         applyUrl = 'html/apply.html';
         communityUrl = 'html/community.html';
@@ -186,6 +189,7 @@ function getPathInfo() {
         // From auth folder in html/: go up 2 levels to root, then to html/
         homeUrl = '../../index.html';
         coursesUrl = '../../html/courses.html';
+        vibecodingUrl = '../../html/vibecoding.html';
         instructorUrl = '../../html/instructor-growth.html';
         applyUrl = '../../html/apply.html';
         communityUrl = '../../html/community.html';
@@ -201,6 +205,7 @@ function getPathInfo() {
         const upPath = '../'.repeat(depth);
         homeUrl = upPath + '../index.html';
         coursesUrl = upPath + 'courses.html';
+        vibecodingUrl = upPath + 'vibecoding.html';
         instructorUrl = upPath + 'instructor-growth.html';
         applyUrl = upPath + 'apply.html';
         communityUrl = upPath + 'community.html';
@@ -214,6 +219,7 @@ function getPathInfo() {
         // From html folder: same level
         homeUrl = '../index.html';
         coursesUrl = 'courses.html';
+        vibecodingUrl = 'vibecoding.html';
         instructorUrl = 'instructor-growth.html';
         applyUrl = 'apply.html';
         communityUrl = 'community.html';
@@ -227,6 +233,7 @@ function getPathInfo() {
         // Default: assume in html folder
         homeUrl = '../index.html';
         coursesUrl = 'courses.html';
+        vibecodingUrl = 'vibecoding.html';
         instructorUrl = 'instructor-growth.html';
         applyUrl = 'apply.html';
         communityUrl = 'community.html';
@@ -241,6 +248,7 @@ function getPathInfo() {
     return {
         homeUrl: homeUrl,
         coursesUrl: coursesUrl,
+        vibecodingUrl: vibecodingUrl,
         instructorUrl: instructorUrl,
         applyUrl: applyUrl,
         communityUrl: communityUrl,

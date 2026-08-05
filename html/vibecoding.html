@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2026 하반기 바이브코딩 통합과정 — 이룸아카데미</title>
+<meta name="description" content="업무자동화에서 실배포까지, 바이브코딩 통합과정. 6주 · 60시간 · 1인 1서비스 실배포 URL.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<style>
+  :root {
+    --coral: #FF5341;
+    --coral-deep: #C9381F;
+    --coral-soft: #FFE3D8;
+    --coral-hover: #E8412F;
+    --ink: #16130F;
+    --ink-soft: #3E3833;
+    --gray: #5A5049;
+    --gray-light: #8C817A;
+    --cream: #FDF0E9;
+    --page: #FFFCFA;
+    --line: #EADFD6;
+    --line-soft: #F0DDD1;
+    --font-display: 'Bricolage Grotesque', 'Pretendard', sans-serif;
+    --font-body: 'Plus Jakarta Sans', 'Pretendard', sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: var(--font-body); color: var(--ink); background: var(--page); overflow-x: hidden; }
+  a { color: inherit; text-decoration: none; }
+  a:hover { color: var(--coral-hover); }
+  h1, h2, h3 { font-family: var(--font-display); }
+  .hidden { display: none !important; }
+
+  /* ── Announcement bar ── */
+  .topbar { background: var(--ink); color: #F2E7DF; text-align: center; padding: 9px 48px; font-size: 13px; font-weight: 600; letter-spacing: 0.01em; }
+
+  /* ── Nav ── */
+  .nav { position: sticky; top: 0; z-index: 50; padding: 16px 48px; background: rgba(255,252,250,0.94); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+  .nav-inner { display: flex; align-items: center; justify-content: space-between; }
+  .nav-left { display: flex; align-items: center; gap: 38px; }
+  .logo { font-family: var(--font-display); font-weight: 800; font-size: 22px; letter-spacing: -0.02em; display: flex; align-items: center; gap: 8px; }
+  .logo-dot { width: 14px; height: 14px; border-radius: 50%; background: var(--coral); display: inline-block; }
+  .logo-sub { color: var(--gray-light); font-weight: 600; }
+  .nav-links { display: flex; gap: 24px; font-size: 14.5px; font-weight: 600; color: var(--ink-soft); }
+  .nav-links > span { cursor: pointer; display: flex; align-items: center; gap: 5px; padding: 4px 0; }
+  .nav-caret { font-size: 9px; color: #B4A99F; }
+  .nav-right { display: flex; align-items: center; gap: 20px; }
+  .nav-right > span { font-size: 14px; font-weight: 600; color: var(--ink-soft); cursor: pointer; }
+  .btn-nav-cta { background: var(--coral); color: #fff !important; font-weight: 700; font-size: 14px; padding: 11px 22px; border-radius: 999px; }
+
+  .dropdown { position: absolute; left: 0; right: 0; top: 100%; background: #fff; border-bottom: 1px solid var(--line); box-shadow: 0 24px 40px -24px rgba(0,0,0,0.25); padding: 34px 48px; }
+  .dd-inner { max-width: 1180px; margin: 0 auto; }
+  .dd-label { font-size: 12px; font-weight: 800; color: var(--coral-deep); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 16px; }
+  .dd-prog-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 40px; }
+  .dd-featured { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .dd-card { display: block; background: var(--cream); border-radius: 14px; padding: 18px 20px; }
+  .dd-card-title { font-family: var(--font-display); font-weight: 800; font-size: 16px; color: var(--ink); }
+  .dd-card-desc { font-size: 13px; color: var(--gray); margin-top: 6px; line-height: 1.5; }
+  .badge-hot { background: var(--coral); color: #fff; font-size: 10px; padding: 2px 7px; border-radius: 999px; vertical-align: middle; margin-left: 4px; }
+  .dd-tracks { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 24px; font-size: 14px; font-weight: 600; color: var(--ink-soft); }
+  .dd-tracks span { cursor: pointer; }
+  .dd-tracks .accent { color: var(--coral-deep); }
+  .dd-3col { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .dd-item-title { font-family: var(--font-display); font-weight: 700; font-size: 15px; color: var(--ink); }
+  .dd-item-desc { font-size: 13px; color: var(--gray); margin-top: 5px; line-height: 1.5; }
+
+  /* ── Shared section bits ── */
+  .container { max-width: 1180px; margin: 0 auto; }
+  .eyebrow { color: var(--coral-deep); font-weight: 800; font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 14px; }
+  .btn { display: inline-flex; align-items: center; gap: 8px; font-weight: 700; font-size: 16px; border-radius: 999px; }
+  .btn-coral { background: var(--coral); color: #fff !important; padding: 15px 30px; }
+  .btn-outline-ink { border: 1.5px solid var(--ink); color: var(--ink) !important; padding: 14px 28px; }
+
+  /* ── Hero: cream (1a) ── */
+  .hero-cream { background: var(--cream); padding: 80px 48px 88px; }
+  .hero-cream-grid { display: grid; grid-template-columns: 1.08fr 0.92fr; gap: 56px; align-items: center; }
+  .pill-cream { display: inline-flex; align-items: center; gap: 8px; background: var(--coral-soft); color: var(--coral-deep); font-weight: 700; font-size: 12.5px; letter-spacing: 0.04em; padding: 7px 14px; border-radius: 999px; text-transform: uppercase; }
+  .hero-cream h1 { font-weight: 800; font-size: 60px; line-height: 1.04; letter-spacing: -0.03em; margin: 22px 0 18px; }
+  .hero-cream h1 .accent { color: var(--coral); }
+  .hero-cream .lede { font-size: 18px; line-height: 1.6; color: var(--gray); max-width: 460px; margin: 0 0 18px; }
+  .hero-stats { display: flex; gap: 22px; margin: 0 0 30px; flex-wrap: wrap; }
+  .hero-stats .num { font-family: var(--font-display); font-weight: 800; font-size: 22px; color: var(--ink); }
+  .hero-stats .cap { font-size: 13px; color: var(--gray-light); font-weight: 600; }
+  .hero-stats .sep { width: 1px; background: #E4D2C6; }
+  .hero-actions { display: flex; gap: 14px; align-items: center; }
+  .hero-visual { position: relative; }
+  .hero-photo { background: repeating-linear-gradient(135deg, #F6DCCF, #F6DCCF 11px, #FBE9DF 11px, #FBE9DF 22px); border-radius: 24px; aspect-ratio: 4 / 3.5; display: flex; align-items: center; justify-content: center; box-shadow: 0 30px 60px -30px rgba(200,56,31,0.35); }
+  .hero-photo span { font-family: monospace; font-size: 13px; color: #B77A62; background: rgba(255,255,255,0.75); padding: 6px 12px; border-radius: 6px; }
+  .hero-float { position: absolute; left: -26px; bottom: 34px; background: #fff; border-radius: 16px; padding: 16px 20px; box-shadow: 0 18px 40px -18px rgba(0,0,0,0.25); display: flex; gap: 12px; align-items: center; }
+  .hero-float .icon { width: 44px; height: 44px; border-radius: 12px; background: var(--coral); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 800; font-family: var(--font-display); font-size: 15px; }
+  .hero-float .cap { font-size: 12px; color: var(--gray-light); font-weight: 600; }
+  .hero-float .val { font-weight: 700; font-size: 15px; }
+
+  /* ── Shared pills ── */
+  .pill-glass { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.18); color: #fff; font-weight: 700; font-size: 12.5px; letter-spacing: 0.04em; padding: 7px 14px; border-radius: 999px; text-transform: uppercase; }
+
+  /* ── Problem ── */
+  .problem { padding: 76px 48px; border-bottom: 1px solid var(--line); }
+  .problem-inner { max-width: 1000px; margin: 0 auto; text-align: center; }
+  .problem h2 { font-weight: 800; font-size: 38px; line-height: 1.18; letter-spacing: -0.02em; margin: 0 0 18px; }
+  .problem p { font-size: 18px; line-height: 1.65; color: var(--gray); max-width: 680px; margin: 0 auto; }
+
+  /* ── Why it works ── */
+  .why { padding: 80px 48px; background: var(--cream); }
+  .why-grid { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 52px; align-items: center; }
+  .why h2 { font-weight: 800; font-size: 36px; line-height: 1.15; letter-spacing: -0.02em; margin: 0; }
+  .why-cards { display: grid; gap: 16px; }
+  .why-card { background: #fff; border-radius: 16px; padding: 22px 24px; border: 1px solid var(--line-soft); display: flex; gap: 16px; }
+  .why-card .no { font-family: var(--font-display); font-weight: 800; color: var(--coral); font-size: 20px; }
+  .why-card p { margin: 0; font-size: 16px; line-height: 1.55; color: var(--ink-soft); }
+
+  /* ── What you'll learn ── */
+  .learn { padding: 88px 48px; }
+  .section-head { text-align: center; margin-bottom: 44px; }
+  .section-head .eyebrow { margin-bottom: 10px; }
+  .learn h2 { font-weight: 800; font-size: 42px; letter-spacing: -0.025em; margin: 0; }
+  .learn h2 .accent { color: var(--coral); }
+  .learn-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; }
+  .learn-card { background: #fff; border-radius: 18px; padding: 26px 22px; border: 1px solid var(--line-soft); }
+  .learn-card .no { width: 40px; height: 40px; border-radius: 11px; background: var(--coral-soft); color: var(--coral); display: flex; align-items: center; justify-content: center; font-weight: 800; font-family: var(--font-display); margin-bottom: 16px; }
+  .learn-card h3 { font-weight: 700; font-size: 18px; margin: 0 0 8px; }
+  .learn-card p { font-size: 14px; line-height: 1.55; color: var(--gray); margin: 0; }
+
+  /* ── Outcomes ── */
+  .outcomes { padding: 88px 48px; background: var(--ink); color: #FBF4EF; }
+  .outcomes .eyebrow { color: #FFB9A8; }
+  .outcomes h2 { font-weight: 800; font-size: 44px; letter-spacing: -0.025em; margin: 0; }
+  .outcomes h2 .accent { color: var(--coral); }
+  .outcomes .sub { font-size: 17px; color: #C5BAB1; max-width: 560px; margin: 16px auto 0; }
+  .outcomes-head { text-align: center; margin-bottom: 48px; }
+  .outcomes-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .outcome-card { background: #211C17; border-radius: 20px; padding: 32px; border: 1px solid #362E28; }
+  .outcome-card .tag { font-family: var(--font-display); font-weight: 800; font-size: 15px; color: var(--coral); margin-bottom: 14px; }
+  .outcome-card p { font-size: 15px; line-height: 1.6; color: #C5BAB1; margin: 0; }
+
+  /* ── Curriculum ── */
+  .curriculum { padding: 88px 48px; background: var(--cream); }
+  .curriculum-inner { max-width: 1000px; margin: 0 auto; }
+  .curriculum h2 { font-weight: 800; font-size: 42px; letter-spacing: -0.025em; margin: 0; }
+  .curriculum .sub { font-size: 16px; color: var(--gray); margin: 14px 0 0; }
+  .week-list { display: grid; gap: 14px; }
+  .week { background: #fff; border-radius: 16px; padding: 24px 28px; border: 1px solid var(--line-soft); display: grid; grid-template-columns: 110px 1fr; gap: 20px; align-items: start; }
+  .week.milestone { border: 1.5px solid var(--coral); }
+  .week .wk { font-family: var(--font-display); font-weight: 800; font-size: 19px; color: var(--coral); }
+  .week .star { display: block; font-size: 11px; color: var(--coral-deep); font-family: var(--font-body); margin-top: 4px; }
+  .week h3 { font-weight: 700; font-size: 18px; margin: 0 0 6px; }
+  .week p { font-size: 14.5px; color: var(--gray); margin: 0; line-height: 1.55; }
+
+  /* ── Apply ── */
+  .apply { padding: 88px 48px; }
+  .apply-inner { max-width: 1080px; margin: 0 auto; }
+  .apply-box { background: var(--coral); border-radius: 32px; padding: 56px; color: #fff; display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 44px; align-items: center; }
+  .apply-box .pill-glass { font-size: 12px; padding: 6px 13px; margin-bottom: 16px; }
+  .apply-box h2 { font-weight: 800; font-size: 42px; line-height: 1.08; letter-spacing: -0.03em; margin: 0 0 16px; }
+  .apply-box .lede { font-size: 16px; line-height: 1.6; color: rgba(255,255,255,0.92); margin: 0; }
+  .price-card { background: #fff; border-radius: 20px; padding: 28px; color: var(--ink); }
+  .price-card .title { font-weight: 800; font-size: 15px; margin-bottom: 16px; font-family: var(--font-display); }
+  .price-rows { display: grid; gap: 12px; }
+  .price-row { display: flex; justify-content: space-between; border-bottom: 1px solid var(--line); padding-bottom: 11px; }
+  .price-row .k { color: var(--gray); font-weight: 600; }
+  .price-row .k small { font-size: 12px; color: var(--gray-light); }
+  .price-row .v { font-weight: 800; font-family: var(--font-display); }
+  .price-total { display: flex; justify-content: space-between; align-items: center; background: var(--cream); border-radius: 12px; padding: 12px 14px; }
+  .price-total .k { color: var(--coral-deep); font-weight: 700; }
+  .price-total .v { font-weight: 800; font-family: var(--font-display); font-size: 20px; color: var(--coral); }
+  .price-note { font-size: 12.5px; color: var(--gray-light); line-height: 1.5; }
+  .btn-apply { background: var(--coral); color: #fff !important; font-weight: 700; text-align: center; padding: 14px; border-radius: 12px; font-size: 15px; display: block; }
+
+  /* ── Footer ── */
+  .footer { background: var(--ink); color: #C5BAB1; padding: 56px 48px 40px; }
+  .footer-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 32px; }
+  .footer-logo { font-family: var(--font-display); font-weight: 800; font-size: 20px; color: #fff; display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+  .footer-logo .dot { width: 12px; height: 12px; border-radius: 50%; background: var(--coral); }
+  .footer-desc { font-size: 14px; line-height: 1.6; margin: 0; max-width: 260px; }
+  .footer-col-title { color: #fff; font-weight: 700; font-size: 13px; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 14px; }
+  .footer-links { display: grid; gap: 9px; font-size: 14px; }
+  .footer-bottom { margin-top: 36px; padding-top: 22px; border-top: 1px solid #3A332E; font-size: 13px; color: var(--gray-light); }
+
+  /* ── Responsive ── */
+  @media (max-width: 1080px) {
+    .learn-grid { grid-template-columns: repeat(3, 1fr); }
+    .hero-cream h1 { font-size: 48px; }
+  }
+  @media (max-width: 900px) {
+    .topbar, .nav, .hero-cream, .problem, .why, .learn, .outcomes, .curriculum, .apply, .footer { padding-left: 24px; padding-right: 24px; }
+    .nav-links, .nav-right > span { display: none; }
+    .hero-cream-grid, .why-grid, .apply-box { grid-template-columns: 1fr; }
+    .apply-box { padding: 36px 28px; }
+    .outcomes-grid, .dd-prog-grid, .dd-featured, .dd-3col { grid-template-columns: 1fr; }
+    .learn-grid { grid-template-columns: 1fr 1fr; }
+    .hero-float { left: 12px; }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+    .week { grid-template-columns: 1fr; gap: 8px; }
+  }
+  @media (max-width: 560px) {
+    .learn-grid { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr; }
+    .hero-cream h1 { font-size: 38px; }
+    .hero-actions { flex-wrap: wrap; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="topbar">📢 2026 하반기 바이브코딩 통합과정 — 선착순 모집 중 · 코딩 무경험자 OK · KECA 회원 20% 할인</div>
+
+  <nav class="nav" id="nav">
+    <div class="nav-inner">
+      <div class="nav-left">
+        <a href="index.html" class="logo"><span class="logo-dot"></span>이룸<span class="logo-sub">ACADEMY</span></a>
+        <div class="nav-links">
+          <span data-menu="prog">교육과정 <span class="nav-caret">▼</span></span>
+          <span data-menu="res">커리큘럼 <span class="nav-caret">▼</span></span>
+          <span data-menu="comm">커뮤니티 <span class="nav-caret">▼</span></span>
+          <span data-menu="">기업교육</span>
+          <span data-menu="">회사소개</span>
+        </div>
+      </div>
+      <div class="nav-right">
+        <span onclick="location.href='inquiry.html'">문의</span>
+        <span onclick="location.href='auth/login.html'">Sign in</span>
+        <a href="#apply" class="btn-nav-cta">수강 신청</a>
+      </div>
+    </div>
+
+    <div class="dropdown hidden" id="dd-prog">
+      <div class="dd-inner dd-prog-grid">
+        <div>
+          <div class="dd-label">대표 과정</div>
+          <div class="dd-featured">
+            <a href="#curriculum" class="dd-card">
+              <div class="dd-card-title">바이브코딩 통합과정 <span class="badge-hot">HOT</span></div>
+              <div class="dd-card-desc">업무자동화 → 실배포까지 6주·60시간 완주</div>
+            </a>
+            <a href="#curriculum" class="dd-card">
+              <div class="dd-card-title">AI 전문강사 Workshop</div>
+              <div class="dd-card-desc">생성형 AI 실무 → 에이전트 개발 8주 과정</div>
+            </a>
+          </div>
+        </div>
+        <div>
+          <div class="dd-label">세부 트랙</div>
+          <div class="dd-tracks">
+            <span>업무자동화</span>
+            <span>AI 데이터분석</span>
+            <span>바이브코딩 기초</span>
+            <span>개발 기초체력</span>
+            <span>풀스택 실배포</span>
+            <span class="accent">전체 과정 보기 →</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dropdown hidden" id="dd-res">
+      <div class="dd-inner dd-3col">
+        <a href="#curriculum"><div class="dd-item-title">12회 완주 로드맵</div><div class="dd-item-desc">주 2회 × 6주, 1주차부터 최종 데모데이까지</div></a>
+        <a href="#outcomes"><div class="dd-item-title">수료 결과물</div><div class="dd-item-desc">실배포 URL·PRD·데이터 분석 자산</div></a>
+        <a href="#apply"><div class="dd-item-title">수강료·신청 안내</div><div class="dd-item-desc">분할 30+30, 전체 50만원 · KECA 20% 할인</div></a>
+      </div>
+    </div>
+
+    <div class="dropdown hidden" id="dd-comm">
+      <div class="dd-inner dd-3col">
+        <div><div class="dd-item-title">강사진 · 멘토</div><div class="dd-item-desc">4명의 전문가 강사진과 섹션별 컨설팅</div></div>
+        <div><div class="dd-item-title">수강 후기</div><div class="dd-item-desc">완주 수강생의 실배포 서비스 사례</div></div>
+        <div><div class="dd-item-title">데모데이 갤러리</div><div class="dd-item-desc">기수별 최종 데모데이 프로젝트</div></div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <header class="hero-cream" id="hero-cream">
+    <div class="container hero-cream-grid">
+      <div>
+        <div class="pill-cream">● 2026 하반기 개강 · AI 전문강사 육성</div>
+        <h1>업무자동화에서<br><span class="accent">실배포</span>까지,<br>바이브코딩 통합과정</h1>
+        <p class="lede">클로드 업무자동화 · AI 데이터분석 · 바이브코딩을 <strong>하나의 완주 로드맵</strong>으로. 따라 하고 끝나는 강의가 아니라, 내가 만든 서비스가 <strong>실제 URL</strong>로 남는 강의.</p>
+        <div class="hero-stats">
+          <div><span class="num">60시간</span> <span class="cap">12회 × 5h</span></div>
+          <div class="sep"></div>
+          <div><span class="num">6주</span> <span class="cap">주 2회 · 평일+주말</span></div>
+          <div class="sep"></div>
+          <div><span class="num">1인 1서비스</span> <span class="cap">실배포 URL</span></div>
+        </div>
+        <div class="hero-actions">
+          <a href="#apply" class="btn btn-coral">수강 신청하기 →</a>
+          <a href="#curriculum" class="btn btn-outline-ink">커리큘럼 보기</a>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="hero-photo"><span>demo day photo</span></div>
+        <div class="hero-float">
+          <div class="icon">URL</div>
+          <div><div class="cap">수료 결과물</div><div class="val">실배포 서비스 + 포트폴리오</div></div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Problem -->
+  <section class="problem">
+    <div class="problem-inner">
+      <div class="eyebrow">The problem</div>
+      <h2>바이브 코딩은 배우고 싶은데,<br>어디서부터 시작해야 할까요?</h2>
+      <p>많은 강의가 'AI 도구 클릭하는 법'만 가르칩니다. 하지만 도구는 계속 바뀝니다. 정작 남는 힘은 <strong>내 업무를 자동화하고, 데이터를 읽고, 아이디어를 실제 서비스로 만드는 과정 전체</strong>입니다.</p>
+    </div>
+  </section>
+
+  <!-- Why it works -->
+  <section class="why">
+    <div class="container why-grid">
+      <div>
+        <div class="eyebrow" style="margin-bottom:12px;">Why it works</div>
+        <h2>60시간을 완주하게 만드는<br>설계 비밀</h2>
+      </div>
+      <div class="why-cards">
+        <div class="why-card"><span class="no">01</span><p>자동화·분석·코딩을 <strong>따로</strong> 가르치지 않습니다. 반복업무를 스킬로 자동화하고, 그 데이터를 분석해 대시보드로 만들고, 아이디어를 PRD에서 배포 URL까지 하나의 흐름으로 연결합니다.</p></div>
+        <div class="why-card"><span class="no">02</span><p><strong>평일에 배우고 주말에 만드는</strong> 주 2회 리듬. 인풋과 실습이 한 주 안에 맞물려 이탈 없이 완주합니다.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- What you'll learn -->
+  <section class="learn">
+    <div class="container">
+      <div class="section-head">
+        <div class="eyebrow">What you'll learn</div>
+        <h2>이 과정에서 <span class="accent">배웁니다</span></h2>
+      </div>
+      <div class="learn-grid">
+        <div class="learn-card"><div class="no">1</div><h3>업무자동화</h3><p>클로드 스킬·플러그인으로 내 반복업무 2개를 자동화</p></div>
+        <div class="learn-card"><div class="no">2</div><h3>데이터분석</h3><p>점검부터 인사이트까지 6단계 분석 + 한 화면 대시보드</p></div>
+        <div class="learn-card"><div class="no">3</div><h3>바이브코딩 기초</h3><p>아이디어→PRD 한 장→내 서비스 첫 화면 제작</p></div>
+        <div class="learn-card"><div class="no">4</div><h3>개발 기초체력</h3><p>터미널·파이썬·DB·서버·REST API 완전 이해</p></div>
+        <div class="learn-card"><div class="no">5</div><h3>풀스택 실배포</h3><p>구현→배포(실제 URL)→도메인·SEO→데이터 기반 개선</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Outcomes -->
+  <section class="outcomes" id="outcomes">
+    <div class="container">
+      <div class="outcomes-head">
+        <div class="eyebrow">What you'll take home</div>
+        <h2>수강 후 남는 <span class="accent">결과물</span></h2>
+        <p class="sub">추상적인 이론이 아니라, 실제 URL로 증명되는 자산.</p>
+      </div>
+      <div class="outcomes-grid">
+        <div class="outcome-card"><div class="tag">01 · 업무자동화·분석 자산</div><p>나만의 자동화 스킬 + 데이터 분석 실습 예제</p></div>
+        <div class="outcome-card"><div class="tag">02 · 기획·설계 자산</div><p>강의 주제별 PRD(화면구성요구서), Data-Based 화면설계 방법 및 실습사례</p></div>
+        <div class="outcome-card"><div class="tag">03 · 실배포 서비스</div><p>실제 URL을 가진 1인 1서비스 + 개선 리포트·발표 2회 검증</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Curriculum -->
+  <section class="curriculum" id="curriculum">
+    <div class="curriculum-inner">
+      <div class="section-head">
+        <div class="eyebrow">Curriculum</div>
+        <h2>12회 완주 커리큘럼</h2>
+        <p class="sub">평일·주말 주 2회 × 6주</p>
+      </div>
+      <div class="week-list">
+        <div class="week">
+          <div class="wk">1주차</div>
+          <div><h3>클로드 완전 정복 → 스킬·플러그인 입문</h3><p>4대 무기·지시 4원칙 · SKILL.md와 커넥터 연결 · 첫 자동화</p></div>
+        </div>
+        <div class="week">
+          <div class="wk">2주차</div>
+          <div><h3>업무자동화 완성 → AI 데이터분석</h3><p>내 업무 스킬 10종 완성 · 6단계 분석과 한 화면 대시보드</p></div>
+        </div>
+        <div class="week milestone">
+          <div class="wk">3주차 <span class="star">★ 기초 마일스톤 발표</span></div>
+          <div><h3>바이브코딩 기초</h3><p>시스템 구조 이해 · PRD 작성방법 · 내 서비스 2종 구현</p></div>
+        </div>
+        <div class="week">
+          <div class="wk">4–5주차</div>
+          <div><h3>개발자의 도구 → 서비스의 뼈대</h3><p>터미널·파이썬·Git · 프로그램 구조·DB·서버·REST API 이해 · 상용프로그램 개발의 이해</p></div>
+        </div>
+        <div class="week milestone">
+          <div class="wk">6주차 <span class="star">★ 최종 데모데이</span></div>
+          <div><h3>실배포와 개선</h3><p>구현→배포 URL→도메인·SEO · 퍼널 분석·개선 · 라이브 데모</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Apply -->
+  <section class="apply" id="apply">
+    <div class="apply-inner">
+      <div class="apply-box">
+        <div>
+          <div class="pill-glass">코딩 무경험자도 OK · 개인 노트북만</div>
+          <h2>2026 하반기<br>바이브코딩,<br>지금 신청하세요</h2>
+          <p class="lede">대상: 바이브코딩 강의를 나가실 AI 강의 유경험 강사님. 프롬프트 카드·실습 자료 제공, 수료 시 실배포 URL이 내 손에 남습니다.</p>
+        </div>
+        <div class="price-card">
+          <div class="title">수강료 안내</div>
+          <div class="price-rows">
+            <div class="price-row"><span class="k">1~3주차<br><small>업무자동화 &amp; 코딩 기초</small></span><span class="v">30만원</span></div>
+            <div class="price-row"><span class="k">4~6주차<br><small>바이브코딩 심화</small></span><span class="v">30만원</span></div>
+            <div class="price-total"><span class="k">전체 수강 시</span><span class="v">50만원</span></div>
+            <div class="price-note">기존 KECA 회원 20% 할인 제공 · 입금계좌: 기업은행 112-215833-04-021 쪼앤미컨설팅(조은아) · 신청 후 입금 확정</div>
+            <a href="https://forms.gle/SZpYdprsmBtvJose9" target="_blank" rel="noopener" id="apply-form-btn" class="btn-apply">신청하기 →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div>
+        <div class="footer-logo"><span class="dot"></span>이룸 ACADEMY</div>
+        <p class="footer-desc">업무자동화에서 실배포까지. 내 서비스로 증명하는 바이브코딩 통합과정.</p>
+      </div>
+      <div>
+        <div class="footer-col-title">Program</div>
+        <div class="footer-links"><span>바이브코딩 통합과정</span><span>12회 커리큘럼</span><span>수강 신청</span></div>
+      </div>
+      <div>
+        <div class="footer-col-title">About</div>
+        <div class="footer-links"><span>과정 소개</span><span>수료 결과물</span><span>수강 안내</span></div>
+      </div>
+      <div>
+        <div class="footer-col-title">Contact</div>
+        <div class="footer-links"><span>이룸아카데미 (IRUM ACADEMY)</span><span>쪼앤미 컨설팅</span></div>
+      </div>
+    </div>
+    <div class="container footer-bottom">© 2026 이룸아카데미 (Irum Academy). All rights reserved.</div>
+  </footer>
+
+<script>
+(function () {
+  // Nav dropdowns (hover)
+  var nav = document.getElementById('nav');
+  var panels = { prog: document.getElementById('dd-prog'), res: document.getElementById('dd-res'), comm: document.getElementById('dd-comm') };
+  function closeAll() { Object.keys(panels).forEach(function (k) { panels[k].classList.add('hidden'); }); }
+  document.querySelectorAll('.nav-links > span').forEach(function (el) {
+    el.addEventListener('mouseenter', function () {
+      closeAll();
+      var m = el.getAttribute('data-menu');
+      if (m && panels[m]) panels[m].classList.remove('hidden');
+    });
+  });
+  nav.addEventListener('mouseleave', closeAll);
+
+})();
+</script>
+</body>
+</html>
