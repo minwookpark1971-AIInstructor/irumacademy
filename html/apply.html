@@ -60,9 +60,15 @@
         <select class="input" id="f-option" name="option"></select>
       </div>
 
+      <!-- 보유기간은 개인정보처리방침 제2조와 반드시 같아야 한다.
+           예전에는 여기만 "1년"이라 방침(탈퇴 시까지)과 어긋나 있었다.
+           "신청서만 1년 뒤 지우는" 구현이 실제로 존재하지 않으므로,
+           존재하지 않는 정책을 고지하는 쪽을 버리고 방침에 맞춘다. -->
       <label class="checkline">
         <input type="checkbox" id="f-agree" required>
-        개인정보 수집·이용에 동의합니다. (신청 접수 및 안내 목적, 보유기간 1년) *
+        <span>[필수] 개인정보 수집·이용에 동의합니다.
+          (신청 접수 및 안내 목적, 회원 탈퇴 시까지 보유 ·
+          <a href="privacy.html" target="_blank" rel="noopener">개인정보처리방침</a>)</span>
       </label>
 
       <p id="form-error" class="form-error mb-0" hidden></p>
@@ -84,7 +90,6 @@
       <div class="muted-2" style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px">입금 안내</div>
       <div style="font-size:15px;line-height:1.7">
         기업은행 <b>112-215833-04-021</b><br>
-        예금주: 쪼앤미 컨설팅<br>
         <span class="muted-2" style="font-size:13px">입금 후 관리자 확인 → 확정 안내 문자 발송</span>
       </div>
     </div>
@@ -207,8 +212,15 @@
         el('f-email').value = user ? user.email : '';
         if (user && user.name && !el('f-name').value) el('f-name').value = user.name;
 
+        // ⚠ value 는 옵션 id 다. 예전에는 name 을 넣었고, 그 탓에 신청 레코드의
+        //   option_id 가 항상 null 이었다 (store.js 의 normalizeCourse · createApplication
+        //   과 3단 연쇄다 — 한 곳만 고치면 여전히 null 이다).
+        //   표시용 이름·가격은 data-* 로 따라 붙인다.
         el('f-option').innerHTML = (selected.options || []).map(function (o) {
-            return '<option value="' + esc(o.name) + '">' + esc(o.label) + '</option>';
+            return '<option value="' + esc(o.id) + '"' +
+                   ' data-name="' + esc(o.name) + '"' +
+                   ' data-price="' + esc(o.price == null ? '' : o.price) + '">' +
+                   esc(o.label) + '</option>';
         }).join('');
 
         showStep('form');
@@ -234,14 +246,24 @@
         btn.disabled = true;
         btn.textContent = '접수 중…';
 
+        var optSel = el('f-option');
+        var optEl = optSel.options[optSel.selectedIndex] || null;
+
         window.IRUM.createApplication({
             course_id: selected.id,
             course_slug: selected.slug,
             course_title: selected.title,
             name: name,
             phone: phone,
+            contact_email: el('f-email').value.trim(),
             organization: el('f-org').value.trim(),
-            option_name: el('f-option').value
+            option_id: optSel.value || null,
+            option_name: optEl ? optEl.getAttribute('data-name') : '',
+            option_price: optEl && optEl.getAttribute('data-price')
+                          ? Number(optEl.getAttribute('data-price')) : null,
+            // 하드코딩하지 않는다. 체크박스를 안 봤으면 동의를 받은 게 아니고,
+            // DB 의 applications_privacy_required 제약이 그런 행을 거부한다.
+            agreed_privacy: el('f-agree').checked
         }).then(function (res) {
             btn.disabled = false;
             btn.textContent = '신청 접수하기';
@@ -282,12 +304,18 @@
         el('done-to-list').addEventListener('click', function () { showStep('list'); });
         el('apply-form').addEventListener('submit', submit);
 
-        el('login-cancel').addEventListener('click', function () {
+        // 로그인을 취소하면 sessionStorage 도 같이 비운다.
+        // 안 비우면 나중에 다른 경로로 이 페이지에 들어왔을 때 예전에 고르다 만 강의의
+        // 신청서가 제멋대로 열린다.
+        function cancelLogin() {
             el('login-modal').hidden = true;
             pendingSlug = null;
-        });
+            try { sessionStorage.removeItem('irum:pendingSlug'); } catch (e) {}
+        }
+
+        el('login-cancel').addEventListener('click', cancelLogin);
         el('login-modal').addEventListener('click', function (e) {
-            if (e.target === el('login-modal')) { el('login-modal').hidden = true; pendingSlug = null; }
+            if (e.target === el('login-modal')) cancelLogin();
         });
         el('google-login').addEventListener('click', function () {
             // supabase 모드에서는 여기서 페이지를 떠나 Google 로 이동하고,

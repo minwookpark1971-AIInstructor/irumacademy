@@ -37,7 +37,21 @@
       </div>
     </div>
 
-    <div class="seg" style="margin:24px 0 28px">
+    <!-- local 모드 경고. config.js 가 빈 채 배포되면 isAdmin() 이 무조건 true 라
+         이 화면이 로그인한 아무에게나 열린다. 조용히 열리는 것이 가장 위험하다. -->
+    <div id="local-warning" class="box mt-4" hidden
+         style="border-color:var(--color-accent);border-width:2px">
+      <b style="color:var(--color-accent)">local 모드로 동작 중입니다.</b>
+      <div class="muted" style="font-size:13.5px;margin-top:6px;line-height:1.7">
+        <code>js/config.js</code> 에 Supabase 설정이 없어 <b>권한 검증이 동작하지 않습니다.</b>
+        지금 보이는 데이터는 이 브라우저의 localStorage 이며, 실제 신청자 데이터가 아닙니다.
+        메일 발송은 비활성화됩니다.
+      </div>
+    </div>
+
+    <!-- ⚠ id 가 필요하다. showTab() 이 전역 .seg-opt 를 잡으면, 나중에 하위 탭용
+         .seg 를 어디든 추가하는 순간 그 클릭이 메인 탭까지 바꿔버린다. -->
+    <div class="seg" id="admin-tabs" style="margin:24px 0 28px">
       <button type="button" class="seg-opt" data-tab="dashboard" aria-selected="true">대시보드</button>
       <button type="button" class="seg-opt" data-tab="courses" aria-selected="false">강의 관리</button>
       <button type="button" class="seg-opt" data-tab="applicants" aria-selected="false">신청자 관리</button>
@@ -82,7 +96,10 @@
       <div class="table-scroll">
         <table class="table">
           <thead>
-            <tr><th>신청일</th><th>이름</th><th>연락처</th><th>소속</th><th>과정</th><th>상태 변경</th></tr>
+            <!-- 예전에는 <th>과정</th> 아래에 option_name 을 렌더했다.
+                 열 이름과 데이터가 달랐던 것이고, course_title 은 이미 있었다. -->
+            <tr><th>신청일</th><th>이름</th><th>연락처</th><th>이메일</th><th>소속</th>
+                <th>과정</th><th>옵션</th><th>상태 변경</th></tr>
           </thead>
           <tbody id="app-rows"></tbody>
         </table>
@@ -120,7 +137,7 @@
     }
 
     function showTab(name) {
-        Array.prototype.forEach.call(document.querySelectorAll('.seg-opt'), function (b) {
+        Array.prototype.forEach.call(document.querySelectorAll('#admin-tabs > .seg-opt'), function (b) {
             b.setAttribute('aria-selected', b.getAttribute('data-tab') === name ? 'true' : 'false');
         });
         Array.prototype.forEach.call(document.querySelectorAll('[data-panel]'), function (p) {
@@ -151,8 +168,10 @@
               '<td class="muted" style="white-space:nowrap">' + esc((a.created_at || '').slice(0, 10)) + '</td>' +
               '<td style="font-weight:600">' + esc(a.name) + '</td>' +
               '<td style="white-space:nowrap">' + esc(a.phone) + '</td>' +
+              '<td class="muted">' + esc(a.contact_email || '-') + '</td>' +
               '<td class="muted">' + esc(a.organization || '-') + '</td>' +
-              '<td><span class="tag tag-neutral">' + esc(a.option_name || '') + '</span></td>' +
+              '<td>' + esc(a.course_title || '') + '</td>' +
+              '<td><span class="tag tag-neutral">' + esc(a.option_name || '-') + '</span></td>' +
               '<td><select class="input" data-id="' + esc(a.id) + '" ' +
                   'style="min-height:32px;font-size:13px;min-width:120px">' + opts + '</select></td>' +
             '</tr>';
@@ -178,14 +197,24 @@
         });
     }
 
+    var COURSE_STATUS = {
+        draft:  { label: '준비중 · DRAFT', cls: 'tag tag-neutral' },
+        open:   { label: '모집중 · OPEN',  cls: 'tag tag-accent' },
+        closed: { label: '마감 · CLOSED',  cls: 'tag tag-outline' }
+    };
+
     function renderCourses() {
-        window.IRUM.listOpenCourses().then(function (list) {
+        // listOpenCourses() 가 아니라 listAllCourses() 다.
+        // open 만 조회하면서 "draft→open→closed 를 관리한다"고 안내하면
+        // 관리자는 draft 강의를 영영 볼 수 없다.
+        window.IRUM.listAllCourses().then(function (list) {
             el('course-rows').innerHTML = list.map(function (c) {
+                var st = COURSE_STATUS[c.status] || COURSE_STATUS.draft;
                 return '<tr>' +
                     '<td style="font-weight:600">' + esc(c.title) + '</td>' +
                     '<td class="muted">' + esc(c.schedule) + '</td>' +
                     '<td>' + esc(c.capacity_text) + '</td>' +
-                    '<td><span class="tag tag-accent">OPEN</span></td>' +
+                    '<td><span class="' + st.cls + '">' + esc(st.label) + '</span></td>' +
                 '</tr>';
             }).join('');
         });
@@ -194,6 +223,7 @@
     function loadDashboard() {
         el('admin-gate').hidden = true;
         el('admin-app').hidden = false;
+        el('local-warning').hidden = window.IRUM.mode !== 'local';
         var user = window.IRUM.getUser();
         el('admin-email').textContent = user ? user.email : '';
 
@@ -224,12 +254,15 @@
     }
 
     document.addEventListener('DOMContentLoaded', function () {
-        Array.prototype.forEach.call(document.querySelectorAll('.seg-opt'), function (b) {
+        Array.prototype.forEach.call(document.querySelectorAll('#admin-tabs > .seg-opt'), function (b) {
             b.addEventListener('click', function () { showTab(b.getAttribute('data-tab')); });
         });
 
         el('csv-btn').addEventListener('click', function () {
-            window.IRUM.downloadCsv(apps, 'irum-applications-' + todayStr() + '.csv');
+            if (!confirm('신청자 명단(이름·연락처·이메일)이 이 PC 에 평문 CSV 로 저장됩니다.\n' +
+                         '개인정보이므로 사용 후 삭제해 주세요.\n\n계속할까요?')) return;
+            window.IRUM.downloadCsv(apps,
+                'irum-applications-' + todayStr() + '.csv', 'applications');
         });
 
         el('admin-login').addEventListener('click', function () {

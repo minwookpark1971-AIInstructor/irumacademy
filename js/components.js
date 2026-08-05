@@ -99,12 +99,25 @@ function generateFooter() {
         <a href="${p.coursesUrl}">강의코스</a>
         <a href="${p.inquiryUrl}">문의하기</a>
         <a href="${p.adminUrl}" class="admin-link">관리자 →</a>
-        <div class="legal">
-            © ${year} 이룸아카데미 (Irum Academy). ·
-            <a href="mailto:irum.ceo@gmail.com">irum.ceo@gmail.com</a> ·
-            서울특별시 강남구 도산대로 54길 41 ·
-            <a href="${p.privacyUrl}">개인정보처리방침</a> ·
-            <a href="${p.termsUrl}">이용약관</a>
+        <!-- 사업자 정보는 전자상거래법상 표기 의무이자, 광고성 메일에 넣어야 하는
+             법정 기재사항(발신자 명칭·주소·연락처)과 같은 값이다.
+             ⚠ 바꿀 때는 여기만 고치면 안 된다 — html/privacy.html, 개인정보처리방침.txt,
+                html/terms.html, 이용약관.txt, Supabase Secrets(SENDER_*)가 같은 값을 쓴다. -->
+        <div class="legal" style="line-height:1.9">
+            <div>
+                <b style="font-weight:600">이룸아카데미</b> (Irum Academy) ·
+                대표 박민욱 ·
+                사업자등록번호 532-56-00372
+            </div>
+            <div>
+                서울특별시 강남구 도산대로54길 41, B1 ·
+                <a href="mailto:irum.ceo@gmail.com">irum.ceo@gmail.com</a>
+            </div>
+            <div style="margin-top:8px">
+                © ${year} 이룸아카데미. ·
+                <a href="${p.privacyUrl}">개인정보처리방침</a> ·
+                <a href="${p.termsUrl}">이용약관</a>
+            </div>
         </div>
     </div>
 </footer>`;
