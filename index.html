@@ -1,1350 +1,232 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Irum Academy - AI시대의 새로운 교육과정</title>
-    <meta name="description" content="온라인 강의 플랫폼">
-    
-    <!-- CSS -->
-    <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="css/animations.css">
-    
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
-    
-    <!-- jQuery Validation -->
-    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>이룸아카데미 — 업무자동화에서 실제 서비스까지</title>
+<meta name="description" content="AI업무자동화 &amp; 바이브코딩 통합 전문가 과정. 2026.08.08 ZOOM 개강, 주 2회 × 6주, 총 60시간. 주관 KECA · 이룸아카데미.">
+<meta property="og:title" content="이룸아카데미 — 업무자동화에서 실제 서비스까지">
+<meta property="og:description" content="AI업무자동화 &amp; 바이브코딩 통합 전문가 과정. 2026.08.08 ZOOM 개강, 주 2회 × 6주, 총 60시간.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.irumcompany.co.kr/">
+<link rel="stylesheet" href="css/modernist.css?v=2">
 </head>
 <body>
-    <!-- Header -->
-    <div id="header-container"></div>
 
-    <!-- Hero Section -->
-    <section class="hero-section" style="background-image: url('images/backgrounds/hero-background.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat; margin-top: 80px; min-height: 50vh; display: flex; align-items: center; justify-content: center; padding-top: 3rem; padding-bottom: 3rem; position: relative;">
-        <div class="container" style="position: relative; z-index: 1; width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 1.5rem;">
-            <div class="hero-content reveal-up" style="text-align: center; width: 100%; margin: 0 auto;">
-                <h1 class="hero-title" style="text-align: center; margin-bottom: 1.5rem; color: #ffffff; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);">AI시대의<br>새로운 교육과정</h1>
-                <p class="hero-description" style="text-align: center; max-width: 800px; margin: 0 auto; color: #ffffff; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);">
-                    이룸아카데미와 함께<br>
-                    AI리터러시를 뛰어넘어<br>
-                    AI로 자신의 경쟁력을 높이는<br>
-                    실무교육을 지향합니다.
-                </p>
-            </div>
-        </div>
-    </section>
+<div id="header-container"></div>
 
-    <!-- AI Workshop Section -->
-    <section id="ai-workshop" class="section" style="background-color: #f9fafb;">
-        <div class="container">
-            <!-- Hero Section -->
-            <div class="curriculum-hero reveal-up">
-                <div class="curriculum-hero__promo-badge">2026 하반기 전문가 과정</div>
-                <div class="curriculum-hero__content">
-                    <h2 class="curriculum-hero__title">2026 하반기 KECA AI 전문강사과정</h2>
-                    <p class="curriculum-hero__subtitle">AI 업무자동화 &amp; 바이브코딩 통합 전문가 과정<br>업무자동화에서 실제 서비스까지, 하나의 완주 로드맵</p>
-                    <div class="curriculum-hero__highlight">
-                        <span class="curriculum-hero__highlight-text">클로드 업무자동화 · AI 데이터분석 · 바이브코딩</span>
-                    </div>
-                    <div class="curriculum-hero__info">
-                        <span class="curriculum-hero__badge">2026년 8월 8일 개강</span>
-                        <span class="curriculum-hero__badge">주 2회 × 6주 · 총 12회</span>
-                        <span class="curriculum-hero__badge">Zoom + 창동 오프라인</span>
-                        <span class="curriculum-hero__badge">주관·운영 KECA / 이룸아카데미</span>
-                    </div>
-                    <div class="curriculum-hero__cta-group">
-                        <button class="curriculum-hero__cta curriculum-hero__cta--primary" id="curriculum-apply-btn">수강 신청 문의하기</button>
-                    </div>
-                </div>
-            </div>
+<main>
 
-            <!-- Curriculum Accordion Section -->
-            <div class="curriculum-accordion reveal-up">
-                <h3 class="curriculum-accordion__title">6주 12회, 무엇을 배우나요?</h3>
-                <div class="curriculum-accordion__list" id="curriculum-accordion-list">
-                    <!-- Accordion items will be populated by JavaScript -->
-                </div>
-                <div class="curriculum-accordion__toggle-wrapper">
-                    <button class="curriculum-accordion__toggle-btn" id="curriculum-toggle-all">자세히 보기</button>
-                </div>
-            </div>
-
-            <!-- Why This Course & Core Outcomes: Side by Side -->
-            <div class="curriculum-features reveal-up">
-                <div class="curriculum-features__grid">
-                    <!-- What You Learn (5 Modules) -->
-                    <div class="curriculum-features__item curriculum-features__item--wide">
-                        <div class="curriculum-features__header">
-                            <h3 class="curriculum-features__title">이 과정에서 배우실 수 있습니다</h3>
-                        </div>
-                        <ul class="curriculum-features__list curriculum-features__list--two-col">
-                            <li>
-                                <strong>01. AI 업무자동화</strong>
-                                <span>클로드 스킬·플러그인으로 내 반복업무 2개를 자동화</span>
-                            </li>
-                            <li>
-                                <strong>02. AI 데이터분석</strong>
-                                <span>데이터 인사이트부터 실제 비즈니스에 적용하는 분석까지</span>
-                            </li>
-                            <li>
-                                <strong>03. AI 바이브코딩 기초</strong>
-                                <span>서비스 아이디어 → 기획서 작성 → 내 서비스 MVP 제작</span>
-                            </li>
-                            <li>
-                                <strong>04. AI 바이브코딩 심화</strong>
-                                <span>개발을 위한 기초 이해 · 터미널·파이썬·DB·서버·REST API 완전 이해</span>
-                            </li>
-                            <li>
-                                <strong>05. 풀스택 실배포</strong>
-                                <span>구현 → 배포(실제 URL) → 도메인·SEO → 데이터 기반 개선</span>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <!-- Why This Course -->
-                    <div class="curriculum-features__item">
-                        <div class="curriculum-features__header">
-                            <h3 class="curriculum-features__title">왜 이 과정인가</h3>
-                        </div>
-                        <ul class="curriculum-features__list">
-                            <li>
-                                <strong>도구가 아니라 '흐름'을 배웁니다</strong>
-                                <span>많은 강의가 'AI 도구 클릭하는 법'만 가르치지만, 도구는 계속 바뀝니다. 정작 남는 힘은 내 업무를 자동화하고, 데이터를 읽고, 아이디어를 실제 서비스로 만드는 과정 전체입니다.</span>
-                            </li>
-                            <li>
-                                <strong>자동화·분석·코딩을 하나로 연결</strong>
-                                <span>따로 가르치지 않습니다. 반복업무를 스킬로 자동화하고, 그 데이터를 분석해 대시보드로 만들고, 내 아이디어를 기획해 실제 서비스로 만드는 하나의 흐름으로 완주합니다.</span>
-                            </li>
-                            <li>
-                                <strong>평일에 배우고 주말에 만드는 주 2회 리듬</strong>
-                                <span>'따라 하고 끝나는 강의'가 아니라 '내가 만든 서비스가 실제 서비스로 남는 강의'를 목표로 설계했습니다.</span>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <!-- Core Outcomes -->
-                    <div class="curriculum-features__item">
-                        <div class="curriculum-features__header">
-                            <h3 class="curriculum-features__title">이 과정에서 얻으실 수 있습니다</h3>
-                        </div>
-                        <ul class="curriculum-features__checklist">
-                            <li><strong>AI 업무자동화·분석 스킬</strong><br>나만의 자동화 스킬 + 데이터 분석 실습 예제</li>
-                            <li><strong>바이브코딩 기획·설계 스킬</strong><br>강의 주제별 PRD(화면구성요구서), Data 기반의 화면설계 방법 및 실습사례</li>
-                            <li><strong>실배포 서비스</strong><br>실제 URL을 가진 1인 1서비스 + 개선 리포트 · 발표 2회 검증</li>
-                            <li><strong>포트폴리오 &amp; 자격증</strong><br>강사별 바이브코딩 포트폴리오 2개 완성 및 KECA AI 교육전문가 자격증 취득</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Course Info & Schedule: Combined -->
-            <div class="curriculum-info reveal-up">
-                <div class="curriculum-info__header">
-                    <h3 class="curriculum-info__title">과정 정보 및 안내/세션 일정</h3>
-                </div>
-                <div class="curriculum-info__content">
-                    <div class="curriculum-info__grid">
-                        <div class="curriculum-info__item">
-                            <span class="curriculum-info__label">과정명</span>
-                            <span class="curriculum-info__value">AI 업무자동화 &amp; 바이브코딩 통합 전문가 과정</span>
-                        </div>
-                        <div class="curriculum-info__item">
-                            <span class="curriculum-info__label">개강</span>
-                            <span class="curriculum-info__value">2026년 8월 8일 (토)</span>
-                        </div>
-                        <div class="curriculum-info__item">
-                            <span class="curriculum-info__label">형태</span>
-                            <span class="curriculum-info__value">평일·주말 주 2회 × 6주 · 총 12회</span>
-                        </div>
-                        <div class="curriculum-info__item">
-                            <span class="curriculum-info__label">평일 수업</span>
-                            <span class="curriculum-info__value">오후 7시~11시 온라인 Zoom</span>
-                        </div>
-                        <div class="curriculum-info__item">
-                            <span class="curriculum-info__label">토요일 수업</span>
-                            <span class="curriculum-info__value">오후 1시~6시 창동 오프라인</span>
-                        </div>
-                        <div class="curriculum-info__item">
-                            <span class="curriculum-info__label">대상</span>
-                            <span class="curriculum-info__value">AI 강의 유경험 강사 (코딩 무경험자 OK)</span>
-                        </div>
-                        <div class="curriculum-info__item">
-                            <span class="curriculum-info__label">수강료</span>
-                            <span class="curriculum-info__value">기초 30만원 / 심화 30만원 · 전체 수강 시 50만원</span>
-                        </div>
-                        <div class="curriculum-info__item">
-                            <span class="curriculum-info__label">주관·운영</span>
-                            <span class="curriculum-info__value">KECA / 이룸아카데미</span>
-                        </div>
-                        <div class="curriculum-info__item">
-                            <span class="curriculum-info__label">문의</span>
-                            <span class="curriculum-info__value">010-3891-7888</span>
-                        </div>
-                        <div class="curriculum-info__item">
-                            <span class="curriculum-info__label">다시보기 웹사이트</span>
-                            <span class="curriculum-info__value">www.irumacademy.co.kr</span>
-                        </div>
-                    </div>
-                    <div class="curriculum-info__details">
-                        <div class="curriculum-info__detail-item">
-                            <strong>오프라인 교육 (토요일 · 창동):</strong><br>
-                            8.8 / 8.15 / 8.22 / 8.29 / 9.5 / 9.12 / 9.19
-                        </div>
-                        <div class="curriculum-info__detail-item">
-                            <strong>Zoom 교육 (평일 저녁):</strong><br>
-                            8.12 / 8.26 / 9.2 / 9.9 / 9.11
-                        </div>
-                        <div class="curriculum-info__detail-item">
-                            <strong>수강료 안내</strong><br>
-                            업무자동화&amp;바이브코딩 기초 (8월 8일~29일) 30만원<br>
-                            바이브코딩 심화 (9월 2일~19일) 30만원<br>
-                            전체 수강 시 50만원 · 기존 KECA 회원 20% 할인
-                        </div>
-                        <div class="curriculum-info__detail-item">
-                            <strong>신청 방법:</strong> 카톡에 첨부된 링크로 수강신청을 해주시면,<br>
-                            입금 후 확정 안내를 드립니다.
-                        </div>
-                        <div class="curriculum-info__detail-item">
-                            <strong>입금계좌:</strong> 기업은행 112-215833-04-021<br>
-                            쪼앤미 컨설팅 (조은아)
-                        </div>
-                        <div class="curriculum-info__detail-item">
-                            <strong>제공 사항:</strong> 클로드 스킬과 플러그인·실습 자료를 제공드리며,<br>
-                            모든 강의는 다시보기를 제공합니다. 개인 노트북만 있으면 시작할 수 있습니다.
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Application Modal -->
-    <div id="aiw-modal" class="aiw-modal" style="display: none;">
-        <div class="aiw-modal-backdrop"></div>
-        <div class="aiw-modal-content">
-            <div class="aiw-modal-header">
-                <h3>수강 신청 문의</h3>
-                <button class="aiw-modal-close" aria-label="닫기">×</button>
-            </div>
-            <form id="aiw-apply-form">
-                <div class="aiw-modal-notice" style="background-color: #F3F4F6; padding: 1rem; border-radius: 0.5rem; margin-bottom: 1.5rem; font-size: 0.9375rem; color: #374151; line-height: 1.6;">
-                    2026 하반기 KECA AI 전문강사과정(AI 업무자동화 &amp; 바이브코딩 통합 전문가 과정)은 2026년 8월 8일(토) 개강하며, 주 2회 × 6주 총 12회로 진행됩니다. 연락처를 남겨주시면 수강신청 링크와 상세 안내를 보내드립니다.
-                </div>
-                <div class="form-group">
-                    <label for="aiw-name" class="form-label">이름 *</label>
-                    <input type="text" id="aiw-name" name="name" class="form-input" required>
-                </div>
-                <div class="form-group">
-                    <label for="aiw-phone" class="form-label">연락처 *</label>
-                    <input type="tel" id="aiw-phone" name="phone" class="form-input" placeholder="010-0000-0000" required>
-                </div>
-                <div class="form-group">
-                    <label style="display: flex; align-items: center; gap: var(--spacing-2); cursor: pointer;">
-                        <input type="checkbox" id="aiw-curriculum-request" name="curriculum-request" style="width: auto; margin: 0;">
-                        <span class="form-label" style="margin: 0;">커리큘럼 상세 자료도 함께 요청하기</span>
-                    </label>
-                </div>
-                <div class="aiw-modal-actions">
-                    <button type="button" class="btn btn-outline" id="aiw-modal-cancel">취소</button>
-                    <button type="submit" class="btn btn-primary">신청하기</button>
-                </div>
-            </form>
-        </div>
+  <!-- ══════════ HERO ══════════ -->
+  <section class="band-dark" style="border-bottom:2px solid var(--color-accent)">
+    <div class="wrap" style="padding-block:clamp(44px,8vw,104px)">
+      <span class="kicker kicker-on-dark kicker-dot">2026 하반기 · 현재 모집중</span>
+      <h1 class="display-1" style="margin:.35em 0 0;max-width:16ch">업무자동화에서<br>실제 서비스까지.</h1>
+      <p class="lede measure" style="opacity:.82;margin-top:1.1em">
+        AI업무자동화 &amp; 바이브코딩 통합 전문가 과정 — 도구 클릭법이 아니라
+        <b style="opacity:1;color:#fff">자동화 → 분석 → 서비스화</b> 전 과정을 직접 만들며 남깁니다.
+      </p>
+      <div class="row-tags" style="margin-top:26px">
+        <span class="tag tag-on-dark">2026.08.08 ZOOM 개강</span>
+        <span class="tag tag-on-dark">평일·주말 주 2회 × 6주</span>
+        <span class="tag tag-on-dark">총 60시간 · 회당 5시간</span>
+        <span class="tag tag-on-dark">주관 KECA · 이룸아카데미</span>
+      </div>
+      <div class="row" style="margin-top:32px">
+        <a href="html/apply.html" class="btn btn-primary btn-lg">강의 신청하기 →</a>
+        <a href="html/instructor-growth.html" class="btn btn-lg btn-on-dark">커리큘럼 보기</a>
+      </div>
     </div>
-
-    <!-- Main Content -->
-    <main class="main-content" style="background-color: #ffffff; padding-top: 0; margin-top: 0;">
-        <!-- Course Grid Section -->
-        <section class="section grid-section" style="padding-top: 2rem;">
-            <div class="container" style="text-align: center;">
-                <div class="course-grid" id="course-grid" style="text-align: center;">
-                    <!-- Grid items will be loaded dynamically -->
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- Footer -->
-    <div id="footer-container"></div>
-
-    <!-- Scripts -->
-    <script src="js/courses-data.js"></script>
-    <script src="js/components.js"></script>
-    <script src="js/main.js"></script>
-    <script src="js/animations.js"></script>
-    <script src="js/courses.js"></script>
-    
-    <script>
-        $(document).ready(function() {
-            // Wait for components to load
-            setTimeout(function() {
-                // Load courses
-                if (typeof loadCourseGrid === 'function') {
-                    loadCourseGrid();
-                }
-                
-                // Initialize animations
-                if (typeof initRevealAnimations === 'function') {
-                    initRevealAnimations();
-                }
-
-                // Initialize AI Workshop
-                initAIWorkshop();
-            }, 200);
-        });
-
-        // AI Workshop Data
-        const aiwSchedule = [
-            { date: '2026-08-08', time: '13:00~18:00', label: '개강 · 창동 오프라인' },
-            { date: '2026-08-12', time: '19:00~23:00', label: 'Zoom' },
-            { date: '2026-08-15', time: '13:00~18:00', label: '창동 오프라인' },
-            { date: '2026-08-22', time: '13:00~18:00', label: '창동 오프라인' },
-            { date: '2026-08-26', time: '19:00~23:00', label: 'Zoom' },
-            { date: '2026-08-29', time: '13:00~18:00', label: '창동 오프라인' },
-            { date: '2026-09-02', time: '19:00~23:00', label: 'Zoom' },
-            { date: '2026-09-05', time: '13:00~18:00', label: '창동 오프라인' },
-            { date: '2026-09-09', time: '19:00~23:00', label: 'Zoom' },
-            { date: '2026-09-11', time: '19:00~23:00', label: 'Zoom' },
-            { date: '2026-09-12', time: '13:00~18:00', label: '창동 오프라인' },
-            { date: '2026-09-19', time: '13:00~18:00', label: '최종 데모데이 · 창동 오프라인' }
-        ];
-
-        const aiwCurriculum = [
-            { week: 'WEEK01', title: '클로드 완전 정복 → 스킬·플러그인 입문', content: '업무자동화 기초 · 스킬과 플러그인의 이해' },
-            { week: 'WEEK02', title: '업무자동화 완성 → AI 데이터분석', content: '내 업무 스킬 10종 완성 · 6단계 분석과 한 화면 대시보드' },
-            { week: 'WEEK03', title: '바이브코딩 기초 ★기초 마일스톤 발표', content: '시스템 구조 이해 · PRD 작성방법 · 내 서비스 2종 구현' },
-            { week: 'WEEK04-05', title: '개발자의 도구 → 서비스의 뼈대', content: '터미널·파이썬·Git · 프로그램 구조·DB·서버·REST API 이해 · 상용프로그램 개발의 이해' },
-            { week: 'WEEK06', title: '실배포와 개선 ★최종 데모데이', content: '구현 → 배포 URL → 도메인·SEO · 퍼널 분석·개선·라이브 데모' }
-        ];
-
-        function initAIWorkshop() {
-            // Render schedule
-            renderSchedule();
-            
-            // Render curriculum accordion
-            renderCurriculumAccordion();
-            
-            // Initialize accordion interactions
-            initCurriculumAccordion();
-            
-            // Initialize modal
-            initModal();
-        }
-
-        // Curriculum Accordion Data
-        const curriculumAccordionData = [
-            {
-                week: '1주차',
-                title: '클로드 완전 정복<br>→ 스킬·플러그인 입문',
-                content: '업무자동화 기초 · 스킬과 플러그인의 이해',
-                practice: '클로드 스킬·플러그인 환경 세팅, 내 반복업무 진단 및 자동화 대상 선정'
-            },
-            {
-                week: '2주차',
-                title: '업무자동화 완성<br>→ AI 데이터분석',
-                content: '내 업무 스킬 10종 완성 · 6단계 분석과 한 화면 대시보드',
-                practice: '내 반복업무 2개 자동화, 데이터 인사이트를 비즈니스 분석과 대시보드로 연결'
-            },
-            {
-                week: '3주차',
-                title: '바이브코딩 기초<br>★기초 마일스톤 발표',
-                content: '시스템 구조 이해 · PRD 작성방법 · 내 서비스 2종 구현',
-                practice: '서비스 아이디어 → 기획서(PRD) 작성 → MVP 제작, 기초 마일스톤 발표'
-            },
-            {
-                week: '4-5주차',
-                title: '개발자의 도구<br>→ 서비스의 뼈대',
-                content: '터미널·파이썬·Git · 프로그램 구조·DB·서버·REST API 이해 · 상용프로그램 개발의 이해',
-                practice: '개발을 위한 기초 이해를 바탕으로 내 서비스의 데이터·서버 구조 직접 설계'
-            },
-            {
-                week: '6주차',
-                title: '실배포와 개선<br>★최종 데모데이',
-                content: '구현 → 배포 URL → 도메인·SEO · 퍼널 분석·개선·라이브 데모',
-                practice: '실제 URL을 가진 1인 1서비스 완성, 개선 리포트 작성 및 최종 데모데이 발표'
-            }
-        ];
-
-        // 텍스트를 2행으로 균등하게 나누는 함수
-        function splitTextIntoTwoLines(text, cardWidth) {
-            // 이미 <br> 태그가 있으면 그대로 반환
-            if (text.includes('<br>')) {
-                return text;
-            }
-            
-            const words = text.split(' ');
-            if (words.length <= 1) return text;
-            
-            // 임시 요소를 생성하여 텍스트 너비 측정
-            const $temp = $('<span>').css({
-                'font-size': '1.125rem',
-                'font-weight': '600',
-                'visibility': 'hidden',
-                'position': 'absolute',
-                'white-space': 'nowrap',
-                'font-family': 'inherit'
-            }).appendTo('body');
-            
-            // 중간 지점에서 시작
-            let splitIndex = Math.floor(words.length / 2);
-            let bestSplit = splitIndex;
-            let bestDiff = Infinity;
-            
-            // 중간 지점 주변(-3 ~ +3)에서 최적의 분할점 찾기
-            for (let offset = -3; offset <= 3; offset++) {
-                const testSplit = splitIndex + offset;
-                if (testSplit > 0 && testSplit < words.length) {
-                    const testFirst = words.slice(0, testSplit).join(' ');
-                    const testSecond = words.slice(testSplit).join(' ');
-                    
-                    const firstWidth = $temp.text(testFirst).width();
-                    const secondWidth = $temp.text(testSecond).width();
-                    const diff = Math.abs(firstWidth - secondWidth);
-                    
-                    if (diff < bestDiff) {
-                        bestDiff = diff;
-                        bestSplit = testSplit;
-                    }
-                }
-            }
-            
-            $temp.remove();
-            
-            const firstLine = words.slice(0, bestSplit).join(' ');
-            const secondLine = words.slice(bestSplit).join(' ');
-            
-            return firstLine + '<br>' + secondLine;
-        }
-
-        function renderCurriculumAccordion() {
-            const $list = $('#curriculum-accordion-list');
-            $list.empty();
-            
-            curriculumAccordionData.forEach(function(item, index) {
-                const $card = $('<div>')
-                    .addClass('curriculum-card')
-                    .attr('data-week', item.week);
-                
-                const $badge = $('<div>')
-                    .addClass('curriculum-card__badge')
-                    .text(item.week);
-                
-                const $title = $('<h4>')
-                    .addClass('curriculum-card__title')
-                    .html(item.title);
-
-                const $content = $('<div>')
-                    .addClass('curriculum-card__content')
-                    .html(`
-                        <div class="curriculum-card__section">
-                            <h5 class="curriculum-card__section-title">주요 내용</h5>
-                            <p class="curriculum-card__section-text">${item.content}</p>
-                        </div>
-                        <div class="curriculum-card__section">
-                            <h5 class="curriculum-card__section-title">실습</h5>
-                            <p class="curriculum-card__section-text">${item.practice}</p>
-                        </div>
-                    `);
-                
-                // Initially hide content (collapsed state)
-                $content.hide();
-                
-                $card.append($badge, $title, $content);
-                $list.append($card);
-                
-                // 카드가 렌더링된 후 너비를 측정하여 텍스트 재분할
-                setTimeout(function() {
-                    const cardWidth = $card.width();
-                    if (cardWidth > 0) {
-                        const formattedTitle = splitTextIntoTwoLines(item.title, cardWidth);
-                        $title.html(formattedTitle);
-                    }
-                }, 0);
-            });
-        }
-
-        function initCurriculumAccordion() {
-            // Toggle all cards button
-            $('#curriculum-toggle-all').on('click', function() {
-                const $allCards = $('.curriculum-card');
-                const $allContents = $('.curriculum-card__content');
-                const $toggleBtn = $(this);
-                const isExpanded = $allCards.first().hasClass('curriculum-card--expanded');
-                
-                if (isExpanded) {
-                    // Close all
-                    $allCards.removeClass('curriculum-card--expanded');
-                    $allContents.slideUp(300);
-                    $toggleBtn.text('자세히 보기');
-                } else {
-                    // Expand all
-                    $allCards.addClass('curriculum-card--expanded');
-                    $allContents.slideDown(300);
-                    $toggleBtn.text('닫기');
-                }
-            });
-
-            // CTA button click handler
-            $('#curriculum-apply-btn').on('click', function() {
-                $('#aiw-modal').fadeIn(300);
-            });
-        }
-
-        function renderSchedule() {
-            const $list = $('#aiw-schedule-list');
-            $list.empty();
-            
-            aiwSchedule.forEach(function(item) {
-                const dateObj = new Date(item.date);
-                const dateStr = dateObj.toLocaleDateString('ko-KR', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric'
-                });
-                
-                const $item = $('<li>')
-                    .html(`
-                        <span>${dateStr}</span>
-                        <span>${item.time}</span>
-                        <span>${item.label}</span>
-                    `);
-                $list.append($item);
-            });
-        }
-
-        function renderCurriculum() {
-            const $grid = $('#aiw-curriculum-grid');
-            $grid.empty();
-            
-            aiwCurriculum.forEach(function(item, index) {
-                const $card = $('<div>')
-                    .addClass('card aiw-curriculum-card')
-                    .attr('data-week', item.week);
-                
-                const $header = $('<div>')
-                    .addClass('aiw-curriculum-card-header')
-                    .html(`<span class="aiw-curriculum-week">${item.week}</span>`);
-                
-                const $title = $('<h4>')
-                    .addClass('aiw-curriculum-card-title')
-                    .text(item.title);
-                
-                const $content = $('<p>')
-                    .addClass('card-description')
-                    .text(item.content);
-                
-                $card.append($header, $title, $content);
-                $grid.append($card);
-            });
-        }
-
-        function initModal() {
-            // Remove existing handlers to prevent duplicates
-            $('#aiw-apply-btn, #curriculum-apply-btn').off('click');
-            $('.aiw-modal-close, .aiw-modal-backdrop, #aiw-modal-cancel').off('click');
-            $('#aiw-apply-form').off('submit');
-            
-            // Open modal
-            $('#aiw-apply-btn, #curriculum-apply-btn').on('click', function() {
-                $('#aiw-modal').fadeIn(300);
-            });
-
-            // Close modal
-            $('.aiw-modal-close, .aiw-modal-backdrop, #aiw-modal-cancel').on('click', function() {
-                $('#aiw-modal').fadeOut(300);
-                setTimeout(function() {
-                    $('#aiw-apply-form')[0].reset();
-                    $('#aiw-curriculum-request').prop('checked', false);
-                }, 300);
-            });
-
-            // Form submit
-            $('#aiw-apply-form').on('submit', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                
-                const name = $('#aiw-name').val().trim();
-                const phone = $('#aiw-phone').val().trim();
-                const curriculumRequest = $('#aiw-curriculum-request').is(':checked');
-                
-                if (!name || !phone) {
-                    alert('이름과 연락처를 모두 입력해주세요.');
-                    return false;
-                }
-                
-                // Save application to localStorage
-                const application = {
-                    id: Date.now().toString(),
-                    name: name,
-                    phone: phone,
-                    curriculumRequest: curriculumRequest,
-                    createdAt: new Date().toISOString(),
-                    status: 'pending'
-                };
-                
-                // Get existing applications
-                let applications = [];
-                try {
-                    const stored = localStorage.getItem('aiw-applications');
-                    if (stored) {
-                        applications = JSON.parse(stored);
-                    }
-                } catch (e) {
-                    console.error('Error loading applications:', e);
-                    alert('저장 중 오류가 발생했습니다. 다시 시도해주세요.');
-                    return false;
-                }
-                
-                // Add new application
-                applications.push(application);
-                try {
-                    localStorage.setItem('aiw-applications', JSON.stringify(applications));
-                } catch (e) {
-                    console.error('Error saving application:', e);
-                    alert('저장 중 오류가 발생했습니다. 다시 시도해주세요.');
-                    return false;
-                }
-                
-                // Show success message
-                let message = '신청이 접수되었습니다.';
-                if (curriculumRequest) {
-                    message += '\n커리큘럼 요청도 함께 접수되었습니다.';
-                }
-                alert(message);
-                
-                // Close modal and reset form
-                $('#aiw-modal').fadeOut(300);
-                setTimeout(function() {
-                    $('#aiw-apply-form')[0].reset();
-                    $('#aiw-curriculum-request').prop('checked', false);
-                }, 300);
-                
-                return false;
-            });
-        }
-    </script>
-    
-    <style>
-        /* Curriculum Hero Section - 시원스쿨 스타일 */
-        .curriculum-hero {
-            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-            border-radius: 1.5rem;
-            padding: 4rem 0;
-            margin: 3rem 0;
-            text-align: center;
-            color: var(--heading);
-            position: relative;
-            border: 2px solid #E5E7EB;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-            width: 100%;
-            max-width: 100%;
-            box-sizing: border-box;
-            margin-left: 0;
-            margin-right: 0;
-        }
-
-        .curriculum-hero__promo-badge {
-            position: absolute;
-            top: -1px;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: linear-gradient(135deg, #FF6B6B 0%, #EE5A6F 100%);
-            color: white;
-            padding: 1rem 3rem;
-            border-radius: 2rem;
-            font-size: 1.5rem;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-            box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
-            white-space: nowrap;
-            max-width: calc(100% - 2rem);
-            box-sizing: border-box;
-        }
-
-        @media (min-width: 768px) {
-            .curriculum-hero__promo-badge {
-                max-width: calc(100% - 3rem);
-            }
-        }
-
-        .curriculum-hero__content {
-            max-width: 100%;
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            box-sizing: border-box;
-        }
-
-        .curriculum-hero__title {
-            font-size: 2.75rem;
-            font-weight: 800;
-            margin-bottom: 1rem;
-            line-height: 1.2;
-            color: var(--heading);
-            letter-spacing: -0.5px;
-        }
-
-        .curriculum-hero__subtitle {
-            font-size: 1.375rem;
-            margin-bottom: 1.5rem;
-            color: #4B5563;
-            line-height: 1.7;
-            font-weight: 500;
-        }
-
-        .curriculum-hero__highlight {
-            margin-bottom: 2rem;
-        }
-
-        .curriculum-hero__highlight-text {
-            display: inline-block;
-            background: #D1D5DB;
-            color: var(--heading);
-            padding: 0.75rem 2rem;
-            border-radius: 2rem;
-            font-size: 1.125rem;
-            font-weight: 700;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-
-        .curriculum-hero__info {
-            display: flex;
-            justify-content: center;
-            gap: 0.75rem;
-            flex-wrap: wrap;
-            margin-bottom: 2.5rem;
-        }
-
-        .curriculum-hero__badge {
-            background: white;
-            padding: 0.625rem 1.5rem;
-            border-radius: 2rem;
-            font-size: 0.875rem;
-            font-weight: 600;
-            border: 2px solid #E5E7EB;
-            color: var(--heading);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-            transition: all 0.2s ease;
-        }
-
-        .curriculum-hero__badge:hover {
-            border-color: #5A4EFA;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(90, 78, 250, 0.15);
-        }
-
-        .curriculum-hero__cta-group {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-
-        .curriculum-hero__cta {
-            border: none;
-            padding: 1.125rem 3rem;
-            border-radius: 0.75rem;
-            font-size: 1.125rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
-            letter-spacing: 0.3px;
-        }
-
-        .curriculum-hero__cta--primary {
-            background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
-            color: white;
-        }
-
-        .curriculum-hero__cta--primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 24px rgba(59, 130, 246, 0.4);
-        }
-
-        .curriculum-hero__cta:active {
-            transform: translateY(0);
-        }
-
-        /* Curriculum Accordion Section */
-        .curriculum-accordion {
-            margin: 3rem 0;
-            width: 100%;
-            max-width: 100%;
-            box-sizing: border-box;
-            margin-left: 0;
-            margin-right: 0;
-            padding: 0;
-        }
-
-        .curriculum-accordion__title {
-            font-size: 2.25rem;
-            font-weight: 800;
-            color: var(--heading);
-            margin: 0 0 2.5rem 0;
-            padding: 0;
-            text-align: center;
-            letter-spacing: -0.5px;
-            width: 100%;
-            box-sizing: border-box;
-        }
-
-        .curriculum-accordion__list {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1rem;
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            box-sizing: border-box;
-        }
-
-        @media (max-width: 1024px) {
-            .curriculum-accordion__list {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (max-width: 768px) {
-            .curriculum-accordion__list {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .curriculum-card {
-            background: white;
-            border: 2px solid #E5E7EB;
-            border-radius: 1rem;
-            padding: 2rem;
-            display: flex;
-            flex-direction: column;
-            transition: all 0.3s ease;
-            position: relative;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-            margin: 0;
-            width: 100%;
-            min-width: 0;
-            box-sizing: border-box;
-        }
-
-        .curriculum-card:hover {
-            border-color: #5A4EFA;
-            box-shadow: 0 8px 24px rgba(90, 78, 250, 0.15);
-            transform: translateY(-4px);
-        }
-
-        .curriculum-card__badge {
-            display: inline-block;
-            background: #3B82F6;
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 0.5rem;
-            font-size: 0.89375rem;
-            font-weight: 700;
-            margin-bottom: 1.25rem;
-            width: fit-content;
-            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
-        }
-
-        .curriculum-card__title {
-            font-size: 1.125rem;
-            font-weight: 600;
-            color: var(--heading);
-            margin: 0 0 0 0;
-            line-height: 1.5;
-            text-align: justify;
-            text-align-last: center;
-            white-space: normal;
-            overflow: visible;
-            text-overflow: clip;
-            word-break: keep-all;
-            display: block;
-        }
-
-        .curriculum-card__content {
-            display: none;
-            margin-top: 1rem;
-            padding-top: 1rem;
-            border-top: 1px solid #E5E7EB;
-        }
-
-        .curriculum-card--expanded .curriculum-card__content {
-            display: block;
-        }
-
-        .curriculum-card__section {
-            margin-bottom: 1rem;
-        }
-
-        .curriculum-card__section:last-child {
-            margin-bottom: 0;
-        }
-
-        .curriculum-card__section-title {
-            font-size: 0.75rem;
-            font-weight: 700;
-            color: #6B7280;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 0.5rem;
-        }
-
-        .curriculum-card__section-text {
-            font-size: 0.8125rem;
-            color: var(--text);
-            line-height: 1.5;
-            margin: 0;
-            word-break: keep-all;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .curriculum-accordion__toggle-wrapper {
-            text-align: center;
-            margin: 2rem 0 0 0;
-            padding: 0;
-            width: 100%;
-            box-sizing: border-box;
-        }
-
-        .curriculum-accordion__toggle-btn {
-            background: linear-gradient(135deg, #6B7280 0%, #4B5563 100%);
-            color: white;
-            border: none;
-            padding: 1rem 3rem;
-            border-radius: 0.75rem;
-            font-size: 1.125rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
-            letter-spacing: 0.3px;
-        }
-
-        .curriculum-accordion__toggle-btn:hover {
-            background: linear-gradient(135deg, #4B5563 0%, #374151 100%);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.25);
-        }
-
-        .curriculum-accordion__toggle-btn:active {
-            transform: translateY(0);
-        }
-
-        /* Curriculum Features Section */
-        .curriculum-features {
-            margin: 3rem 0;
-        }
-
-        .curriculum-features__grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1.5rem;
-        }
-
-        .curriculum-features__item {
-            background: white;
-            border: 2px solid #E5E7EB;
-            border-radius: 1rem;
-            padding: 2rem;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-            transition: all 0.3s ease;
-        }
-
-        .curriculum-features__item:hover {
-            border-color: #5A4EFA;
-            box-shadow: 0 8px 24px rgba(90, 78, 250, 0.1);
-            transform: translateY(-2px);
-        }
-
-        .curriculum-features__header {
-            border-bottom: 3px solid #D1D5DB;
-            padding-bottom: 1rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .curriculum-features__title {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: var(--heading);
-            margin: 0;
-        }
-
-        .curriculum-features__list {
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            margin: 0;
-            padding: 0;
-        }
-
-        .curriculum-features__list li {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-            padding-left: 1.5rem;
-            position: relative;
-        }
-
-        .curriculum-features__list li::before {
-            content: '✓';
-            position: absolute;
-            left: 0;
-            top: 0;
-            color: #5A4EFA;
-            font-weight: 700;
-            font-size: 1.125rem;
-        }
-
-        .curriculum-features__list li strong {
-            color: var(--heading);
-            font-weight: 600;
-            font-size: 1rem;
-            line-height: 1.6;
-        }
-
-        .curriculum-features__list li span {
-            color: var(--text-muted);
-            font-size: 0.9375rem;
-            line-height: 1.6;
-        }
-
-        .curriculum-features__item--wide {
-            grid-column: 1 / -1;
-        }
-
-        .curriculum-features__list--two-col {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1rem 2rem;
-        }
-
-        .curriculum-features__checklist {
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-            margin: 0;
-            padding: 0;
-        }
-
-        .curriculum-features__checklist li {
-            padding-left: 1.5rem;
-            position: relative;
-            color: var(--text);
-            font-size: 0.9375rem;
-            line-height: 1.6;
-        }
-
-        .curriculum-features__checklist li strong {
-            color: var(--heading);
-            font-weight: 600;
-        }
-
-        .curriculum-features__checklist li::before {
-            content: '✓';
-            position: absolute;
-            left: 0;
-            top: 0;
-            color: #10b981;
-            font-weight: 700;
-            font-size: 1.125rem;
-        }
-
-        /* Curriculum Info Section */
-        .curriculum-info {
-            background: white;
-            border: 2px solid #E5E7EB;
-            border-radius: 1rem;
-            padding: 2.5rem;
-            margin: 3rem 0;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
-        }
-
-        .curriculum-info__header {
-            border-bottom: 3px solid #D1D5DB;
-            padding-bottom: 1.25rem;
-            margin-bottom: 2rem;
-        }
-
-        .curriculum-info__title {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: var(--heading);
-            margin: 0;
-        }
-
-        .curriculum-info__content {
-            display: flex;
-            gap: 3rem;
-            align-items: stretch;
-        }
-
-        .curriculum-info__grid {
-            flex: 1.6;
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1.25rem;
-        }
-
-        .curriculum-info__item {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-            padding: 1.5rem;
-            background-color: #F9FAFB;
-            border-radius: 0.75rem;
-            border: 2px solid #E5E7EB;
-            transition: all 0.3s ease;
-            height: 100%;
-        }
-
-        .curriculum-info__item:hover {
-            background-color: white;
-            border-color: #5A4EFA;
-            box-shadow: 0 4px 12px rgba(90, 78, 250, 0.1);
-            transform: translateY(-2px);
-        }
-
-        .curriculum-info__label {
-            font-size: 1.125rem;
-            font-weight: 600;
-            color: #6B7280;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .curriculum-info__value {
-            font-size: 0.9375rem;
-            font-weight: 500;
-            color: var(--heading);
-            line-height: 1.5;
-        }
-
-        .curriculum-info__details {
-            flex: 1.44;
-            min-width: 0;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            height: 100%;
-        }
-
-        .curriculum-info__detail-item {
-            padding: 1.5rem;
-            background-color: #F9FAFB;
-            border-radius: 0.75rem;
-            border: 2px solid #E5E7EB;
-            font-size: 0.9375rem;
-            line-height: 1.8;
-            color: var(--text);
-            transition: all 0.3s ease;
-        }
-
-        .curriculum-info__detail-item:hover {
-            background-color: white;
-            border-color: #5A4EFA;
-            box-shadow: 0 4px 12px rgba(90, 78, 250, 0.1);
-            transform: translateY(-2px);
-        }
-
-        .curriculum-info__detail-item strong {
-            color: var(--heading);
-            font-weight: 600;
-        }
-
-        .curriculum-info__instructors {
-            font-size: 0.84375rem;
-        }
-
-        @media (max-width: 768px) {
-            .curriculum-features__grid {
-                grid-template-columns: 1fr;
-            }
-
-            .curriculum-features__list--two-col {
-                grid-template-columns: 1fr;
-            }
-
-            .curriculum-info {
-                padding: 1.5rem;
-            }
-
-            .curriculum-info__content {
-                flex-direction: column;
-                gap: 2rem;
-            }
-
-            .curriculum-info__grid {
-                grid-template-columns: 1fr;
-            }
-
-            .curriculum-card__title {
-                white-space: normal;
-                text-overflow: clip;
-                overflow: visible;
-            }
-
-            .curriculum-card__section-text {
-                -webkit-line-clamp: 3;
-                line-clamp: 3;
-            }
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .curriculum-hero {
-                padding: 3rem 0;
-                margin: 2rem 0;
-                border-radius: 1rem;
-            }
-
-            .curriculum-hero__content {
-                padding: 0;
-            }
-
-            .curriculum-hero__promo-badge {
-                font-size: 1rem;
-                padding: 0.75rem 2rem;
-            }
-
-            .curriculum-hero__title {
-                font-size: 2rem;
-            }
-
-            .curriculum-hero__subtitle {
-                font-size: 1.125rem;
-            }
-
-            .curriculum-hero__highlight-text {
-                font-size: 1rem;
-                padding: 0.625rem 1.5rem;
-            }
-
-            .curriculum-hero__info {
-                flex-direction: column;
-                gap: 0.75rem;
-            }
-
-            .curriculum-hero__badge {
-                width: 100%;
-                text-align: center;
-            }
-
-            .curriculum-hero__cta {
-                width: 100%;
-                padding: 1rem 2rem;
-            }
-
-            .curriculum-accordion__title {
-                font-size: 1.75rem;
-            }
-
-            .curriculum-card {
-                padding: 1.5rem;
-            }
-
-            .curriculum-card__section-title {
-                font-size: 0.5625rem;
-            }
-
-            .curriculum-card__section-text {
-                font-size: 0.75rem;
-            }
-
-            .curriculum-card__title {
-                font-size: 1.05rem;
-                white-space: normal;
-                text-overflow: clip;
-                overflow: visible;
-            }
-
-            .curriculum-accordion__toggle-btn {
-                width: 100%;
-                padding: 0.875rem 2rem;
-                font-size: 1rem;
-            }
-
-            .curriculum-features__item {
-                padding: 1.5rem;
-            }
-
-            .curriculum-info {
-                padding: 1.5rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .curriculum-hero__title {
-                font-size: 1.5rem;
-            }
-
-            .curriculum-hero__subtitle {
-                font-size: 1rem;
-            }
-
-            .curriculum-accordion__header-title {
-                font-size: 0.9375rem;
-            }
-        }
-
-        /* Hero title and description font size (20% reduced from 100% enlarged) */
-        .hero-title {
-            font-size: 3.6rem !important;
-        }
-        .hero-description {
-            font-size: 1.8rem !important;
-        }
-        
-        @media (min-width: 768px) {
-            .hero-title {
-                font-size: 4.8rem !important;
-            }
-            .hero-description {
-                font-size: 2rem !important;
-            }
-        }
-        
-        @media (min-width: 1024px) {
-            .hero-title {
-                font-size: 6rem !important;
-            }
-            .hero-description {
-                font-size: 2rem !important;
-            }
-        }
-        
-        @media (max-width: 767px) {
-            .hero-section {
-                padding-top: calc(3rem - 140px) !important;
-                background-image: url('images/backgrounds/hero-background-mobile.jpg') !important;
-            }
-            .hero-title {
-                font-size: 2.36544rem !important;
-                line-height: 1.3 !important;
-                white-space: normal !important;
-                text-align: center !important;
-            }
-            .hero-description {
-                font-size: 1.261568rem !important;
-                line-height: 1.5 !important;
-                text-align: center !important;
-            }
-        }
-    </style>
+  </section>
+
+  <!-- ══════════ 파트너 스트립 ══════════ -->
+  <div class="wrap">
+    <div class="partners">
+      <span class="label">주관 · 운영 · 인증</span>
+      <span class="name">KECA</span>
+      <span class="name">이룸아카데미</span>
+      <span class="name">쪼앤미 컨설팅</span>
+      <span class="name">ZOOM</span>
+    </div>
+  </div>
+
+  <!-- ══════════ 문제 제기 ══════════ -->
+  <section class="wrap sec">
+    <div class="grid grid-auto-320" style="align-items:start">
+      <div>
+        <span class="kicker">문제 제기</span>
+        <h2 style="font-size:clamp(26px,3.4vw,40px);line-height:1.12;letter-spacing:-0.02em">
+          AI업무자동화와 바이브코딩,<br>어디서부터 시작해야 할까요?
+        </h2>
+      </div>
+      <p class="muted mb-0" style="font-size:clamp(15px,1.6vw,17px);line-height:1.7;padding-top:6px">
+        유튜브를 따라 도구 버튼만 눌러보는 강의는 많습니다. 이 과정은 다릅니다.
+        반복 업무 자동화부터 데이터 분석, 아이디어를 실제 배포된 서비스로 만드는 것까지 —
+        <b>하나의 흐름</b>으로 연결해 <b>완주한 결과물</b>을 남깁니다.
+        평일에 배우고 주말에 만드는 주 2회 리듬으로.
+      </p>
+    </div>
+  </section>
+
+  <!-- ══════════ 배우는 것 5가지 ══════════ -->
+  <section class="band-surface">
+    <div class="wrap sec">
+      <span class="kicker">Curriculum</span>
+      <h2 class="h-sec" style="margin-bottom:36px">배우는 것 5가지</h2>
+      <div class="cellgrid grid-auto-200">
+        <div>
+          <div class="row" style="align-items:center;gap:10px;margin-bottom:12px">
+            <span style="width:11px;height:11px;background:var(--color-accent);display:inline-block"></span>
+            <span style="font-family:var(--font-heading);font-weight:800;font-size:14px">01</span>
+          </div>
+          <h3 style="font-size:17px;line-height:1.25;margin-bottom:8px">AI 업무자동화</h3>
+          <p class="mb-0" style="font-size:13.5px;line-height:1.6;color:var(--color-neutral-700)">클로드 스킬·플러그인으로 반복업무 2개를 직접 자동화합니다.</p>
+        </div>
+        <div>
+          <div class="row" style="align-items:center;gap:10px;margin-bottom:12px">
+            <span style="width:11px;height:11px;background:var(--color-accent);display:inline-block"></span>
+            <span style="font-family:var(--font-heading);font-weight:800;font-size:14px">02</span>
+          </div>
+          <h3 style="font-size:17px;line-height:1.25;margin-bottom:8px">AI 데이터분석</h3>
+          <p class="mb-0" style="font-size:13.5px;line-height:1.6;color:var(--color-neutral-700)">데이터에서 인사이트를 뽑아 비즈니스에 적용합니다.</p>
+        </div>
+        <div>
+          <div class="row" style="align-items:center;gap:10px;margin-bottom:12px">
+            <span style="width:11px;height:11px;background:var(--color-accent);display:inline-block"></span>
+            <span style="font-family:var(--font-heading);font-weight:800;font-size:14px">03</span>
+          </div>
+          <h3 style="font-size:17px;line-height:1.25;margin-bottom:8px">바이브코딩 기초</h3>
+          <p class="mb-0" style="font-size:13.5px;line-height:1.6;color:var(--color-neutral-700)">아이디어 → 기획서 → MVP까지 한 흐름으로 만듭니다.</p>
+        </div>
+        <div>
+          <div class="row" style="align-items:center;gap:10px;margin-bottom:12px">
+            <span style="width:11px;height:11px;background:var(--color-accent);display:inline-block"></span>
+            <span style="font-family:var(--font-heading);font-weight:800;font-size:14px">04</span>
+          </div>
+          <h3 style="font-size:17px;line-height:1.25;margin-bottom:8px">바이브코딩 심화</h3>
+          <p class="mb-0" style="font-size:13.5px;line-height:1.6;color:var(--color-neutral-700)">터미널·파이썬·DB·서버·REST API를 다룹니다.</p>
+        </div>
+        <div>
+          <div class="row" style="align-items:center;gap:10px;margin-bottom:12px">
+            <span style="width:11px;height:11px;background:var(--color-accent);display:inline-block"></span>
+            <span style="font-family:var(--font-heading);font-weight:800;font-size:14px">05</span>
+          </div>
+          <h3 style="font-size:17px;line-height:1.25;margin-bottom:8px">풀스택 실배포</h3>
+          <p class="mb-0" style="font-size:13.5px;line-height:1.6;color:var(--color-neutral-700)">배포 URL → 도메인·SEO → 데이터 기반 개선까지.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════ 얻는 것 3가지 ══════════ -->
+  <section class="wrap sec">
+    <span class="kicker">Outcomes</span>
+    <h2 class="h-sec" style="margin-bottom:32px">수료 후 손에 남는 것 3가지</h2>
+    <div class="grid grid-auto-240">
+      <div class="rule-block">
+        <div class="num">01</div>
+        <h3 style="font-size:18px;margin:10px 0 8px">자동화 스킬 + 분석 예제</h3>
+        <p class="muted mb-0" style="font-size:14px;line-height:1.6">반복업무 자동화 스킬과 데이터분석 예제를 확보합니다.</p>
+      </div>
+      <div class="rule-block">
+        <div class="num">02</div>
+        <h3 style="font-size:18px;margin:10px 0 8px">PRD · 화면설계 스킬</h3>
+        <p class="muted mb-0" style="font-size:14px;line-height:1.6">아이디어를 기획서와 화면으로 옮기는 스킬을 갖춥니다.</p>
+      </div>
+      <div class="rule-block">
+        <div class="num">03</div>
+        <h3 style="font-size:18px;margin:10px 0 8px">실배포된 1인 1서비스</h3>
+        <p class="muted mb-0" style="font-size:14px;line-height:1.6">실제 URL의 서비스 + 개선 리포트·발표 2회로 검증합니다.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════ 6주 커리큘럼 타임라인 ══════════ -->
+  <section class="band-dark">
+    <div class="wrap sec">
+      <span class="kicker kicker-on-dark">6-Week Roadmap</span>
+      <h2 class="h-sec" style="margin-bottom:36px">6주 커리큘럼 타임라인</h2>
+      <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(190px,1fr))">
+        <div class="week">
+          <div class="week-head"><span class="week-no">WEEK 1</span><span style="font-size:13px"></span></div>
+          <h3>클로드 정복</h3>
+          <p>스킬·플러그인 기초</p>
+        </div>
+        <div class="week">
+          <div class="week-head"><span class="week-no">WEEK 2</span><span style="font-size:13px"></span></div>
+          <h3>업무자동화 완성</h3>
+          <p>자동화 → 데이터분석</p>
+        </div>
+        <div class="week is-milestone">
+          <div class="week-head"><span class="week-no">WEEK 3</span><span style="font-size:13px">★</span></div>
+          <h3>바이브코딩 기초</h3>
+          <p>기초 마일스톤 발표</p>
+        </div>
+        <div class="week">
+          <div class="week-head"><span class="week-no">WEEK 4–5</span><span style="font-size:13px"></span></div>
+          <h3>개발자의 도구</h3>
+          <p>서비스의 뼈대 만들기</p>
+        </div>
+        <div class="week is-milestone">
+          <div class="week-head"><span class="week-no">WEEK 6</span><span style="font-size:13px">★</span></div>
+          <h3>실배포와 개선</h3>
+          <p>최종 데모데이</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════ 일정 · 수강 안내 ══════════ -->
+  <section class="wrap sec">
+    <span class="kicker">Enrollment</span>
+    <h2 class="h-sec" style="margin-bottom:32px">일정 · 수강 안내</h2>
+    <div class="grid grid-auto-260">
+      <div class="box">
+        <h3 style="font-size:16px;color:var(--color-accent-700);margin-bottom:14px">일정 &amp; 방식</h3>
+        <p class="mb-0 muted" style="font-size:14px;line-height:1.7">
+          평일 19~23시 <b>ZOOM</b> 온라인<br>
+          토 13~18시 <b>창동 오프라인</b><br>
+          <span class="muted-2" style="font-size:13px">오프라인 8.8·15·22·29, 9.5·12·19 / Zoom 8.12·26, 9.2·9·11</span>
+        </p>
+      </div>
+      <div class="box">
+        <h3 style="font-size:16px;color:var(--color-accent-700);margin-bottom:14px">수강료</h3>
+        <p class="mb-0 muted" style="font-size:14px;line-height:1.7">
+          기초(8.8~8.29) <b>30만원</b><br>
+          심화(9.2~9.19) <b>30만원</b><br>
+          전체 <b>50만원</b> · <span style="color:var(--color-accent-700)">KECA 회원 20% 할인</span>
+        </p>
+      </div>
+      <div class="box">
+        <h3 style="font-size:16px;color:var(--color-accent-700);margin-bottom:14px">혜택</h3>
+        <p class="mb-0 muted" style="font-size:14px;line-height:1.7">
+          강사별 <b>포트폴리오 2개</b> 완성<br>
+          <b>KECA AI 교육전문가 자격증</b> 취득<br>
+          전 회차 <b>다시보기</b> 제공
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════ 레드 포스터 CTA ══════════ -->
+  <section class="band-accent">
+    <div class="wrap sec-lg">
+      <h2 class="display-2" style="margin:0">지금, 진행중인 과정에<br>합류하세요.</h2>
+      <p style="font-size:clamp(15px,1.6vw,18px);opacity:.9;margin:18px 0 0;max-width:44ch">
+        2026.08.08 개강. 신청은 로그인 없이 열람하고, 신청 버튼을 누를 때만 Google 로그인이 필요합니다.
+      </p>
+      <div style="margin-top:30px">
+        <a href="html/apply.html" class="btn btn-lg btn-on-accent">지금 신청하기 →</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<div id="footer-container"></div>
+
+<script src="js/config.js?v=2"></script>
+<script src="js/store.js?v=2"></script>
+<script src="js/components.js?v=2"></script>
 </body>
 </html>
-
-
