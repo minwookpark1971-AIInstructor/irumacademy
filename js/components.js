@@ -106,12 +106,12 @@ function generateFooter() {
                 html/terms.html, 이용약관.txt, Supabase Secrets(SENDER_*)가 같은 값을 쓴다. -->
         <div class="legal" style="line-height:1.9">
             <div>
-                <b style="font-weight:600">이룸아카데미</b> (Irum Academy) ·
+                <b style="font-weight:600">이룸아카데미</b> (상호: 이룸) ·
                 대표 박민욱 ·
                 사업자등록번호 532-56-00372
             </div>
             <div>
-                서울특별시 강남구 도산대로54길 41, B1 ·
+                서울특별시 강남구 도산대로54길 41, B1호(논현동) ·
                 <a href="mailto:irum.ceo@gmail.com">irum.ceo@gmail.com</a>
             </div>
             <div style="margin-top:8px">

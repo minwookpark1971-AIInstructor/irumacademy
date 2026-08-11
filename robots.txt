@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+# 관리자 화면은 색인하지 않는다. admin.html 자체에도 noindex 메타가 있다.
+Disallow: /html/admin.html
+
+Sitemap: https://www.irumcompany.co.kr/sitemap.xml

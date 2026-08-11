@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- 이룸아카데미 파비콘.
+       워드마크 전체(IRUM ACADEMY / FOR AI & JOB)는 16px 에서 뭉개지므로
+       로고의 첫 글자만 남긴다. 검정 바탕 + 크림 글자는 로고 원본의 반전 배색이다. -->
+  <rect width="64" height="64" fill="#16130F"/>
+  <!-- I 자 — 원본 로고의 굵은 산세리프 비례를 따랐다 -->
+  <rect x="25" y="12" width="14" height="40" fill="#E8E6E0"/>
+  <!-- 브랜드 악센트 -->
+  <rect x="12" y="52" width="40" height="4" fill="#FF5341"/>
+</svg>
