@@ -209,7 +209,9 @@
   <nav class="nav" id="nav">
     <div class="nav-inner">
       <div class="nav-left">
-        <a href="index.html" class="logo"><span class="logo-dot"></span>이룸<span class="logo-sub">ACADEMY</span></a>
+        <!-- 이 페이지는 html/ 안에 있으므로 홈은 ../index.html 이다.
+             예전에는 html/index.html(중복 홈)이 있어 'index.html' 로도 열렸다. -->
+        <a href="../index.html" class="logo"><span class="logo-dot"></span>이룸<span class="logo-sub">ACADEMY</span></a>
         <div class="nav-links">
           <span data-menu="prog">교육과정 <span class="nav-caret">▼</span></span>
           <span data-menu="res">커리큘럼 <span class="nav-caret">▼</span></span>
@@ -219,8 +221,10 @@
         </div>
       </div>
       <div class="nav-right">
-        <span onclick="location.href='inquiry.html'">문의</span>
-        <span onclick="location.href='auth/login.html'">Sign in</span>
+        <!-- 'Sign in'(auth/login.html) 을 뺐다. 이메일·비밀번호 로그인은 폐지됐고
+             (Supabase Email 제공자 비활성) 해당 페이지도 삭제했다.
+             로그인은 apply.html 의 신청 시점에 Google 로만 일어난다. -->
+        <span onclick="location.href='mailto:irum.ceo@gmail.com'">문의</span>
         <a href="#apply" class="btn-nav-cta">수강 신청</a>
       </div>
     </div>

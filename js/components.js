@@ -44,8 +44,6 @@ function getPathInfo() {
         programsUrl: toHtml + 'instructor-growth.html',
         applyUrl: toHtml + 'apply.html',
         adminUrl: toHtml + 'admin.html',
-        coursesUrl: toHtml + 'courses.html',
-        inquiryUrl: toHtml + 'inquiry.html',
         privacyUrl: toHtml + 'privacy.html',
         termsUrl: toHtml + 'terms.html',
         logoUrl: toRoot + 'images/logo/이룸아카데미_logo.png',
@@ -97,8 +95,10 @@ function generateFooter() {
         <a href="${p.aboutUrl}">회사소개</a>
         <a href="${p.programsUrl}">전문강사성장프로그램</a>
         <a href="${p.applyUrl}">강의신청하기</a>
-        <a href="${p.coursesUrl}">강의코스</a>
-        <a href="${p.inquiryUrl}">문의하기</a>
+        <!-- '강의코스'(courses.html) · '문의하기'(inquiry.html) 링크를 뺐다.
+             전자는 더 이상 운영하지 않는 옛 AI 코스 9개를 노출했고,
+             후자는 삭제된 회원가입 시스템으로 유도해 방문자를 막다른 길에 가뒀다.
+             문의는 아래 이메일 주소가 받는다. -->
         <a href="${p.adminUrl}" class="admin-link">관리자 →</a>
         <!-- 사업자 정보는 전자상거래법상 표기 의무이자, 광고성 메일에 넣어야 하는
              법정 기재사항(발신자 명칭·주소·연락처)과 같은 값이다.
