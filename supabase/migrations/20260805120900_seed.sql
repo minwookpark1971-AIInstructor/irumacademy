@@ -14,9 +14,10 @@ insert into public.courses (
     'AI업무자동화 & 바이브코딩 통합 전문가 과정',
     '업무자동화에서 실제 서비스까지',
     '심화 · 6주',
-    '60시간 (12회 × 5시간)',
-    '2026.08.08 ZOOM 개강 · 주 2회',
-    'KECA · 이룸아카데미',
+    '48시간 (12회 × 4시간)',
+    '2026.08.15 개강 · 주 2회 × 6주',
+    -- ⚠ '주관' 을 값에 넣지 말 것. apply.html 이 이미 '주관 ' 라벨을 앞에 붙인다.
+    '쪼앤미컨설팅 · KECA · 이룸아카데미',
     '기초 30만 · 심화 30만 · 전체 50만 (KECA 20%↓)',
     20,
     '20명 · 접수중',
@@ -42,8 +43,8 @@ insert into public.course_options (course_id, name, description, price, sort_ord
 select c.id, v.name, v.description, v.price, v.sort_order
   from public.courses c
   cross join (values
-        ('기초', '기초 (8.8~8.29) · 30만원',              300000, 10),
-        ('심화', '심화 (9.2~9.19) · 30만원',              300000, 20),
+        ('기초', '기초 (8.15~9.2) · 30만원',              300000, 10),
+        ('심화', '심화 (9.5~9.23) · 30만원',              300000, 20),
         ('전체', '전체 · 50만원 (KECA 20% 할인)',         500000, 30)
   ) as v(name, description, price, sort_order)
  where c.slug = 'ai-automation-vibecoding-2026h2'
@@ -60,7 +61,7 @@ on conflict (course_id, name) do update set
 -- 2) 아래를 SQL Editor 에서 실행해 관리자로 등록한다.
 --
 --      insert into public.admins (user_id, note)
---      select id, '대표' from auth.users where email = 'irum.ceo@gmail.com'
+--      select id, '대표' from auth.users where email = 'minwookpark1971@gmail.com'
 --      on conflict (user_id) do nothing;
 --
 -- 3) 검증한다. 세 줄 다 기대값이 나와야 한다.

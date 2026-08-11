@@ -195,8 +195,42 @@ create or replace view public.marketing_reconsent_due
        and marketing_opt_in_at < now() - interval '2 years';
 
 
--- ── 006 에서 미뤄둔 트리거 등록 ─────────────────────────────────────────────
--- marketing_consent_log 가 이제 존재하므로 붙일 수 있다.
+-- ── 006 에서 미뤄둔 함수·트리거 등록 ────────────────────────────────────────
+-- marketing_consent_log 가 이제 존재하므로 함수를 실제로 만들 수 있다.
+-- 006 파일에도 같은 정의가 주석 맥락으로 적혀 있다 — 고칠 때 두 곳을 함께 볼 것.
+create or replace function private.sync_profile_from_application()
+returns trigger
+language plpgsql
+security definer
+set search_path = public, private, pg_temp
+as $$
+begin
+    update public.profiles
+       set name              = coalesce(new.name,              name),
+           phone             = coalesce(new.phone,             phone),
+           contact_email     = coalesce(new.contact_email,     contact_email),
+           occupation        = coalesce(new.occupation,        occupation),
+           region_code       = coalesce(new.region_code,       region_code),
+           offline_available = coalesce(new.offline_available, offline_available)
+     where id = new.user_id;
+
+    -- 광고 수신동의는 "동의한 경우에만" 켠다.
+    -- 신청서에서 체크를 안 했다고 기존 동의를 철회로 해석하면 안 된다.
+    if new.agreed_marketing then
+        update public.profiles
+           set marketing_opt_in    = true,
+               marketing_opt_in_at = coalesce(new.agreed_marketing_at, now()),
+               marketing_opt_out_at = null
+         where id = new.user_id and not marketing_opt_in;
+
+        insert into public.marketing_consent_log (user_id, email, action, source)
+        values (new.user_id, new.contact_email, 'opt_in', 'apply_form');
+    end if;
+
+    return new;
+end;
+$$;
+
 drop trigger if exists applications_sync_profile on public.applications;
 create trigger applications_sync_profile
     after insert on public.applications

@@ -102,15 +102,16 @@
         title: 'AI업무자동화 & 바이브코딩 통합 전문가 과정',
         subtitle: '업무자동화에서 실제 서비스까지',
         level: '심화 · 6주',
-        duration: '60시간 (12회 × 5시간)',
-        schedule: '2026.08.08 ZOOM 개강 · 주 2회',
-        host: 'KECA · 이룸아카데미',
+        duration: '48시간 (12회 × 4시간)',
+        schedule: '2026.08.15 개강 · 주 2회 × 6주',
+        // ⚠ '주관' 을 값에 넣지 말 것. apply.html 이 이미 '주관 ' 라벨을 앞에 붙인다.
+        host: '쪼앤미컨설팅 · KECA · 이룸아카데미',
         price_text: '기초 30만 · 심화 30만 · 전체 50만 (KECA 20%↓)',
         capacity_text: '20명 · 접수중',
         status: 'open',
         options: [
-            { id: 'fallback-opt-basic', name: '기초', label: '기초 (8.8~8.29) · 30만원', price: 300000 },
-            { id: 'fallback-opt-adv',   name: '심화', label: '심화 (9.2~9.19) · 30만원', price: 300000 },
+            { id: 'fallback-opt-basic', name: '기초', label: '기초 (8.15~9.2) · 30만원', price: 300000 },
+            { id: 'fallback-opt-adv',   name: '심화', label: '심화 (9.5~9.23) · 30만원', price: 300000 },
             { id: 'fallback-opt-all',   name: '전체', label: '전체 · 50만원 (KECA 20% 할인)', price: 500000 }
         ]
     }];
@@ -241,10 +242,22 @@
             lsWrite(LS_USER, currentUser);
             return Promise.resolve(true);
         }
+        // ⚠ error 를 반드시 본다. signInWithOAuth 는 실패해도 reject 하지 않고
+        //   { error } 를 담아 resolve 한다. 예전에는 결과를 버리고 무조건 true 를
+        //   돌려줬고, 그 탓에 Google 제공자가 꺼져 있으면(400 provider is not
+        //   enabled) 버튼을 눌러도 아무 일도 일어나지 않았다 — 오류 표시조차 없이.
         return sb.auth.signInWithOAuth({
             provider: 'google',
             options: { redirectTo: returnTo || window.location.href.split('#')[0] }
-        }).then(function () { return true; });
+        }).then(function (res) {
+            if (res && res.error) {
+                console.error('[IRUM] Google 로그인 실패:', res.error.message);
+                global.alert('Google 로그인을 시작할 수 없습니다.\n' +
+                             '잠시 후 다시 시도해 주시고, 계속되면 irum.ceo@gmail.com 으로 알려주세요.');
+                return false;
+            }
+            return true;
+        });
     }
 
     function signOut() {

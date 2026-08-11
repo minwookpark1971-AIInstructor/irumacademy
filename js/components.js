@@ -79,8 +79,9 @@ function generateHeader() {
     <a href="${p.homeUrl}"${mark('home')}>홈</a>
     <a href="${p.aboutUrl}"${mark('about')}>회사소개</a>
     <a href="${p.programsUrl}"${mark('programs')}>전문강사성장프로그램</a>
-    <a href="${p.applyUrl}"${mark('apply')}>강의신청하기</a>
-    <a href="${p.applyUrl}" class="btn btn-primary" style="padding:9px 16px">강의 신청하기 →</a>
+    <!-- 신청 진입점은 CTA 버튼 하나뿐이다. 예전에는 같은 링크를 텍스트 메뉴로도
+         함께 걸어 헤더에 "강의신청하기"가 두 번 보였다. aria-current 는 버튼이 넘겨받는다. -->
+    <a href="${p.applyUrl}"${mark('apply')} class="btn btn-primary" style="padding:9px 16px">강의 신청하기 →</a>
 </nav>`;
 }
 
