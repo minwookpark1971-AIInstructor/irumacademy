@@ -67,6 +67,14 @@
 
 *, *::before, *::after { box-sizing: border-box; }
 
+/* ⚠ 브라우저 기본 `[hidden] { display:none }` 은 UA 스타일시트라 클래스 하나에도 진다.
+   그래서 `.dialog-backdrop` 처럼 자기 display 를 가진 클래스에 hidden 을 걸면 조용히
+   무시된다. 실제로 신청 페이지의 로그인 모달이 그 상태였다 — 페이지를 열자마자
+   화면 전체를 덮은 채로 떠 있었고, hidden 을 다시 세우는 '취소'가 아무것도 바꾸지
+   못해 화면이 멈춘 것처럼 보였다(모든 클릭을 backdrop 이 먹었다).
+   이 사이트의 JS 는 표시 여부를 오직 hidden 하나로 통제하므로 여기서 못을 박는다. */
+[hidden] { display: none !important; }
+
 body {
   margin: 0;
   background: var(--color-bg);
@@ -415,7 +423,6 @@ textarea.input { min-height: 90px; resize: vertical; }
   padding: 0 clamp(18px, 3vw, 28px) 26px;
   border-top: 1px solid var(--color-divider);
 }
-.acc-body[hidden] { display: none; }
 .acc-cols {
   display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 22px; padding-top: 22px;
