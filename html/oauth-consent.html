@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>연결 승인 | 이룸아카데미</title>
+    <style>
+        * { box-sizing: border-box; }
+        body { margin: 0; font-family: Pretendard, -apple-system, "Segoe UI", "Malgun Gothic", sans-serif; color: #111; background: #fff; }
+        .consent { max-width: 460px; margin: 12vh auto; padding: 0 20px; }
+        h1 { font-size: 22px; margin: 0 0 8px; }
+        p { color: #555; line-height: 1.6; }
+        .box { border: 1px solid #e5e5e5; border-radius: 12px; padding: 16px 18px; margin: 18px 0; }
+        .box dt { font-size: 12px; color: #888; margin-top: 8px; }
+        .box dt:first-child { margin-top: 0; }
+        .box dd { margin: 2px 0 0; font-weight: 600; word-break: break-all; }
+        label { display: block; font-size: 14px; margin: 12px 0 4px; }
+        input { width: 100%; padding: 10px 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 15px; }
+        .btn { padding: 11px 16px; border-radius: 8px; border: 1px solid #111; background: #111; color: #fff; font-size: 15px; cursor: pointer; }
+        .btn.outline { background: #fff; color: #111; }
+        .btn.block { width: 100%; margin-top: 16px; }
+        .actions { display: flex; gap: 8px; }
+        .actions .btn { flex: 1; }
+        .err { color: #c0392b; margin-top: 12px; }
+        [hidden] { display: none !important; }
+    </style>
+</head>
+
+<body>
+    <main class="consent">
+        <h1>사이트 편집 연결 승인</h1>
+        <p id="status">확인 중…</p>
+
+        <form id="login-form" hidden>
+            <p>관리자 계정으로 로그인해 주세요.</p>
+            <label for="email">이메일</label>
+            <input type="email" id="email" required autocomplete="username">
+            <label for="password">비밀번호</label>
+            <input type="password" id="password" required autocomplete="current-password">
+            <button type="submit" class="btn block">로그인</button>
+        </form>
+
+        <section id="consent" hidden>
+            <p>아래 앱이 관리자 권한으로 사이트의 문구·프로그램·신청/문의를 조회하고 수정하려고 합니다. 직접 연결한 것이 아니라면 거부하세요.</p>
+            <dl class="box">
+                <dt>앱</dt>
+                <dd id="client-name"></dd>
+                <dt>요청 권한</dt>
+                <dd id="scopes"></dd>
+                <dt>로그인 계정</dt>
+                <dd id="account"></dd>
+            </dl>
+            <div class="actions">
+                <button class="btn outline" id="deny">거부</button>
+                <button class="btn" id="approve">승인</button>
+            </div>
+        </section>
+
+        <p class="err" id="error" hidden></p>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        (function () {
+            // 공개 가능한 값(URL, publishable key). 접근 통제는 RLS·OAuth 동의로 한다.
+            const SUPABASE_URL = 'https://tdayexcmksjfryhthyfz.supabase.co';
+            const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_BLdv2L6WneDsbz3mqp8hgA_kXRcc78X';
+            const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+
+            const statusEl = document.getElementById('status');
+            const errorEl = document.getElementById('error');
+            const loginForm = document.getElementById('login-form');
+            const consentEl = document.getElementById('consent');
+            const authorizationId = new URLSearchParams(location.search).get('authorization_id');
+
+            function fail(msg) {
+                statusEl.hidden = true;
+                loginForm.hidden = true;
+                consentEl.hidden = true;
+                errorEl.textContent = msg;
+                errorEl.hidden = false;
+            }
+
+            function go(url) {
+                // 인증 서버가 돌려준 http(s) 주소로만 이동
+                if (/^https?:\/\//i.test(url || '')) { location.href = url; } else { fail('올바르지 않은 리디렉션 주소입니다.'); }
+            }
+
+            async function start() {
+                if (!authorizationId) { fail('잘못된 요청입니다 (authorization_id 없음).'); return; }
+                if (!sb.auth.oauth) { fail('이 브라우저의 Supabase 라이브러리가 OAuth 서버 API를 지원하지 않습니다.'); return; }
+
+                const { data: { session } } = await sb.auth.getSession();
+                if (!session) {
+                    statusEl.hidden = true;
+                    loginForm.hidden = false;
+                    return;
+                }
+
+                const { data: isAdmin } = await sb.rpc('is_admin');
+                if (isAdmin !== true) { fail('관리자로 등록되지 않은 계정입니다.'); return; }
+
+                const { data, error } = await sb.auth.oauth.getAuthorizationDetails(authorizationId);
+                if (error || !data) { fail('승인 요청을 불러오지 못했습니다: ' + (error ? error.message : '')); return; }
+                if (data.redirect_url) { go(data.redirect_url); return; } // 이미 처리된 요청
+
+                document.getElementById('client-name').textContent = (data.client && data.client.name) || '알 수 없는 앱';
+                document.getElementById('scopes').textContent = (data.scope || '').split(' ').filter(Boolean).join(', ') || '기본';
+                document.getElementById('account').textContent = session.user.email;
+                statusEl.hidden = true;
+                consentEl.hidden = false;
+            }
+
+            loginForm.addEventListener('submit', async function (e) {
+                e.preventDefault();
+                errorEl.hidden = true;
+                const { error } = await sb.auth.signInWithPassword({
+                    email: document.getElementById('email').value.trim(),
+                    password: document.getElementById('password').value
+                });
+                if (error) { errorEl.textContent = '로그인 실패: ' + error.message; errorEl.hidden = false; return; }
+                loginForm.hidden = true;
+                statusEl.hidden = false;
+                start();
+            });
+
+            document.getElementById('approve').addEventListener('click', async function () {
+                const { data, error } = await sb.auth.oauth.approveAuthorization(authorizationId);
+                if (error || !data) { fail('승인 실패: ' + (error ? error.message : '')); return; }
+                go(data.redirect_url || data.redirect_to);
+            });
+
+            document.getElementById('deny').addEventListener('click', async function () {
+                const { data, error } = await sb.auth.oauth.denyAuthorization(authorizationId);
+                if (error || !data) { fail('거부 처리 실패: ' + (error ? error.message : '')); return; }
+                go(data.redirect_url || data.redirect_to);
+            });
+
+            start();
+        })();
+    </script>
+</body>
+
+</html>
