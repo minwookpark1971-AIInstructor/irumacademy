@@ -33,14 +33,10 @@
         <h1>사이트 편집 연결 승인</h1>
         <p id="status">확인 중…</p>
 
-        <form id="login-form" hidden>
-            <p>관리자 계정으로 로그인해 주세요.</p>
-            <label for="email">이메일</label>
-            <input type="email" id="email" required autocomplete="username">
-            <label for="password">비밀번호</label>
-            <input type="password" id="password" required autocomplete="current-password">
-            <button type="submit" class="btn block">로그인</button>
-        </form>
+        <div id="login-form" hidden>
+            <p>관리자 계정(Google)으로 로그인해 주세요.</p>
+            <button type="button" class="btn block" id="google-login">Google로 로그인</button>
+        </div>
 
         <section id="consent" hidden>
             <p>아래 앱이 관리자 권한으로 사이트의 문구·프로그램·신청/문의를 조회하고 수정하려고 합니다. 직접 연결한 것이 아니라면 거부하세요.</p>
@@ -129,17 +125,15 @@
                 consentEl.hidden = false;
             }
 
-            loginForm.addEventListener('submit', async function (e) {
-                e.preventDefault();
+            // 이 프로젝트는 이메일 로그인이 꺼져 있고 Google 로그인만 쓴다.
+            // 로그인 후 같은 주소(authorization_id 포함)로 돌아와 승인 화면을 이어서 보여준다.
+            document.getElementById('google-login').addEventListener('click', async function () {
                 errorEl.hidden = true;
-                const { error } = await sb.auth.signInWithPassword({
-                    email: document.getElementById('email').value.trim(),
-                    password: document.getElementById('password').value
+                const { error } = await sb.auth.signInWithOAuth({
+                    provider: 'google',
+                    options: { redirectTo: location.href.split('#')[0] }
                 });
-                if (error) { errorEl.textContent = '로그인 실패: ' + error.message; errorEl.hidden = false; return; }
-                loginForm.hidden = true;
-                statusEl.hidden = false;
-                start();
+                if (error) { errorEl.textContent = '로그인 실패: ' + error.message; errorEl.hidden = false; }
             });
 
             document.getElementById('approve').addEventListener('click', async function () {
