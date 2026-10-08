@@ -50,6 +50,14 @@
 .mh-hero .hl { opacity: 0; transform: translateY(24px); animation: hlUp .6s cubic-bezier(.2, .7, .2, 1) forwards; animation-delay: calc(var(--i, 0) * 120ms + 150ms); }
 @keyframes hlUp { to { opacity: 1; transform: none; } }
 
+/* 밝은 배경 이미지(톤=light): 어두운 막을 걷고 글자를 잉크색으로. home.hero_images.tone 으로 전환된다 */
+.hero-light .mh-hero { color: var(--ink); background: #F4F4F4; }
+.hero-light .mh-hero-shade { background: radial-gradient(58% 52% at 50% 50%, rgba(244, 244, 244, .92) 0%, rgba(244, 244, 244, .6) 55%, rgba(244, 244, 244, 0) 100%); }
+.hero-light .mh-hero-title { color: var(--ink); }
+.hero-light .mh-hero-sub { color: var(--ink-2); }
+.hero-light .mh-hero-actions .btn-on-dark { border-color: var(--ink); color: var(--ink); }
+.hero-light .mh-hero-actions .btn-on-dark:hover { background: rgba(17, 20, 24, .06); border-color: var(--ink); }
+
 /* ══════════ 2. 신뢰 로고 마키 ══════════ */
 .mh-clients { background: var(--bg); padding: 36px 0 40px; border-bottom: 1px solid var(--line); }
 .mh-clients-label { margin: 0 0 22px; text-align: center; font-size: 13px; font-weight: 700; letter-spacing: .14em; color: var(--ink-sub); }
