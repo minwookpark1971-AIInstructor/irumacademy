@@ -3,7 +3,7 @@
  *
  *   home.hero         {title, subtitle}                      히어로 카피(줄바꿈 \n = 줄 구분)
  *   home.hero_meta    {cta1{label,href}, cta2{label,href}}   히어로 버튼
- *   home.hero_images  {items:[{src, alt?}]}  1~5장           히어로 배경 사진 크로스페이드
+ *   home.hero_images  {tone?, items:[{src, alt?}]} 1~5장     히어로 배경 사진 크로스페이드(tone: light=밝은 이미지·어두운 글자, 기본 dark)
  *   home.clients      {items:[{name, src?, href?}]}          신뢰 로고 마키 (없으면 섹션 숨김)
  *   home.cases        {more_href?, items:[{title, image?, tags?[], href?}]}  출강 사례 캐러셀
  *   home.areas        {items:[{name, desc, audience?, courses?[], output?, images?[{src,alt?}]}]}  강의영역 탭(없으면 HTML 폴백 유지)
@@ -74,8 +74,10 @@
         } catch (e) { /* 폴백 유지 */ }
         try {
             var imgs = items(c['home.hero_images'], 5).filter(function (x) { return P.safeSrc(x.src); });
+            var tone = c['home.hero_images'] && c['home.hero_images'].tone === 'light' ? 'light' : 'dark';
             var bg = $('#hero-bg');
             if (bg && imgs.length) {
+                document.body.classList.toggle('hero-light', tone === 'light');
                 var key = imgs.map(function (x) { return x.src; }).join('|');
                 if (bg.getAttribute('data-key') !== key) {
                     bg.setAttribute('data-key', key);

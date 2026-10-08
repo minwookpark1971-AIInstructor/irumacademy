@@ -182,6 +182,18 @@ html { scroll-behavior: smooth; }
 .is-home .gnb:not(.is-scrolled) .gnb-cta-ghost { color: #fff; border-color: rgba(255, 255, 255, .5); }
 .is-home .gnb:not(.is-scrolled) .gnb-cta-ghost:hover { border-color: #fff; background: rgba(255, 255, 255, .1); }
 .is-home .gnb:not(.is-scrolled) .gnb-toggle { color: #fff; border-color: rgba(255, 255, 255, .5); }
+/* 밝은 히어로 위: 글자는 잉크색 */
+.is-home.hero-light .gnb:not(.is-scrolled):not(.is-open) .gnb-brand,
+.is-home.hero-light .gnb:not(.is-scrolled):not(.is-open) .gnb-brand b { color: var(--ink); }
+.is-home.hero-light .gnb:not(.is-scrolled):not(.is-open) .gnb-brand b em { color: var(--acc); }
+.is-home.hero-light .gnb:not(.is-scrolled):not(.is-open) .gnb-brand small { color: var(--ink-sub); }
+.is-home.hero-light .gnb:not(.is-scrolled):not(.is-open) .gnb-menu a { color: var(--ink-2); }
+.is-home.hero-light .gnb:not(.is-scrolled):not(.is-open) .gnb-menu a:hover,
+.is-home.hero-light .gnb:not(.is-scrolled):not(.is-open) .gnb-menu a.is-active { color: var(--ink); }
+.is-home.hero-light .gnb:not(.is-scrolled):not(.is-open) .gnb-menu a::after { background: var(--acc); }
+.is-home.hero-light .gnb:not(.is-scrolled):not(.is-open) .gnb-cta-ghost { color: var(--ink); border-color: rgba(17, 20, 24, .35); }
+.is-home.hero-light .gnb:not(.is-scrolled):not(.is-open) .gnb-cta-ghost:hover { border-color: var(--ink); background: rgba(17, 20, 24, .05); }
+.is-home.hero-light .gnb:not(.is-scrolled):not(.is-open) .gnb-toggle { color: var(--ink); border-color: rgba(17, 20, 24, .35); }
 /* 드로어를 열면 헤더 배경이 비어 보이지 않게 */
 .is-home .gnb.is-open { background: var(--navy); }
 
