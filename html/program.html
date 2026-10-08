@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0E1626">
+<title>과정 안내 | 이룸아카데미</title>
+<meta name="description" content="이룸아카데미 과정의 일정·커리큘럼·수강료·입금 안내를 확인하고 신청하세요.">
+<meta property="og:title" content="과정 안내 | 이룸아카데미">
+<meta property="og:description" content="이룸아카데미 과정의 일정·커리큘럼·수강료·입금 안내를 확인하고 신청하세요.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="이룸아카데미">
+<meta property="og:locale" content="ko_KR">
+<link rel="icon" href="../images/logo/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../images/logo/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="../images/logo/apple-touch-icon.png">
+<link rel="stylesheet" href="../css/modernist.css?v=3">
+<link rel="stylesheet" href="../css/tokens.css?v=1">
+<link rel="stylesheet" href="../css/webzine.css?v=2">
+<link rel="stylesheet" href="../css/home.css?v=1">
+<link rel="stylesheet" href="../css/catalog.css?v=3">
+</head>
+<body>
+
+<div id="header-container"></div>
+
+<main>
+
+  <p class="sr-only" id="pg-status" role="status" aria-live="polite"></p>
+
+  <!-- 상단 요약 -->
+  <section class="pg-hero" id="pg-hero" hidden>
+    <div class="hm-wrap">
+      <div>
+        <p class="pg-crumb"><a href="../index.html#programs">← 진행중 과정</a></p>
+        <div class="pg-badges" id="pg-badges"></div>
+        <h1 class="pg-title" id="pg-title"></h1>
+        <p class="pg-sub" id="pg-sub" hidden></p>
+        <p class="pg-sum" id="pg-sum" hidden></p>
+        <dl class="pg-facts" id="pg-facts"></dl>
+        <div class="pg-cta" id="pg-cta"></div>
+      </div>
+      <div id="pg-poster"></div>
+    </div>
+  </section>
+
+  <!-- 구역 바로가기 -->
+  <nav class="pg-toc" id="pg-toc" aria-label="이 과정의 구역" hidden><ul id="pg-toc-list"></ul></nav>
+
+  <!-- 값이 있는 구역만 표시된다 -->
+  <section class="pg-sec" id="sec-overview" hidden><div class="hm-wrap"><span class="eyebrow">Overview</span><h2>과정 소개</h2><div class="pg-lead" id="overview-body"></div></div></section>
+  <section class="pg-sec" id="sec-tracks" hidden><div class="hm-wrap"><span class="eyebrow">Tracks</span><h2>트랙 안내</h2><div class="cards3" id="tracks-body"></div></div></section>
+  <section class="pg-sec" id="sec-learn" hidden><div class="hm-wrap"><span class="eyebrow">Learn</span><h2>배우는 것</h2><div class="cards3" id="learn-body"></div></div></section>
+  <section class="pg-sec" id="sec-outcomes" hidden><div class="hm-wrap"><span class="eyebrow">Outcomes</span><h2>수료 후 손에 남는 것</h2><div class="cards3" id="outcomes-body"></div></div></section>
+  <section class="pg-sec" id="sec-curriculum" hidden>
+    <div class="hm-wrap">
+      <span class="eyebrow">Curriculum</span><h2>커리큘럼</h2>
+      <div class="table-scroll" style="margin-top:20px">
+        <table class="info-table">
+          <caption class="sr-only">회차별 일정과 주제</caption>
+          <thead><tr><th scope="col">회차</th><th scope="col">일정</th><th scope="col">형태</th><th scope="col">주제</th><th scope="col">내용</th></tr></thead>
+          <tbody id="curriculum-body"></tbody>
+        </table>
+      </div>
+      <p class="pg-table-note" id="curriculum-note" hidden>★ 마일스톤 회차</p>
+    </div>
+  </section>
+  <section class="pg-sec" id="sec-operations" hidden>
+    <div class="hm-wrap"><span class="eyebrow">How it works</span><h2>운영 방식</h2>
+      <div class="table-scroll" style="margin-top:20px"><table class="info-table"><caption class="sr-only">운영 방식</caption><tbody id="operations-body"></tbody></table></div>
+    </div>
+  </section>
+  <section class="pg-sec" id="sec-fees" hidden>
+    <div class="hm-wrap"><span class="eyebrow">Fees</span><h2>수강료</h2>
+      <div class="table-scroll" style="margin-top:20px">
+        <table class="info-table"><caption class="sr-only">수강료</caption>
+          <thead><tr><th scope="col">과정</th><th scope="col">수강료</th></tr></thead>
+          <tbody id="fees-body"></tbody>
+        </table>
+      </div>
+      <p class="pg-table-note" id="fees-note" hidden></p>
+    </div>
+  </section>
+  <section class="pg-sec" id="sec-notices" hidden><div class="hm-wrap"><span class="eyebrow">Notice</span><h2>안내 사항</h2><ul class="list-check pg-lead" id="notices-body"></ul></div></section>
+  <section class="pg-sec" id="sec-payment" hidden>
+    <div class="hm-wrap"><span class="eyebrow">Payment</span><h2>입금 안내</h2>
+      <div class="pay-panel" style="margin-top:18px">
+        <div class="pay-bank" id="pay-bank"></div>
+        <div class="pay-num" id="pay-number"></div>
+        <div class="pay-holder" id="pay-holder"></div>
+        <button type="button" class="btn btn-primary" id="copy-account" style="margin-top:16px;width:100%;justify-content:center">계좌번호 복사</button>
+        <ul class="pay-notice"><li>신청서를 남기신 뒤 위 계좌로 입금해 주시면, 입금 확인 후 수강이 확정되고 확정 안내 문자가 발송됩니다.</li></ul>
+      </div>
+    </div>
+  </section>
+  <section class="pg-sec" id="sec-faq" hidden><div class="hm-wrap"><span class="eyebrow">FAQ</span><h2>자주 묻는 질문</h2><div class="faq-list" style="margin-top:20px" id="faq-body"></div></div></section>
+
+  <!-- 과정을 찾지 못했을 때 -->
+  <section class="pg-notfound" id="pg-notfound" hidden>
+    <div class="hm-wrap">
+      <h1 style="font-size:clamp(24px,3.4vw,38px)">과정을 찾을 수 없습니다.</h1>
+      <p class="muted">주소가 잘못되었거나, 이미 종료·비공개된 과정입니다.</p>
+      <p><a class="btn btn-primary" href="../index.html#programs">진행중인 과정 보기 →</a></p>
+    </div>
+  </section>
+
+  <section class="pg-notfound" id="pg-error" hidden>
+    <div class="hm-wrap">
+      <h1 style="font-size:clamp(24px,3.4vw,38px)">과정 정보를 불러오지 못했습니다.</h1>
+      <p class="muted">잠시 후 새로고침해 주세요.</p>
+      <p><a class="btn btn-primary" href="../index.html#programs">진행중인 과정 보기 →</a></p>
+    </div>
+  </section>
+
+</main>
+
+<!-- 모바일 하단 신청 바 (components.js 의 공통 바를 이 페이지에서는 과정별 바로 대체) -->
+<div class="mobile-cta pg-sticky" id="pg-sticky" hidden></div>
+
+<div id="footer-container"></div>
+
+<script>window.IRUM_NO_MOBILE_CTA = true;</script>
+<script src="../js/config.js?v=2"></script>
+<script src="../js/components.js?v=5"></script>
+<script src="../js/programs.js?v=1"></script>
+<script src="../js/program-page.js?v=1"></script>
+</body>
+</html>
