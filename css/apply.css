@@ -10,7 +10,8 @@
 .nav a.btn-primary[aria-current='page'] { color: var(--color-bg); }
 
 /* ── 상단 히어로 ─────────────────────────────────────────────────────────── */
-.apply-hero { border-bottom: 2px solid var(--color-accent); }
+.apply-hero { border-bottom: 2px solid var(--color-accent); background: #050e27 url(../images/banners/page-header.webp?v=1) right center / cover no-repeat; }
+@media (max-width: 720px) { .apply-hero { background-image: linear-gradient(rgba(5, 14, 39, .62), rgba(5, 14, 39, .62)), url(../images/banners/page-header.webp?v=1); background-position: center, 72% center; } }
 .apply-hero .wrap { padding-block: clamp(40px, 7vw, 88px); }
 .apply-hero h1 { margin: .3em 0 0; }
 .apply-hero .lede { opacity: .82; margin-top: 1em; max-width: 56ch; }
