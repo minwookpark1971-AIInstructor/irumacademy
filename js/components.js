@@ -147,6 +147,7 @@ function generateFooter() {
             <select id="family-site" aria-label="패밀리 사이트 바로가기">
                 <option value="">바로가기…</option>
                 <option value="https://ax.irumcompany.co.kr/">AX 교육프로그램 웹진 (대학·기관)</option>
+                <option value="https://keca.vercel.app/">KECA 한국교육컨설팅협회</option>
             </select>
         </span>
         <a href="${p.adminUrl}" class="admin-link">관리자 →</a>
