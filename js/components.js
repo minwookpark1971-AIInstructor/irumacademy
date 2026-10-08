@@ -4,8 +4,8 @@
  * AJAX 없이 문자열 주입이라 file:// 에서도 동작한다.
  *
  * 메뉴 모드
- *   - 기본(window.IRUM_ANCHOR_NAV 가 거짓): 기존 페이지 링크(홈·회사소개·전문강사성장프로그램)
- *   - 앵커 모드(true): 메인 섹션 앵커(과정소개·커리큘럼·수강안내·강사·FAQ) + 회사소개
+ *   - 앵커 모드(기본값): 메인 섹션 앵커(과정소개·커리큘럼·수강안내·강사·FAQ) + 회사소개
+ *   - window.IRUM_ANCHOR_NAV = false 로 끄면 기존 페이지 링크(홈·회사소개·전문강사성장프로그램)
  *     메인에서는 #앵커, 다른 페이지에서는 index.html#앵커 로 연결한다.
  *     메인은 섹션이 없거나 숨겨져 있으면 해당 메뉴를 자동으로 숨긴다(window.IRUM_refreshNav).
  */
@@ -89,6 +89,7 @@ function currentPage(pathInfo) {
 }
 
 function menuLinks(p, cur) {
+    if (window.IRUM_ANCHOR_NAV === undefined) window.IRUM_ANCHOR_NAV = true;
     const mark = (key) => cur === key ? ' aria-current="page"' : '';
     if (window.IRUM_ANCHOR_NAV) {
         const base = p.isHome ? '' : p.homeUrl;
@@ -233,7 +234,7 @@ function initShell() {
     // 메인 전용: 앵커 메뉴 노출·강조 (섹션이 없거나 숨겨져 있으면 메뉴도 숨김)
     let observer = null;
     window.IRUM_refreshNav = function () {
-        if (!window.IRUM_ANCHOR_NAV || !getPathInfo().isHome) return;
+        if (window.IRUM_ANCHOR_NAV === false || !getPathInfo().isHome) return;
         const links = document.querySelectorAll('[data-anchor]');
         const visible = [];
         links.forEach((a) => {
