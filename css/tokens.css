@@ -1,0 +1,125 @@
+/* ==========================================================================
+   디자인 토큰 — ax.irumcompany.co.kr 웹진 디자인 언어와 통일
+   값 출처: ax 사이트 CSS(:root) 직접 추출
+   사용법: 모든 페이지에서 modernist.css 뒤에 로드한다.
+           modernist.css 가 쓰는 변수(--color-*, --font-*)를 여기서 덮어쓰므로
+           서브페이지의 레이아웃은 그대로 두고 색·서체만 한 번에 바뀐다.
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&family=Noto+Serif+KR:wght@500;700;900&family=Cormorant+Garamond:wght@500;600;700&display=swap');
+
+:root {
+  /* ── ax 원본 토큰 ────────────────────────────────────────────── */
+  --navy-900: #0E1626;          /* theme-color · 히어로/푸터 배경 · 본문 제목 */
+  --ink:      #0E1626;
+  --ink-2:    #33415C;
+  --ink-3:    #5C6983;          /* 보조 텍스트 (흰 배경 대비 5.7:1) */
+  --line:     #D3DEEA;
+  --paper:    #F4F7FB;
+  --paper-2:  #FFFFFF;
+  --paper-3:  #E6EDF5;
+  --acc:      #06697E;          /* 포인트 · CTA · 라벨 (흰 배경 대비 6.2:1) */
+  --acc-2:    #22C7E0;
+  --hot:      #B03A0B;          /* NEW · 진행중 강조 */
+  --hot-2:    #9A3412;
+  --err:      #C0392B;
+  --track-a:  #1F5FCC;          /* A코스 */
+  --track-b:  #6B3FC4;          /* B코스 */
+
+  /* ── modernist.css 변수 덮어쓰기 ─────────────────────────────── */
+  --color-bg: var(--paper);
+  --color-surface: var(--paper-3);
+  --color-text: var(--ink);
+  --color-accent: var(--acc);
+  --color-accent-2: var(--acc-2);
+  --color-divider: #B9C6D8;
+
+  --color-neutral-100: #F7F9FC;
+  --color-neutral-200: #E6EDF5;
+  --color-neutral-300: #D3DEEA;
+  --color-neutral-400: #B4C2D6;
+  --color-neutral-500: #8FA0B8;
+  --color-neutral-600: #5C6983;
+  --color-neutral-700: #46536B;
+  --color-neutral-800: #33415C;
+  --color-neutral-900: #1B2740;
+
+  --color-accent-100: #E6F4F7;
+  --color-accent-200: #C7E6ED;
+  --color-accent-300: #9CD0DC;
+  --color-accent-400: #5FB0C4;
+  --color-accent-500: #2B8CA3;
+  --color-accent-600: #05596B;
+  --color-accent-700: #044A5A;
+  --color-accent-800: #033B48;
+  --color-accent-900: #022C36;
+
+  /* UI 라벨·버튼은 산세리프, 제목만 세리프(ax 와 동일한 웹진 위계) */
+  --font-serif: "Noto Serif KR", "Cormorant Garamond", Georgia, serif;
+  --font-latin: "Cormorant Garamond", "Noto Serif KR", Georgia, serif;
+  --font-body: "Noto Sans KR", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-heading: "Noto Sans KR", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-heading-weight: 800;
+
+  --radius-sm: 2px;
+  --radius-md: 2px;
+  --radius-lg: 4px;
+
+  --shadow-sm: 0 1px 2px rgba(14, 22, 38, .08);
+  --shadow-md: 0 4px 14px rgba(14, 22, 38, .10);
+  --shadow-lg: 0 10px 30px rgba(14, 22, 38, .14);
+
+  --header-h: 64px;
+}
+
+body {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--ink);
+  background: var(--paper);
+  /* 한글은 단어(어절) 단위로 줄바꿈, 긴 영문·URL 은 넘치지 않게 */
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
+/* 제목은 세리프 — 한 문단 3문장 이내, 행간 1.2~1.3 */
+h1, h2, h3,
+.display-1, .display-2, .display-3, .h-sec, .h-sub {
+  font-family: var(--font-serif);
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+  text-wrap: balance;
+}
+.display-1, .display-2, .display-3 { font-weight: 900; line-height: 1.18; }
+h1, h2, h3, .h-sec, .h-sub { font-weight: 700; }
+
+/* 영문 라벨(섹션 캡션) */
+.eyebrow, .kicker {
+  font-family: var(--font-latin);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--acc);
+}
+.kicker-on-dark { color: var(--acc-2); }
+.kicker-dot::before { background: var(--acc-2); }
+
+/* 버튼: ax 와 같은 네이비 면 + 포인트(gold) 면 */
+.btn { border-radius: var(--radius-md); }
+.btn-primary { background: var(--acc); color: #fff; }
+.btn-primary:hover { background: var(--color-accent-600); color: #fff; }
+.btn-primary:active { background: var(--color-accent-700); }
+.btn-secondary { border-color: var(--ink-3); color: var(--ink); }
+.btn-ghost { color: var(--acc); }
+.btn-on-dark { border-color: rgba(255, 255, 255, .45); color: #fff; }
+.btn-on-accent { background: #fff; color: var(--acc); }
+
+/* 다크 밴드는 순수 네이비 */
+.band-dark { background: var(--navy-900); color: #E6EDF7; }
+.band-accent { background: var(--acc); }
+.tag-on-dark { background: rgba(230, 237, 247, .12); color: #E6EDF7; }
+.tag-accent { background: var(--color-accent-100); color: var(--color-accent-800); }
+
+a { color: var(--acc); }
+::selection { background: color-mix(in srgb, var(--acc) 28%, transparent); }
