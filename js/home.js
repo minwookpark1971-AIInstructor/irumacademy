@@ -17,6 +17,7 @@
  *   home.instructor{name, role, bio[]}  /  home.metrics{items[{n,label}]}   (없으면 섹션 숨김)
  *   home.enrollment{schedule, fees[{name,price,note}], account{bank,number,holder}, notice[]}
  *   home.faq       [{q,a}]                                   (없으면 섹션 숨김)
+ *   settings.seo   {title, description}  (site_settings 테이블)  탭 제목·description
  */
 (function () {
     'use strict';
@@ -243,6 +244,20 @@
         sec.hidden = false;
     }
 
+
+    /** settings.seo — 브라우저 탭 제목·description 보정(크롤러는 JS 를 실행하지 않으므로 OG 는 정적 HTML 이 담당) */
+    function applySeo(v) {
+        if (!v) return;
+        if (isStr(v.title)) {
+            document.title = v.title;
+            var ot = $('meta[property="og:title"]'); if (ot) ot.setAttribute('content', v.title);
+        }
+        if (isStr(v.description)) {
+            var d = $('meta[name="description"]'); if (d) d.setAttribute('content', v.description);
+            var od = $('meta[property="og:description"]'); if (od) od.setAttribute('content', v.description);
+        }
+    }
+
     // ── 섹션 번호 · 「다음 →」 · 메뉴 갱신 ─────────────────────
     function renumber() {
         var secs = $$('[data-sec]').filter(function (s) { return !s.hidden; });
@@ -342,9 +357,10 @@
 
     // ── 부팅 ────────────────────────────────────────────────
     function render(c) {
+        // 순서 중요: 슬라이드(틀 복제)가 먼저, 그 위에 1장 제목·태그·버튼을 덮어쓴다
         var steps = [
-            ['home.hero', applyHero], ['home.hero_meta', applyHeroMeta],
-            ['home.slides', applySlides], ['home.highlights', applyHighlights], ['home.cards', applyCards],
+            ['home.slides', applySlides], ['home.hero', applyHero], ['home.hero_meta', applyHeroMeta],
+            ['home.highlights', applyHighlights], ['home.cards', applyCards],
             ['home.timeline', applyTimeline], ['home.outcomes', applyOutcomes], ['home.system', applySystem],
             ['home.enrollment', applyEnrollment], ['home.faq', applyFaq]
         ];
@@ -355,8 +371,9 @@
         try { applyHeroOverlay(); } catch (e) { /* 폴백 */ }
     }
 
-    function boot(c) {
+    function boot(c, seo) {
         if (c) render(c);
+        try { applySeo(seo); } catch (e) { /* 폴백 */ }
         initSlider();
         initCopy();
         renumber();
@@ -364,11 +381,11 @@
 
     // DOM 준비 + 데이터 조회(성공·실패 무관) 둘 다 끝나면 딱 한 번 실행
     var cfg = window.IRUM_CONFIG || {};
-    var data = null, fetched = false, domReady = document.readyState !== 'loading', booted = false;
+    var data = null, seoData = null, fetched = false, domReady = document.readyState !== 'loading', booted = false;
     function tryBoot() {
         if (booted || !fetched || !domReady) return;
         booted = true;
-        boot(data);
+        boot(data, seoData);
     }
     document.addEventListener('DOMContentLoaded', function () { domReady = true; tryBoot(); });
 
@@ -376,16 +393,17 @@
 
     var ctrl = window.AbortController ? new AbortController() : null;
     var timer = setTimeout(function () { if (ctrl) ctrl.abort(); }, 4000);
-    fetch(cfg.supabaseUrl + '/rest/v1/site_content?key=like.home.*&select=key,value', {
-        headers: { apikey: cfg.supabaseAnonKey },
-        signal: ctrl ? ctrl.signal : undefined
-    })
-        .then(function (r) { return r.ok ? r.json() : null; })
-        .then(function (rows) {
-            if (!Array.isArray(rows)) return;
-            data = {};
-            rows.forEach(function (r) { data[r.key] = r.value; });
-        })
-        .catch(function () { data = null; })
-        .then(function () { clearTimeout(timer); fetched = true; tryBoot(); });
+    function get(path) {
+        return fetch(cfg.supabaseUrl + '/rest/v1/' + path, {
+            headers: { apikey: cfg.supabaseAnonKey },
+            signal: ctrl ? ctrl.signal : undefined
+        }).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; });
+    }
+    Promise.all([
+        get('site_content?key=like.home.*&select=key,value'),
+        get('site_settings?key=eq.seo&select=value&limit=1')
+    ]).then(function (res) {
+        if (Array.isArray(res[0])) { data = {}; res[0].forEach(function (r) { data[r.key] = r.value; }); }
+        if (Array.isArray(res[1]) && res[1][0]) seoData = res[1][0].value;
+    }).then(function () { clearTimeout(timer); fetched = true; tryBoot(); });
 })();
