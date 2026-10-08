@@ -124,7 +124,9 @@
 .area-tile b { position: relative; font-size: 16px; font-weight: 700; line-height: 1.4; letter-spacing: -0.02em; }
 .area-tile img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .area-tile img + * { z-index: 1; }
-.area-tile.has-img::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 40%, rgba(14, 22, 38, .75)); }
+.area-tile.has-img::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(14, 22, 38, 0) 45%, rgba(14, 22, 38, .82) 100%); }
+.area-tile img { object-fit: cover; object-position: 50% 42%; }
+.area-tile { background-color: var(--navy); }
 .area-tile.has-img i, .area-tile.has-img b { z-index: 1; }
 .area-meta { margin: 28px 0 0; border-top: 1px solid var(--line); }
 .area-meta > div { display: grid; grid-template-columns: 84px 1fr; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--line); font-size: 16px; }
@@ -141,6 +143,8 @@
   .area-tiles { grid-template-columns: 1fr; }
   .area-tile { aspect-ratio: auto; min-height: 104px; flex-direction: row; align-items: flex-end; gap: 14px; }
   .area-tile i { font-size: 28px; }
+  .area-tile.has-img::after { background: linear-gradient(90deg, rgba(14, 22, 38, .78) 0%, rgba(14, 22, 38, .3) 70%, rgba(14, 22, 38, .1) 100%); }
+  .area-tile img { object-position: 50% 38%; }
 }
 
 /* ══════════ 5. 숫자 ══════════ */
@@ -165,7 +169,8 @@
 .steps4 { background: #fff; }
 
 /* ══════════ 8. CTA ══════════ */
-.mh-cta { background: var(--navy); color: #fff; text-align: center; padding-block: var(--section-y); }
+.mh-cta { background: #050e27 url(../images/banners/cta.webp?v=1) center / cover no-repeat; color: #fff; text-align: center; padding-block: var(--section-y); }
+@media (max-width: 720px) { .mh-cta { background-position: 6% center; } }
 .mh-cta h2 { margin: 0 auto; max-width: 18em; color: #fff; font-size: clamp(30px, 4.6vw, 60px); font-weight: 800; line-height: 1.2; letter-spacing: -0.035em; }
 .mh-cta p { margin: 22px auto 0; max-width: 38em; color: #B4C2D6; font-size: clamp(16px, 1.6vw, 19px); line-height: 1.75; }
 .mh-cta-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 40px; }
