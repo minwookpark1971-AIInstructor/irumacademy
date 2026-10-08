@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>기관 제안 요청 | 이룸아카데미</title>
+<meta name="description" content="기관·학교·기업의 AI 교육 도입, 강사 워크샵, 일반 문의를 남겨 주세요. 담당자가 확인 후 연락드립니다.">
+<link rel="icon" href="../images/logo/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../images/logo/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="../images/logo/apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.irumcompany.co.kr/html/inquiry.html">
+<meta property="og:title" content="기관 제안 요청 | 이룸아카데미">
+<meta property="og:description" content="기관·학교·기업의 AI 교육 도입을 문의해 주세요.">
+<meta property="og:site_name" content="이룸아카데미">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:image" content="https://www.irumcompany.co.kr/images/logo/og-image.png?v=20261008b">
+<link rel="stylesheet" href="../css/modernist.css?v=3">
+<link rel="stylesheet" href="../css/tokens.css?v=2">
+<link rel="stylesheet" href="../css/webzine.css?v=3">
+<link rel="stylesheet" href="../css/apply.css?v=2">
+<style>
+  .iq-wrap { max-width: 720px; margin: 0 auto; padding: clamp(28px, 5vw, 56px) clamp(16px, 4vw, 24px) clamp(56px, 8vw, 96px); }
+  .iq-card { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: clamp(20px, 4vw, 36px); }
+  .iq-card .form-group:first-of-type { margin-top: 0; border-top: 0; padding-top: 0; }
+  .iq-hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+  .iq-msg { margin-top: 14px; padding: 12px 14px; border-radius: var(--radius-sm); font-size: 14px; }
+  .iq-msg.is-err { background: #FDECEA; color: #8A2A1E; }
+  .iq-done { text-align: center; padding: clamp(32px, 6vw, 64px) 8px; }
+  .iq-done h2 { margin: 0 0 10px; font-size: clamp(24px, 3vw, 32px); }
+  .iq-done p { margin: 0 0 22px; color: var(--ink-sub); line-height: 1.7; }
+  .iq-req { color: var(--acc); }
+  .field .input[aria-invalid='true'] { border-color: #C0392B; }
+</style>
+</head>
+<body>
+
+<div id="header-container"></div>
+
+<main>
+  <section class="band-dark apply-hero">
+    <div class="wrap">
+      <span class="kicker kicker-on-dark kicker-dot">Proposal</span>
+      <h1 class="display-3">기관 제안 요청</h1>
+      <p class="lede">기관·학교·기업의 AI 교육 도입, 강사 워크샵, 일반 문의를 남겨 주세요. 담당자가 확인 후 입력하신 이메일로 연락드립니다.</p>
+    </div>
+  </section>
+
+  <div class="iq-wrap">
+    <div class="iq-card" id="iq-card">
+      <form id="iq-form" novalidate>
+        <div class="form-group">
+          <h2 class="group-title">문의 유형</h2>
+          <div class="field">
+            <label for="iq-type">유형 선택 <span class="iq-req">*</span></label>
+            <select class="input" id="iq-type" name="type" required>
+              <option value="institution">기관·학교·기업 교육 제안</option>
+              <option value="workshop">강사 워크샵 문의</option>
+              <option value="general">일반 문의 · 다음 기수 알림</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <h2 class="group-title">연락처</h2>
+          <div class="field-row">
+            <div class="field"><label for="iq-name">이름(담당자) <span class="iq-req">*</span></label><input class="input" id="iq-name" name="name" maxlength="100" autocomplete="name" required></div>
+            <div class="field"><label for="iq-email">이메일 <span class="iq-req">*</span></label><input class="input" id="iq-email" name="email" type="email" maxlength="254" autocomplete="email" required></div>
+          </div>
+          <div class="field-row" id="iq-org-row">
+            <div class="field"><label for="iq-org">기관·학교·회사명</label><input class="input" id="iq-org" name="org" maxlength="200" autocomplete="organization"></div>
+            <div class="field"><label for="iq-phone">연락처(선택)</label><input class="input" id="iq-phone" name="phone" type="tel" maxlength="50" autocomplete="tel"></div>
+          </div>
+        </div>
+
+        <div class="form-group" id="iq-detail-group">
+          <h2 class="group-title">교육 개요</h2>
+          <div class="field-row">
+            <div class="field"><label for="iq-headcount">예상 인원(선택)</label><input class="input" id="iq-headcount" name="headcount" type="number" min="1" max="100000" inputmode="numeric"></div>
+            <div class="field"><label for="iq-date">희망 일정(선택)</label><input class="input" id="iq-date" name="date" maxlength="200" placeholder="예: 2026년 12월 중, 하루 4시간"></div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <h2 class="group-title">문의 내용</h2>
+          <div class="field">
+            <label for="iq-message">내용 <span class="iq-req">*</span></label>
+            <textarea class="input" id="iq-message" name="message" rows="6" maxlength="5000" required placeholder="교육 대상, 목적, 원하는 주제(예: 업무자동화·데이터분석·바이브코딩) 등을 적어 주세요."></textarea>
+          </div>
+          <div class="iq-hp" aria-hidden="true"><label>웹사이트<input type="text" name="website" id="iq-website" tabindex="-1" autocomplete="off"></label></div>
+        </div>
+
+        <div class="form-group">
+          <label class="checkline"><input type="checkbox" id="iq-consent" required><span>개인정보 수집·이용에 동의합니다. 입력하신 정보는 문의 응대 목적으로만 사용합니다. <a href="privacy.html" target="_blank" rel="noopener">개인정보처리방침</a></span></label>
+        </div>
+
+        <div class="iq-msg is-err" id="iq-error" role="alert" hidden></div>
+        <button type="submit" class="btn btn-primary form-submit" id="iq-submit">문의 보내기</button>
+      </form>
+    </div>
+  </div>
+</main>
+
+<div id="footer-container"></div>
+
+<script src="../js/config.js?v=2"></script>
+<script src="../js/components.js?v=7"></script>
+<script>
+(function () {
+    'use strict';
+    var cfg = window.IRUM_CONFIG || {};
+    var $ = function (id) { return document.getElementById(id); };
+    var form = $('iq-form'), errBox = $('iq-error'), submit = $('iq-submit');
+    var loadedAt = Date.now();
+
+    // ?topic=next → 일반 문의 + 다음 기수 알림 문구 미리 채움
+    var topic = new URLSearchParams(location.search).get('topic');
+    if (topic === 'next') {
+        $('iq-type').value = 'general';
+        $('iq-message').value = '다음 기수 개설 알림을 받고 싶습니다.\n관심 분야: ';
+    }
+
+    function syncType() {
+        var t = $('iq-type').value;
+        var org = t !== 'general';
+        $('iq-org-row').hidden = !org;
+        $('iq-detail-group').hidden = !org;
+    }
+    $('iq-type').addEventListener('change', syncType);
+    syncType();
+
+    function showErr(msg, field) {
+        errBox.textContent = msg; errBox.hidden = false;
+        Array.prototype.forEach.call(form.querySelectorAll('[aria-invalid]'), function (n) { n.removeAttribute('aria-invalid'); });
+        if (field) { field.setAttribute('aria-invalid', 'true'); field.focus(); }
+    }
+
+    form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        errBox.hidden = true;
+        var type = $('iq-type').value;
+        var name = $('iq-name').value.trim(), email = $('iq-email').value.trim(), message = $('iq-message').value.trim();
+        if (!name) return showErr('이름을 입력해 주세요.', $('iq-name'));
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return showErr('이메일 형식을 확인해 주세요.', $('iq-email'));
+        if (!message) return showErr('문의 내용을 입력해 주세요.', $('iq-message'));
+        if (!$('iq-consent').checked) return showErr('개인정보 수집·이용에 동의해 주세요.', $('iq-consent'));
+        // 스팸 방지: 숨은 입력란이 채워졌거나 3초 안에 제출되면 성공한 척 종료
+        if ($('iq-website').value || Date.now() - loadedAt < 3000) return done();
+        if (!cfg.supabaseUrl || !cfg.supabaseAnonKey) return showErr('지금은 접수할 수 없습니다. irum.ceo@gmail.com 으로 보내 주세요.');
+
+        var table, row;
+        if (type === 'general') {
+            table = 'site_inquiries';
+            row = { name: name, email: email, category: 'general', message: message };
+        } else {
+            table = 'site_applications';
+            var hc = parseInt($('iq-headcount').value, 10);
+            row = { track: type, contact_name: name, email: email, message: message };
+            if ($('iq-org').value.trim()) row.org_name = $('iq-org').value.trim();
+            if ($('iq-phone').value.trim()) row.phone = $('iq-phone').value.trim();
+            if (hc >= 1 && hc <= 100000) row.headcount = hc;
+            if ($('iq-date').value.trim()) row.preferred_date = $('iq-date').value.trim();
+        }
+        submit.disabled = true; submit.textContent = '보내는 중…';
+        fetch(cfg.supabaseUrl + '/rest/v1/' + table, {
+            method: 'POST',
+            headers: { apikey: cfg.supabaseAnonKey, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
+            body: JSON.stringify(row)
+        }).then(function (r) {
+            if (!r.ok) throw new Error('http ' + r.status);
+            done();
+        }).catch(function () {
+            submit.disabled = false; submit.textContent = '문의 보내기';
+            showErr('전송하지 못했습니다. 잠시 후 다시 시도하거나 irum.ceo@gmail.com 으로 보내 주세요.');
+        });
+    });
+
+    function done() {
+        var card = $('iq-card');
+        card.textContent = '';
+        var box = document.createElement('div'); box.className = 'iq-done';
+        var h = document.createElement('h2'); h.textContent = '문의가 접수되었습니다.';
+        var p = document.createElement('p'); p.textContent = '담당자가 확인 후 입력하신 이메일로 연락드립니다.';
+        var a = document.createElement('a'); a.className = 'btn btn-primary'; a.href = '../index.html'; a.textContent = '메인으로 돌아가기';
+        box.appendChild(h); box.appendChild(p); box.appendChild(a); card.appendChild(box);
+        window.scrollTo(0, 0);
+    }
+})();
+</script>
+</body>
+</html>

@@ -1,122 +1,145 @@
 /* ==========================================================================
-   디자인 토큰 — ax.irumcompany.co.kr 웹진 디자인 언어와 통일
-   값 출처: ax 사이트 CSS(:root) 직접 추출
+   디자인 토큰 — 메인페이지 화면계획안(2026-10-08) 6장 기준
+   흰 바탕 + 검정 타이포 + 포인트 블루 1개. 네이비(#0E1626)는 히어로 오버레이·CTA·푸터에만 쓴다.
    사용법: 모든 페이지에서 modernist.css 뒤에 로드한다.
            modernist.css 가 쓰는 변수(--color-*, --font-*)를 여기서 덮어쓰므로
-           서브페이지의 레이아웃은 그대로 두고 색·서체만 한 번에 바뀐다.
+           서브페이지의 레이아웃은 그대로 두고 색·서체·모서리만 한 번에 바뀐다.
    ========================================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&family=Noto+Serif+KR:wght@500;700;900&family=Cormorant+Garamond:wght@500;600;700&display=swap');
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css');
 
 :root {
-  /* ── ax 원본 토큰 ────────────────────────────────────────────── */
-  --navy-900: #0E1626;          /* theme-color · 히어로/푸터 배경 · 본문 제목 */
-  --ink:      #0E1626;
-  --ink-2:    #33415C;
-  --ink-3:    #5C6983;          /* 보조 텍스트 (흰 배경 대비 5.7:1) */
-  --line:     #D3DEEA;
-  --paper:    #F4F7FB;
-  --paper-2:  #FFFFFF;
-  --paper-3:  #E6EDF5;
-  --acc:      #06697E;          /* 포인트 · CTA · 라벨 (흰 배경 대비 6.2:1) */
-  --acc-2:    #22C7E0;
-  --hot:      #B03A0B;          /* NEW · 진행중 강조 */
+  /* ── 계획안 토큰 ─────────────────────────────────────────────── */
+  --bg:       #FFFFFF;          /* 기본 배경 */
+  --bg-soft:  #F5F6F8;          /* 교차 섹션 배경 */
+  --ink:      #111418;          /* 제목·본문 */
+  --ink-sub:  #5B6270;          /* 보조 텍스트 (흰 배경 대비 5.9:1) */
+  --line:     #E4E7EC;          /* 구분선·카드 테두리 */
+  --navy:     #0E1626;          /* 히어로 오버레이·CTA·푸터 */
+  --accent:   #3B5BFD;          /* 버튼·탭 밑줄·배지 (흰 배경 대비 5.1:1) — 대표님 확정 필요 */
+  --radius:   16px;             /* 카드 */
+  --radius-pill: 999px;         /* 버튼 */
+  --shadow:   0 8px 24px rgba(17, 20, 24, .08);
+  --container: 1200px;
+  --section-y: clamp(80px, 12vw, 160px);
+  --fs-hero:  clamp(36px, 6vw, 72px);
+  --fs-h2:    clamp(28px, 3.6vw, 44px);
+  --fs-body:  17px;
+
+  /* ── 기존 이름(서브페이지·카탈로그 CSS 가 사용) → 새 값으로 연결 ──── */
+  --navy-900: var(--navy);
+  --ink-2:    #3A404B;
+  --ink-3:    var(--ink-sub);
+  --paper:    var(--bg-soft);
+  --paper-2:  var(--bg);
+  --paper-3:  #ECEEF2;
+  --acc:      var(--accent);
+  --acc-2:    #8FA3FF;          /* 네이비 위 라벨·링크 */
+  --hot:      #B03A0B;          /* 진행중 강조 */
   --hot-2:    #9A3412;
   --err:      #C0392B;
   --track-a:  #1F5FCC;          /* A코스 */
   --track-b:  #6B3FC4;          /* B코스 */
 
   /* ── modernist.css 변수 덮어쓰기 ─────────────────────────────── */
-  --color-bg: var(--paper);
+  --color-bg: var(--bg-soft);
   --color-surface: var(--paper-3);
   --color-text: var(--ink);
-  --color-accent: var(--acc);
+  --color-accent: var(--accent);
   --color-accent-2: var(--acc-2);
-  --color-divider: #B9C6D8;
+  --color-divider: #D5D9E0;
 
-  --color-neutral-100: #F7F9FC;
-  --color-neutral-200: #E6EDF5;
-  --color-neutral-300: #D3DEEA;
-  --color-neutral-400: #B4C2D6;
-  --color-neutral-500: #8FA0B8;
-  --color-neutral-600: #5C6983;
-  --color-neutral-700: #46536B;
-  --color-neutral-800: #33415C;
-  --color-neutral-900: #1B2740;
+  --color-neutral-100: #F7F8FA;
+  --color-neutral-200: #ECEEF2;
+  --color-neutral-300: #E4E7EC;
+  --color-neutral-400: #C3C8D2;
+  --color-neutral-500: #9097A5;
+  --color-neutral-600: #5B6270;
+  --color-neutral-700: #464C58;
+  --color-neutral-800: #2E333C;
+  --color-neutral-900: #1A1D23;
 
-  --color-accent-100: #E6F4F7;
-  --color-accent-200: #C7E6ED;
-  --color-accent-300: #9CD0DC;
-  --color-accent-400: #5FB0C4;
-  --color-accent-500: #2B8CA3;
-  --color-accent-600: #05596B;
-  --color-accent-700: #044A5A;
-  --color-accent-800: #033B48;
-  --color-accent-900: #022C36;
+  --color-accent-100: #EEF1FF;
+  --color-accent-200: #D9E0FF;
+  --color-accent-300: #B3C0FF;
+  --color-accent-400: #8195FF;
+  --color-accent-500: #3B5BFD;
+  --color-accent-600: #2A47E0;
+  --color-accent-700: #2038B8;
+  --color-accent-800: #182B8F;
+  --color-accent-900: #111F66;
 
-  /* UI 라벨·버튼은 산세리프, 제목만 세리프(ax 와 동일한 웹진 위계) */
-  --font-serif: "Noto Serif KR", "Cormorant Garamond", Georgia, serif;
-  --font-latin: "Cormorant Garamond", "Noto Serif KR", Georgia, serif;
-  --font-body: "Noto Sans KR", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --font-heading: "Noto Sans KR", system-ui, -apple-system, "Segoe UI", sans-serif;
+  /* 전체 서체는 Pretendard Variable */
+  --font-body: "Pretendard Variable", Pretendard, system-ui, -apple-system, "Segoe UI", "Noto Sans KR", sans-serif;
+  --font-heading: var(--font-body);
+  --font-serif: var(--font-body);
+  --font-latin: var(--font-body);
   --font-heading-weight: 800;
 
-  --radius-sm: 2px;
-  --radius-md: 2px;
-  --radius-lg: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: var(--radius);
 
-  --shadow-sm: 0 1px 2px rgba(14, 22, 38, .08);
-  --shadow-md: 0 4px 14px rgba(14, 22, 38, .10);
-  --shadow-lg: 0 10px 30px rgba(14, 22, 38, .14);
+  --shadow-sm: 0 1px 2px rgba(17, 20, 24, .06);
+  --shadow-md: 0 4px 14px rgba(17, 20, 24, .08);
+  --shadow-lg: var(--shadow);
 
   --header-h: 64px;
+  --wrap: var(--container);
 }
 
 body {
+  font-family: var(--font-body);
   font-size: 15px;
   line-height: 1.7;
   color: var(--ink);
-  background: var(--paper);
+  background: var(--bg-soft);
   /* 한글은 단어(어절) 단위로 줄바꿈, 긴 영문·URL 은 넘치지 않게 */
   word-break: keep-all;
   overflow-wrap: break-word;
 }
 
-/* 제목은 세리프 — 한 문단 3문장 이내, 행간 1.2~1.3 */
 h1, h2, h3,
 .display-1, .display-2, .display-3, .h-sec, .h-sub {
-  font-family: var(--font-serif);
-  letter-spacing: -0.01em;
+  font-family: var(--font-heading);
+  letter-spacing: -0.02em;
   line-height: 1.25;
   text-wrap: balance;
 }
-.display-1, .display-2, .display-3 { font-weight: 900; line-height: 1.18; }
+.display-1, .display-2, .display-3 { font-weight: 800; line-height: 1.15; }
 h1, h2, h3, .h-sec, .h-sub { font-weight: 700; }
 
 /* 영문 라벨(섹션 캡션) */
 .eyebrow, .kicker {
-  font-family: var(--font-latin);
+  font-family: var(--font-body);
   font-size: 13px;
   font-weight: 700;
-  letter-spacing: .18em;
+  letter-spacing: .14em;
   text-transform: uppercase;
   color: var(--acc);
 }
 .kicker-on-dark { color: var(--acc-2); }
 .kicker-dot::before { background: var(--acc-2); }
 
-/* 버튼: ax 와 같은 네이비 면 + 포인트(gold) 면 */
-.btn { border-radius: var(--radius-md); }
+/* 버튼: 알약형 */
+.btn { border-radius: var(--radius-pill); }
 .btn-primary { background: var(--acc); color: #fff; }
 .btn-primary:hover { background: var(--color-accent-600); color: #fff; }
 .btn-primary:active { background: var(--color-accent-700); }
 .btn-secondary { border-color: var(--ink-3); color: var(--ink); }
 .btn-ghost { color: var(--acc); }
-.btn-on-dark { border-color: rgba(255, 255, 255, .45); color: #fff; }
+.btn-on-dark { border-color: rgba(255, 255, 255, .5); color: #fff; }
 .btn-on-accent { background: #fff; color: var(--acc); }
 
+/* 카드·패널 모서리 (계획안 --radius 16px) */
+.pcard, .tcard, .icard, .track-card, .empty-box, .inst-card, .pay-panel, .pay-card,
+.steps4, .metric-grid { border-radius: var(--radius); overflow: hidden; }
+.poster img, .poster-fallback, .slide-img img,
+.course, .summary, .pay-box, .side-detail { border-radius: var(--radius); }
+.pbadge, .type-badge, .chip, .tag { border-radius: var(--radius-pill); }
+
 /* 다크 밴드는 순수 네이비 */
-.band-dark { background: var(--navy-900); color: #E6EDF7; }
+.band-dark { background: var(--navy); color: #E6EDF7; }
 .band-accent { background: var(--acc); }
 .tag-on-dark { background: rgba(230, 237, 247, .12); color: #E6EDF7; }
 .tag-accent { background: var(--color-accent-100); color: var(--color-accent-800); }
