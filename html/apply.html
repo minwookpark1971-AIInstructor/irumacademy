@@ -4,14 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>강의신청하기 | 이룸아카데미</title>
-<meta name="description" content="현재 진행중인 강의를 확인하고 신청하세요. 로그인 없이 열람할 수 있고, 신청 버튼을 누를 때만 Google 로그인이 필요합니다.">
+<meta name="description" content="현재 모집 중인 과정을 확인하고 신청하세요. 로그인 없이 열람할 수 있고, 신청 버튼을 누를 때만 Google 로그인이 필요합니다.">
 <link rel="icon" href="../images/logo/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="../images/logo/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="../images/logo/apple-touch-icon.png">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://www.irumcompany.co.kr/html/apply.html">
 <meta property="og:title" content="강의신청하기 | 이룸아카데미">
-<meta property="og:description" content="현재 진행중인 강의를 확인하고 신청하세요. 2026.08.15 개강, 총 12회 48시간.">
+<meta property="og:description" content="현재 모집 중인 과정을 확인하고 신청하세요.">
 <meta property="og:site_name" content="이룸아카데미">
 <meta property="og:locale" content="ko_KR">
 <meta property="og:image" content="https://www.irumcompany.co.kr/images/logo/og-image.png">
@@ -20,6 +20,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://www.irumcompany.co.kr/images/logo/og-image.png">
 <link rel="stylesheet" href="../css/modernist.css?v=3">
+<link rel="stylesheet" href="../css/apply.css?v=1">
 </head>
 <body>
 
@@ -27,15 +28,31 @@
 
 <main>
 
-  <!-- ══════════ STEP: 목록 ══════════ -->
-  <section id="step-list" class="wrap medium sec">
-    <span class="kicker">강의신청하기</span>
-    <h1 style="font-size:clamp(28px,4vw,50px);line-height:1.06;letter-spacing:-0.025em">현재 진행중인 강의</h1>
-    <p class="muted measure" style="font-size:15px;margin-top:14px">
-      로그인 없이 열람할 수 있습니다. <b>신청하기</b>를 누르는 순간에만 Google 로그인이 필요합니다.
-    </p>
+  <!-- ══════════ 상단 히어로 (목록 단계에서만 표시) ══════════ -->
+  <section class="band-dark apply-hero" id="apply-hero">
+    <div class="wrap">
+      <span class="kicker kicker-on-dark kicker-dot">2026 하반기 · 현재 모집중</span>
+      <h1 class="display-3">강의 신청</h1>
+      <p class="lede">
+        원하는 과정을 고르고 신청서를 남겨 주세요. 입금이 확인되면 수강이 확정됩니다.
+        열람은 로그인 없이 가능하고, <b style="color:#fff">신청하기</b>를 누를 때만 Google 로그인이 필요합니다.
+      </p>
+      <div class="row-tags" id="hero-tags"></div>
+    </div>
+  </section>
 
-    <div id="course-list" class="stack gap-5" style="margin-top:32px">
+  <!-- ══════════ 단계 표시 ══════════ -->
+  <div class="steps-bar">
+    <ol class="steps" id="steps" aria-label="신청 단계">
+      <li class="step is-current" data-step="list"><span class="step-no">1</span><span>과정 선택</span></li>
+      <li class="step" data-step="form"><span class="step-no">2</span><span>신청서 작성</span></li>
+      <li class="step" data-step="done"><span class="step-no">3</span><span>입금 · 확정</span></li>
+    </ol>
+  </div>
+
+  <!-- ══════════ STEP: 목록 ══════════ -->
+  <section id="step-list" class="wrap sec">
+    <div id="course-list">
       <p class="note">강의 정보를 불러오는 중…</p>
     </div>
 
@@ -46,69 +63,111 @@
   </section>
 
   <!-- ══════════ STEP: 신청서 ══════════ -->
-  <section id="step-form" class="wrap narrow" style="padding-block:clamp(40px,5vw,72px)" hidden>
-    <button type="button" class="btn btn-ghost" id="back-to-list" style="margin-bottom:18px">← 강의 목록</button>
-    <span class="kicker">신청서 작성</span>
-    <h1 id="form-title" style="font-size:clamp(24px,3.2vw,38px);letter-spacing:-0.02em;margin-bottom:6px"></h1>
-    <p id="form-userline" class="muted-2" style="font-size:13.5px;margin-bottom:24px"></p>
+  <section id="step-form" class="wrap" style="padding-block:clamp(32px,4.5vw,64px)" hidden>
+    <button type="button" class="btn btn-ghost" id="back-to-list" style="margin-bottom:14px">← 과정 다시 선택</button>
 
-    <form id="apply-form" class="stack" style="gap:18px" novalidate>
-      <div class="field">
-        <label for="f-name">이름 *</label>
-        <input class="input" id="f-name" name="name" placeholder="홍길동" autocomplete="name" required>
-      </div>
-      <div class="field">
-        <label for="f-phone">연락처 *</label>
-        <input class="input" id="f-phone" name="phone" placeholder="010-0000-0000" inputmode="tel" autocomplete="tel" required>
-      </div>
-      <div class="field">
-        <label for="f-email">이메일 (Google 계정 자동)</label>
-        <input class="input" id="f-email" disabled>
-      </div>
-      <div class="field">
-        <label for="f-org">소속</label>
-        <input class="input" id="f-org" name="organization" placeholder="학교 / 기관 / 프리랜서 등" autocomplete="organization">
-      </div>
-      <div class="field">
-        <label for="f-option">신청 과정 *</label>
-        <select class="input" id="f-option" name="option"></select>
+    <div class="form-layout">
+      <div>
+        <div class="form-head">
+          <span class="kicker">신청서 작성</span>
+          <h1 id="form-title"></h1>
+          <p id="form-userline" class="muted-2" style="font-size:13.5px;margin:0"></p>
+        </div>
+
+        <form id="apply-form" novalidate>
+          <div class="form-group">
+            <h2 class="group-title">신청자 정보</h2>
+            <div class="field-row">
+              <div class="field">
+                <label for="f-name">이름 *</label>
+                <input class="input" id="f-name" name="name" placeholder="홍길동" autocomplete="name" required>
+              </div>
+              <div class="field">
+                <label for="f-phone">연락처 *</label>
+                <input class="input" id="f-phone" name="phone" placeholder="010-0000-0000" inputmode="tel" autocomplete="tel" required>
+              </div>
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <label for="f-email">이메일 (Google 계정 자동)</label>
+                <input class="input" id="f-email" disabled>
+              </div>
+              <div class="field">
+                <label for="f-org">소속</label>
+                <input class="input" id="f-org" name="organization" placeholder="학교 / 기관 / 프리랜서 등" autocomplete="organization">
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <h2 class="group-title">신청 과정</h2>
+            <div class="field">
+              <label for="f-option">수강 과정 선택 *</label>
+              <select class="input" id="f-option" name="option"></select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <h2 class="group-title">개인정보 동의</h2>
+            <!-- 보유기간은 개인정보처리방침 제2조와 반드시 같아야 한다.
+                 예전에는 여기만 "1년"이라 방침(탈퇴 시까지)과 어긋나 있었다.
+                 "신청서만 1년 뒤 지우는" 구현이 실제로 존재하지 않으므로,
+                 존재하지 않는 정책을 고지하는 쪽을 버리고 방침에 맞춘다. -->
+            <label class="checkline">
+              <input type="checkbox" id="f-agree" required>
+              <span>[필수] 개인정보 수집·이용에 동의합니다.
+                (신청 접수 및 안내 목적, 회원 탈퇴 시까지 보유 ·
+                <a href="privacy.html" target="_blank" rel="noopener">개인정보처리방침</a>)</span>
+            </label>
+          </div>
+
+          <p id="form-error" class="form-error" style="margin:16px 0 0" hidden></p>
+
+          <button type="submit" class="btn btn-primary form-submit" id="submit-btn">신청 접수하기</button>
+        </form>
       </div>
 
-      <!-- 보유기간은 개인정보처리방침 제2조와 반드시 같아야 한다.
-           예전에는 여기만 "1년"이라 방침(탈퇴 시까지)과 어긋나 있었다.
-           "신청서만 1년 뒤 지우는" 구현이 실제로 존재하지 않으므로,
-           존재하지 않는 정책을 고지하는 쪽을 버리고 방침에 맞춘다. -->
-      <label class="checkline">
-        <input type="checkbox" id="f-agree" required>
-        <span>[필수] 개인정보 수집·이용에 동의합니다.
-          (신청 접수 및 안내 목적, 회원 탈퇴 시까지 보유 ·
-          <a href="privacy.html" target="_blank" rel="noopener">개인정보처리방침</a>)</span>
-      </label>
-
-      <p id="form-error" class="form-error mb-0" hidden></p>
-
-      <button type="submit" class="btn btn-primary" id="submit-btn"
-              style="padding:14px;justify-content:center;font-size:15px">신청 접수하기</button>
-    </form>
+      <!-- 선택 요약 -->
+      <aside class="summary" aria-label="신청 요약">
+        <div class="summary-head">신청 요약</div>
+        <div class="summary-body">
+          <p class="summary-title" id="sum-title"></p>
+          <dl>
+            <div><dt>과정</dt><dd id="sum-option">-</dd></div>
+            <div id="sum-schedule-row"><dt>일정</dt><dd id="sum-schedule">-</dd></div>
+          </dl>
+          <div class="summary-total"><span>수강료</span><span class="amount" id="sum-price">-</span></div>
+          <p class="summary-note">신청 접수 후 안내되는 계좌로 입금해 주시면, 확인 후 수강이 확정됩니다.</p>
+        </div>
+      </aside>
+    </div>
   </section>
 
   <!-- ══════════ STEP: 완료 ══════════ -->
-  <section id="step-done" class="wrap narrow" style="padding-block:clamp(44px,6vw,84px)" hidden>
-    <div class="mark" style="margin-bottom:18px"></div>
+  <section id="step-done" class="wrap narrow" style="padding-block:clamp(40px,5.5vw,76px)" hidden>
+    <div class="done-mark" aria-hidden="true">✓</div>
     <h1 style="font-size:clamp(26px,3.4vw,42px);letter-spacing:-0.02em">신청이 접수되었습니다.</h1>
     <p class="muted" style="font-size:15px;line-height:1.7;margin-top:12px">
-      입금 확인 후 수강이 확정됩니다. 아래 계좌로 수강료를 입금해 주세요.
+      입금이 확인되면 수강이 확정되고, 확정 안내 문자가 발송됩니다.
     </p>
 
-    <div class="box mt-6" style="background:var(--color-surface)">
-      <div class="muted-2" style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px">입금 안내</div>
-      <div style="font-size:15px;line-height:1.7">
-        기업은행 <b>112-215833-04-021</b><br>
-        <span class="muted-2" style="font-size:13px">입금 후 관리자 확인 → 확정 안내 문자 발송</span>
+    <div class="pay-box">
+      <div class="pay-box-head">입금 안내</div>
+      <div class="pay-box-body">
+        <div class="pay-account">
+          <small>기업은행 · 예금주 쪼앤미 컨설팅(조은아)</small>
+          <span id="pay-account">112-215833-04-021</span>
+        </div>
+        <div class="pay-meta">
+          <span>신청 과정 <b id="done-course">-</b></span>
+          <span>입금액 <b id="done-amount">-</b></span>
+        </div>
+        <div><button type="button" class="btn btn-secondary" id="copy-account">계좌번호 복사</button></div>
+        <div class="pay-flow"><span>① 신청 접수</span><span>② 입금</span><span>③ 관리자 확인</span><span>④ 확정 안내 문자</span></div>
       </div>
     </div>
 
-    <h3 style="font-size:16px;margin:28px 0 12px">내 신청 내역</h3>
+    <h3 style="font-size:16px;margin:32px 0 12px">내 신청 내역</h3>
     <div id="my-apps" style="border-top:2px solid var(--color-divider)"></div>
 
     <div class="row mt-8">
@@ -146,6 +205,7 @@
     var courses = [];
     var selected = null;
     var pendingSlug = null;
+    var lastApplied = null;
 
     function el(id) { return document.getElementById(id); }
 
@@ -153,6 +213,14 @@
         el('step-list').hidden = name !== 'list';
         el('step-form').hidden = name !== 'form';
         el('step-done').hidden = name !== 'done';
+        el('apply-hero').hidden = name !== 'list';
+        var order = ['list', 'form', 'done'];
+        Array.prototype.forEach.call(el('steps').children, function (li) {
+            var i = order.indexOf(li.getAttribute('data-step'));
+            var cur = order.indexOf(name);
+            li.classList.toggle('is-current', i === cur);
+            li.classList.toggle('is-done', i < cur);
+        });
         window.scrollTo(0, 0);
     }
 
@@ -162,12 +230,43 @@
         });
     }
 
+    function won(n) {
+        return (n == null || isNaN(n)) ? '-' : Number(n).toLocaleString('ko-KR') + '원';
+    }
+
+    // ── 히어로 태그: 메인 히어로(home.hero_meta)와 같은 DB 값을 보여 준다 ──────
+    // 실패하면 태그 영역만 비워 둔다. 공개 키만 사용.
+    function loadHeroTags() {
+        var cfg = window.IRUM_CONFIG || {};
+        if (!cfg.supabaseUrl || !cfg.supabaseAnonKey || !window.fetch) return;
+        fetch(cfg.supabaseUrl + '/rest/v1/site_content?key=eq.home.hero_meta&select=value&limit=1',
+              { headers: { apikey: cfg.supabaseAnonKey } })
+            .then(function (r) { return r.ok ? r.json() : null; })
+            .then(function (rows) {
+                var v = rows && rows[0] && rows[0].value;
+                if (!v || !Array.isArray(v.tags)) return;
+                var box = el('hero-tags');
+                v.tags.forEach(function (t) {
+                    if (typeof t !== 'string' || !t.trim()) return;
+                    var s = document.createElement('span');
+                    s.className = 'tag tag-on-dark';
+                    s.textContent = t;
+                    box.appendChild(s);
+                });
+            })
+            .catch(function () { /* 태그 없이 표시 */ });
+    }
+
     // ── 강의 목록 ────────────────────────────────────────────────────────────
+    function fact(label, value) {
+        return value ? '<div><dt>' + label + '</dt><dd>' + esc(value) + '</dd></div>' : '';
+    }
+
     function renderCourses() {
         var box = el('course-list');
         if (!courses.length) {
             box.innerHTML =
-                '<div class="box">' +
+                '<div class="course-empty">' +
                 '<h2 style="font-size:20px;margin-bottom:8px">현재 모집 중인 과정이 없습니다</h2>' +
                 '<p class="muted mb-0" style="font-size:14px">다음 기수 일정은 문의해 주시면 가장 먼저 안내드립니다.</p>' +
                 '<div class="row mt-6"><a href="mailto:irum.ceo@gmail.com" class="btn btn-primary">문의하기 →</a>' +
@@ -177,25 +276,32 @@
         }
 
         box.innerHTML = courses.map(function (c) {
+            var opts = (c.options || []).map(function (o) {
+                var desc = o.label && o.label !== o.name ? '<span class="opt-desc">' + esc(o.label) + '</span>' : '';
+                return '<li><span><span class="opt-name">' + esc(o.name) + '</span>' + desc + '</span>' +
+                       '<span class="opt-price">' + (o.price > 0 ? won(o.price) : '문의') + '</span></li>';
+            }).join('');
             return '' +
-            '<div class="box-strong stack gap-4">' +
-              '<div class="row-tags">' +
-                '<span class="tag tag-accent">모집중 · OPEN</span>' +
-                '<span class="tag tag-neutral">' + esc(c.level) + '</span>' +
-                '<span class="tag tag-neutral">' + esc(c.duration) + '</span>' +
+            '<article class="course">' +
+              '<div class="course-main">' +
+                '<div class="row-tags">' +
+                  '<span class="tag tag-accent">모집중 · OPEN</span>' +
+                  (c.level ? '<span class="tag tag-neutral">' + esc(c.level) + '</span>' : '') +
+                  (c.duration ? '<span class="tag tag-neutral">' + esc(c.duration) + '</span>' : '') +
+                '</div>' +
+                (c.subtitle ? '<div class="course-sub">' + esc(c.subtitle) + '</div>' : '') +
+                '<h2 class="course-title">' + esc(c.title) + '</h2>' +
+                '<dl class="course-facts">' +
+                  fact('일정', c.schedule) + fact('주관', c.host) +
+                  fact('수강료', c.price_text) + fact('정원', c.capacity_text) +
+                '</dl>' +
               '</div>' +
-              '<div>' +
-                '<div style="font-size:12px;color:var(--color-accent-700);font-weight:800;letter-spacing:.04em">' + esc(c.subtitle) + '</div>' +
-                '<h2 style="font-size:clamp(20px,2.6vw,30px);letter-spacing:-0.02em;margin:6px 0 0">' + esc(c.title) + '</h2>' +
-              '</div>' +
-              '<div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;font-size:13.5px;color:var(--color-neutral-800)">' +
-                '<div><span class="muted-2">일정 </span>' + esc(c.schedule) + '</div>' +
-                '<div><span class="muted-2">주관 </span>' + esc(c.host) + '</div>' +
-                '<div><span class="muted-2">수강료 </span>' + esc(c.price_text) + '</div>' +
-                '<div><span class="muted-2">정원 </span>' + esc(c.capacity_text) + '</div>' +
-              '</div>' +
-              '<div><button type="button" class="btn btn-primary btn-lg" data-apply="' + esc(c.slug) + '">신청하기 →</button></div>' +
-            '</div>';
+              '<aside class="course-side">' +
+                '<div class="side-label">수강 과정 · 수강료</div>' +
+                '<ul class="opt-list">' + opts + '</ul>' +
+                '<button type="button" class="btn btn-primary btn-lg" data-apply="' + esc(c.slug) + '">신청하기 →</button>' +
+              '</aside>' +
+            '</article>';
         }).join('');
 
         Array.prototype.forEach.call(box.querySelectorAll('[data-apply]'), function (btn) {
@@ -214,6 +320,22 @@
         pendingSlug = slug;
         try { sessionStorage.setItem('irum:pendingSlug', slug); } catch (e) {}
         el('login-modal').hidden = false;
+    }
+
+    function selectedOption() {
+        var sel = el('f-option');
+        return sel.options[sel.selectedIndex] || null;
+    }
+
+    function updateSummary() {
+        if (!selected) return;
+        var o = selectedOption();
+        var price = o && o.getAttribute('data-price') ? Number(o.getAttribute('data-price')) : null;
+        el('sum-title').textContent = selected.title;
+        el('sum-option').textContent = o ? o.getAttribute('data-name') : '-';
+        el('sum-schedule').textContent = selected.schedule || '-';
+        el('sum-schedule-row').hidden = !selected.schedule;
+        el('sum-price').textContent = price > 0 ? won(price) : '문의';
     }
 
     function openForm(slug) {
@@ -237,6 +359,7 @@
                    esc(o.label) + '</option>';
         }).join('');
 
+        updateSummary();
         showStep('form');
     }
 
@@ -261,7 +384,7 @@
         btn.textContent = '접수 중…';
 
         var optSel = el('f-option');
-        var optEl = optSel.options[optSel.selectedIndex] || null;
+        var optEl = selectedOption();
 
         window.IRUM.createApplication({
             course_id: selected.id,
@@ -282,6 +405,10 @@
             btn.disabled = false;
             btn.textContent = '신청 접수하기';
             if (!res.ok) { showError(res.error); return; }
+            var price = optEl && optEl.getAttribute('data-price') ? Number(optEl.getAttribute('data-price')) : null;
+            lastApplied = { title: selected.title, option: optEl ? optEl.getAttribute('data-name') : '', price: price };
+            el('done-course').textContent = lastApplied.title + (lastApplied.option ? ' · ' + lastApplied.option : '');
+            el('done-amount').textContent = price > 0 ? won(price) : '안내 문자 참고';
             el('apply-form').reset();
             renderMyApps();
             showStep('done');
@@ -312,11 +439,26 @@
         });
     }
 
+    function copyAccount() {
+        var text = el('pay-account').textContent.trim();
+        var btn = el('copy-account');
+        function done(ok) {
+            btn.textContent = ok ? '복사되었습니다' : '길게 눌러 직접 복사해 주세요';
+            setTimeout(function () { btn.textContent = '계좌번호 복사'; }, 2000);
+        }
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(function () { done(true); }, function () { done(false); });
+        } else { done(false); }
+    }
+
     // ── 부팅 ─────────────────────────────────────────────────────────────────
     document.addEventListener('DOMContentLoaded', function () {
+        loadHeroTags();
         el('back-to-list').addEventListener('click', function () { showStep('list'); });
         el('done-to-list').addEventListener('click', function () { showStep('list'); });
         el('apply-form').addEventListener('submit', submit);
+        el('f-option').addEventListener('change', updateSummary);
+        el('copy-account').addEventListener('click', copyAccount);
 
         // 로그인을 취소하면 sessionStorage 도 같이 비운다.
         // 안 비우면 나중에 다른 경로로 이 페이지에 들어왔을 때 예전에 고르다 만 강의의
