@@ -64,7 +64,7 @@ function getPathInfo() {
     };
 }
 
-// 메인 섹션 앵커 메뉴 (앵커 모드)
+// 메인 섹션 앵커 메뉴 (앵커 모드). 페이지가 window.IRUM_ANCHORS = [{id,label,always}] 로 바꿀 수 있다.
 const ANCHOR_ITEMS = [
     { id: 'tracks',     label: '과정소개', always: true  },
     { id: 'curriculum', label: '커리큘럼', always: true  },
@@ -93,7 +93,7 @@ function menuLinks(p, cur) {
     const mark = (key) => cur === key ? ' aria-current="page"' : '';
     if (window.IRUM_ANCHOR_NAV) {
         const base = p.isHome ? '' : p.homeUrl;
-        return ANCHOR_ITEMS.map(it =>
+        return (window.IRUM_ANCHORS || ANCHOR_ITEMS).map(it =>
             `<a href="${base}#${it.id}" data-anchor="${it.id}"${(!p.isHome && !it.always) ? ' hidden' : ''}>${it.label}</a>`
         ).join('') + `<a href="${p.aboutUrl}"${mark('about')}>회사소개</a>`;
     }
@@ -178,7 +178,7 @@ function generateFooter() {
 // 하단 고정 신청 바 · 맨 위로 버튼
 function generateExtras() {
     const p = getPathInfo();
-    const noBar = ['apply.html', 'admin.html'].indexOf(p.filename) !== -1;
+    const noBar = ['apply.html', 'admin.html'].indexOf(p.filename) !== -1 || window.IRUM_NO_MOBILE_CTA === true;
     return (noBar ? '' : `<div class="mobile-cta"><a href="${p.applyUrl}" class="btn">강의 신청하기 →</a></div>`) +
            `<button type="button" class="to-top" id="to-top" aria-label="맨 위로">↑</button>`;
 }

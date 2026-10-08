@@ -159,3 +159,7 @@
   .course-facts > div:nth-child(odd) { padding-right: 0; }
   .field-row { grid-template-columns: 1fr; }
 }
+
+/* 과정 상세 보기 링크 (신청 카드 우측) */
+.side-detail { align-self: center; font-size: 14px; font-weight: 700; color: var(--acc); text-decoration: none; }
+.side-detail:hover { text-decoration: underline; }
