@@ -34,15 +34,15 @@
         AI업무자동화 &amp; 바이브코딩 통합 전문가 과정 — 도구 클릭법이 아니라
         <b style="opacity:1;color:#fff">자동화 → 분석 → 서비스화</b> 전 과정을 직접 만들며 남깁니다.
       </p>
-      <div class="row-tags" style="margin-top:26px">
+      <div class="row-tags" data-home="hero.tags" style="margin-top:26px">
         <span class="tag tag-on-dark">2026.08.15 개강</span>
         <span class="tag tag-on-dark">평일·주말 주 2회 × 6주</span>
         <span class="tag tag-on-dark">총 12회 48시간</span>
         <span class="tag tag-on-dark">주관 쪼앤미컨설팅 · 운영 KECA · 이룸아카데미</span>
       </div>
       <div class="row" style="margin-top:32px">
-        <a href="html/apply.html" class="btn btn-primary btn-lg">강의 신청하기 →</a>
-        <a href="html/instructor-growth.html" class="btn btn-lg btn-on-dark">커리큘럼 보기</a>
+        <a href="html/apply.html" class="btn btn-primary btn-lg" data-home="hero.cta1">강의 신청하기 →</a>
+        <a href="html/instructor-growth.html" class="btn btn-lg btn-on-dark" data-home="hero.cta2">커리큘럼 보기</a>
       </div>
     </div>
   </section>
@@ -80,12 +80,12 @@
   <section class="band-surface">
     <div class="wrap sec">
       <span class="kicker">Curriculum</span>
-      <h2 class="h-sec" style="margin-bottom:36px">배우는 것 5가지</h2>
-      <div class="cellgrid grid-auto-200">
+      <h2 class="h-sec" data-home="learn.title" style="margin-bottom:36px">배우는 것 5가지</h2>
+      <div class="cellgrid grid-auto-200" data-home="learn.items">
         <div>
           <div class="row" style="align-items:center;gap:10px;margin-bottom:12px">
             <span style="width:11px;height:11px;background:var(--color-accent);display:inline-block"></span>
-            <span style="font-family:var(--font-heading);font-weight:800;font-size:14px">01</span>
+            <span data-f="no" style="font-family:var(--font-heading);font-weight:800;font-size:14px">01</span>
           </div>
           <h3 style="font-size:17px;line-height:1.25;margin-bottom:8px">AI 업무자동화</h3>
           <p class="mb-0" style="font-size:13.5px;line-height:1.6;color:var(--color-neutral-700)">클로드 스킬·플러그인으로 반복업무 2개를 직접 자동화합니다.</p>
@@ -129,8 +129,8 @@
   <!-- ══════════ 얻는 것 3가지 ══════════ -->
   <section class="wrap sec">
     <span class="kicker">Outcomes</span>
-    <h2 class="h-sec" style="margin-bottom:32px">수료 후 손에 남는 것 3가지</h2>
-    <div class="grid grid-auto-240">
+    <h2 class="h-sec" data-home="outcomes.title" style="margin-bottom:32px">수료 후 손에 남는 것 3가지</h2>
+    <div class="grid grid-auto-240" data-home="outcomes.items">
       <div class="rule-block">
         <div class="num">01</div>
         <h3 style="font-size:18px;margin:10px 0 8px">자동화 스킬 + 분석 예제</h3>
@@ -153,10 +153,10 @@
   <section class="band-dark">
     <div class="wrap sec">
       <span class="kicker kicker-on-dark">6-Week Roadmap</span>
-      <h2 class="h-sec" style="margin-bottom:36px">6주 커리큘럼 타임라인</h2>
-      <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(190px,1fr))">
+      <h2 class="h-sec" data-home="timeline.title" style="margin-bottom:36px">6주 커리큘럼 타임라인</h2>
+      <div class="grid" data-home="timeline.weeks" style="grid-template-columns:repeat(auto-fit,minmax(190px,1fr))">
         <div class="week">
-          <div class="week-head"><span class="week-no">WEEK 1</span><span style="font-size:13px">8/15 토 · 8/19 수</span></div>
+          <div class="week-head"><span class="week-no">WEEK 1</span><span data-f="date" style="font-size:13px">8/15 토 · 8/19 수</span></div>
           <h3>클로드 정복</h3>
           <p>업무자동화 기초 · 스킬과 플러그인의 이해</p>
         </div>
@@ -249,35 +249,117 @@
 <script src="js/store.js?v=2"></script>
 <script src="js/components.js?v=2"></script>
 <script>
-/* 히어로 문구를 DB(site_content, key='home.hero')에서 가져와 덮어쓴다.
-   실패·빈 값이면 HTML 에 들어 있는 기존 문구를 그대로 둔다(폴백).
-   공개 키(IRUM_CONFIG)만 사용하며, 값은 textContent/<br> 노드로만 넣는다(HTML 삽입 없음). */
+/* 메인 화면 문구를 DB(site_content, key 'home.*')에서 불러와 덮어쓴다.
+   실패·타임아웃·빈 값·모양이 다른 값이면 HTML 에 들어 있는 기존 문구를 그대로 둔다(폴백).
+   공개 키(IRUM_CONFIG)만 사용하며, 값은 textContent/DOM 노드로만 넣는다(HTML 삽입 없음).
+   키: home.hero{title,subtitle} · home.hero_meta{tags[],cta1{label,href},cta2{label,href}}
+       home.learn{title,items[{title,body}]} · home.outcomes{title,items[{title,body}]}
+       home.timeline{title,weeks[{no,date,title,body,milestone}]} */
 (function () {
   var cfg = window.IRUM_CONFIG || {};
   if (!cfg.supabaseUrl || !cfg.supabaseAnonKey || !window.fetch) return;
 
-  function render(el, text) {
-    if (!el || typeof text !== 'string' || !text.trim()) return;
+  var isStr = function (x) { return typeof x === 'string' && x.trim() !== ''; };
+  var $ = function (name) { return document.querySelector('[data-home="' + name + '"]'); };
+
+  function setText(el, text) { if (el && isStr(text)) el.textContent = text; }
+  function setLines(el, text) {
+    if (!el || !isStr(text)) return;
     el.textContent = '';
     text.split('\n').forEach(function (line, i) {
       if (i) el.appendChild(document.createElement('br'));
       el.appendChild(document.createTextNode(line));
     });
   }
+  /* 상대 경로 또는 http(s) 만 허용 (javascript: 등 차단) */
+  function safeHref(h) {
+    h = String(h || '').trim();
+    if (/^[a-z][a-z0-9+.-]*:/i.test(h)) return /^https?:/i.test(h) ? h : null;
+    return h.indexOf('//') === 0 ? null : h;
+  }
+  function setLink(a, v) {
+    if (!a || !v) return;
+    setText(a, v.label);
+    var h = safeHref(v.href);
+    if (h) a.setAttribute('href', h);
+  }
+  /* 컨테이너의 첫 자식을 틀(template)로 삼아 목록 개수만큼 복제해 채운다 */
+  function fillList(box, items, fill) {
+    if (!box || !Array.isArray(items) || !items.length || !box.firstElementChild) return;
+    var tpl = box.firstElementChild.cloneNode(true);
+    var nodes = items.map(function (it, i) { var n = tpl.cloneNode(true); fill(n, it, i); return n; });
+    box.textContent = '';
+    nodes.forEach(function (n) { box.appendChild(n); });
+  }
+  var q = function (n, sel) { return n.querySelector(sel); };
+
+  function applyHero(v) {
+    if (!v) return;
+    setLines(document.getElementById('hero-title'), v.title);
+    setLines(document.getElementById('hero-subtitle'), v.subtitle);
+  }
+  function applyHeroMeta(v) {
+    if (!v) return;
+    var tags = $('hero.tags');
+    if (tags && Array.isArray(v.tags) && v.tags.some(isStr)) {
+      tags.textContent = '';
+      v.tags.filter(isStr).forEach(function (t) {
+        var s = document.createElement('span');
+        s.className = 'tag tag-on-dark';
+        s.textContent = t;
+        tags.appendChild(s);
+      });
+    }
+    setLink($('hero.cta1'), v.cta1);
+    setLink($('hero.cta2'), v.cta2);
+  }
+  function applyLearn(v) {
+    if (!v) return;
+    setText($('learn.title'), v.title);
+    fillList($('learn.items'), v.items, function (n, it, i) {
+      setText(q(n, '[data-f="no"]'), (i < 9 ? '0' : '') + (i + 1));
+      setText(q(n, 'h3'), it && it.title);
+      setText(q(n, 'p'), it && it.body);
+    });
+  }
+  function applyOutcomes(v) {
+    if (!v) return;
+    setText($('outcomes.title'), v.title);
+    fillList($('outcomes.items'), v.items, function (n, it, i) {
+      setText(q(n, '.num'), (i < 9 ? '0' : '') + (i + 1));
+      setText(q(n, 'h3'), it && it.title);
+      setText(q(n, 'p'), it && it.body);
+    });
+  }
+  function applyTimeline(v) {
+    if (!v) return;
+    setText($('timeline.title'), v.title);
+    fillList($('timeline.weeks'), v.weeks, function (n, w) {
+      w = w || {};
+      setText(q(n, '.week-no'), w.no);
+      setText(q(n, '[data-f="date"]'), w.date);
+      setText(q(n, 'h3'), w.title);
+      setText(q(n, 'p'), w.body);
+      n.classList.toggle('is-milestone', w.milestone === true);
+    });
+  }
 
   var ctrl = window.AbortController ? new AbortController() : null;
   var timer = setTimeout(function () { if (ctrl) ctrl.abort(); }, 4000);
 
-  fetch(cfg.supabaseUrl + '/rest/v1/site_content?key=eq.home.hero&select=value&limit=1', {
+  fetch(cfg.supabaseUrl + '/rest/v1/site_content?key=like.home.*&select=key,value', {
     headers: { apikey: cfg.supabaseAnonKey },
     signal: ctrl ? ctrl.signal : undefined
   })
     .then(function (r) { return r.ok ? r.json() : null; })
     .then(function (rows) {
-      var v = rows && rows[0] && rows[0].value;
-      if (!v) return;
-      render(document.getElementById('hero-title'), v.title);
-      render(document.getElementById('hero-subtitle'), v.subtitle);
+      if (!Array.isArray(rows)) return;
+      var c = {};
+      rows.forEach(function (r) { c[r.key] = r.value; });
+      [['home.hero', applyHero], ['home.hero_meta', applyHeroMeta], ['home.learn', applyLearn],
+       ['home.outcomes', applyOutcomes], ['home.timeline', applyTimeline]].forEach(function (p) {
+        try { p[1](c[p[0]]); } catch (e) { /* 이 구역만 폴백 */ }
+      });
     })
     .catch(function () { /* 폴백: 기존 문구 유지 */ })
     .then(function () { clearTimeout(timer); });
