@@ -27,9 +27,15 @@ function getPathInfo() {
     const isInHtmlFolder = htmlIndex !== -1 && htmlIndex === pathParts.length - 2;
     const isInHtmlSubfolder = htmlIndex !== -1 && htmlIndex < pathParts.length - 2;
 
+    // 스테이징(/v2/index.html): 메인과 같은 화면이지만 한 단계 아래 폴더
+    const inV2 = pathParts.length >= 2 && pathParts[pathParts.length - 2] === 'v2';
+
     // 루트 기준 상대 접두사: 루트에서는 'html/', html/ 안에서는 '', html/xxx/ 안에서는 '../'
     let toHtml, toRoot;
-    if (isRoot) {
+    if (inV2) {
+        toHtml = '../html/';
+        toRoot = '../';
+    } else if (isRoot) {
         toHtml = 'html/';
         toRoot = '';
     } else if (isInHtmlSubfolder) {
@@ -54,7 +60,7 @@ function getPathInfo() {
         termsUrl: toHtml + 'terms.html',
         logoUrl: toRoot + 'images/logo/이룸아카데미_logo.png',
         filename: filename,
-        isHome: isRoot
+        isHome: isRoot || inV2
     };
 }
 
