@@ -109,11 +109,11 @@
     function posterNode(p, thumb, eager) {
         var src = safeSrc(thumb ? (p.thumb || p.poster) : (p.poster || p.thumb));
         if (src) {
-            var fig = el('figure', 'poster');
+            var fig = el('figure', 'poster' + (/(^|\/)images\/logo\//.test(src) ? ' poster-logo' : ''));
             var img = el('img');
             img.src = src;
             img.alt = isStr(p.poster_alt) ? p.poster_alt : (p.title || '');
-            img.width = 1080; img.height = 1350;
+            if (/(^|\/)images\/logo\//.test(src)) { img.width = 500; img.height = 500; } else { img.width = 1080; img.height = 1350; }
             img.loading = eager ? 'eager' : 'lazy';
             img.decoding = 'async';
             fig.appendChild(img);

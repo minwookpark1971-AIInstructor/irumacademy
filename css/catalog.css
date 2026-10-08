@@ -162,3 +162,9 @@
 @media (max-width: 720px) {
   .slide-img.poster-fallback { max-width: 240px; justify-self: start; }
 }
+
+/* 로고 이미지(images/logo/…)는 잘리지 않게 정사각 + 흰 바탕으로 표시 */
+.poster-logo img { aspect-ratio: 1 / 1; object-fit: contain; background: #fff; padding: 6%; }
+.slide-img.poster-logo { max-width: 300px; }
+.pcard-thumb.poster-logo img { aspect-ratio: 1 / 1; }
+.pg-hero .poster.poster-logo { max-width: 300px; }
