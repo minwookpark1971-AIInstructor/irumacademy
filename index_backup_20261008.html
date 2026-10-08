@@ -29,8 +29,8 @@
   <section class="band-dark" style="border-bottom:2px solid var(--color-accent)">
     <div class="wrap" style="padding-block:clamp(44px,8vw,104px)">
       <span class="kicker kicker-on-dark kicker-dot">2026 하반기 · 현재 모집중</span>
-      <h1 class="display-1" id="hero-title" style="margin:.35em 0 0;max-width:16ch">업무자동화에서<br>실제 서비스까지.</h1>
-      <p class="lede measure" id="hero-subtitle" style="opacity:.82;margin-top:1.1em">
+      <h1 class="display-1" style="margin:.35em 0 0;max-width:16ch">업무자동화에서<br>실제 서비스까지.</h1>
+      <p class="lede measure" style="opacity:.82;margin-top:1.1em">
         AI업무자동화 &amp; 바이브코딩 통합 전문가 과정 — 도구 클릭법이 아니라
         <b style="opacity:1;color:#fff">자동화 → 분석 → 서비스화</b> 전 과정을 직접 만들며 남깁니다.
       </p>
@@ -248,40 +248,5 @@
 <script src="js/config.js?v=2"></script>
 <script src="js/store.js?v=2"></script>
 <script src="js/components.js?v=2"></script>
-<script>
-/* 히어로 문구를 DB(site_content, key='home.hero')에서 가져와 덮어쓴다.
-   실패·빈 값이면 HTML 에 들어 있는 기존 문구를 그대로 둔다(폴백).
-   공개 키(IRUM_CONFIG)만 사용하며, 값은 textContent/<br> 노드로만 넣는다(HTML 삽입 없음). */
-(function () {
-  var cfg = window.IRUM_CONFIG || {};
-  if (!cfg.supabaseUrl || !cfg.supabaseAnonKey || !window.fetch) return;
-
-  function render(el, text) {
-    if (!el || typeof text !== 'string' || !text.trim()) return;
-    el.textContent = '';
-    text.split('\n').forEach(function (line, i) {
-      if (i) el.appendChild(document.createElement('br'));
-      el.appendChild(document.createTextNode(line));
-    });
-  }
-
-  var ctrl = window.AbortController ? new AbortController() : null;
-  var timer = setTimeout(function () { if (ctrl) ctrl.abort(); }, 4000);
-
-  fetch(cfg.supabaseUrl + '/rest/v1/site_content?key=eq.home.hero&select=value&limit=1', {
-    headers: { apikey: cfg.supabaseAnonKey },
-    signal: ctrl ? ctrl.signal : undefined
-  })
-    .then(function (r) { return r.ok ? r.json() : null; })
-    .then(function (rows) {
-      var v = rows && rows[0] && rows[0].value;
-      if (!v) return;
-      render(document.getElementById('hero-title'), v.title);
-      render(document.getElementById('hero-subtitle'), v.subtitle);
-    })
-    .catch(function () { /* 폴백: 기존 문구 유지 */ })
-    .then(function () { clearTimeout(timer); });
-})();
-</script>
 </body>
 </html>
