@@ -165,6 +165,15 @@
 
 /* 로고 이미지(images/logo/…)는 잘리지 않게 정사각 + 흰 바탕으로 표시 */
 .poster-logo img { aspect-ratio: 1 / 1; object-fit: contain; background: #fff; padding: 6%; }
-.slide-img.poster-logo { max-width: 300px; }
+.slide-img.poster-logo { max-width: 200px; }
 .pcard-thumb.poster-logo img { aspect-ratio: 1 / 1; }
 .pg-hero .poster.poster-logo { max-width: 300px; }
+
+/* 히어로 슬라이드: 긴 과정명도 3줄 안에 들어오도록 글자 크기를 줄이고 텍스트 칸을 넓힌다 */
+.slide { grid-template-columns: minmax(0, 1.9fr) minmax(0, 1fr); }
+.slide-title { font-size: clamp(28px, 3.5vw, 44px); line-height: 1.22; }
+.slide-img { max-width: 260px; }
+@media (max-width: 720px) {
+  .slide-title { font-size: clamp(26px, 7vw, 32px); }
+  .slide-img.poster-logo { max-width: 160px; }
+}
