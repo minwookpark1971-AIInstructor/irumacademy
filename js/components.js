@@ -55,6 +55,7 @@ function getPathInfo() {
         aboutUrl: toHtml + 'about.html',
         programsUrl: toHtml + 'instructor-growth.html',
         applyUrl: toHtml + 'apply.html',
+        inquiryUrl: toHtml + 'inquiry.html',
         adminUrl: toHtml + 'admin.html',
         privacyUrl: toHtml + 'privacy.html',
         termsUrl: toHtml + 'terms.html',
@@ -66,10 +67,10 @@ function getPathInfo() {
 
 // 메인 섹션 앵커 메뉴 (앵커 모드). 페이지가 window.IRUM_ANCHORS = [{id,label,always}] 로 바꿀 수 있다.
 const ANCHOR_ITEMS = [
-    { id: 'programs',   label: '진행중 과정', always: true  },
-    { id: 'howto',      label: '신청방법',   always: true  },
-    { id: 'instructor', label: '강사',       always: false },
-    { id: 'faq',        label: 'FAQ',        always: false }
+    { id: 'areas',   label: '강의영역', always: true  },
+    { id: 'cases',   label: '출강사례', always: false },
+    { id: 'courses', label: '모집과정', always: true  },
+    { id: 'insight', label: '인사이트', always: false }
 ];
 
 // 브랜드 마크 — "이룸" + 악센트 "아카데미" + 영문 라벨
@@ -84,6 +85,7 @@ function currentPage(pathInfo) {
     if (f === 'about.html') return 'about';
     if (f === 'instructor-growth.html') return 'programs';
     if (f === 'apply.html') return 'apply';
+    if (f === 'inquiry.html') return 'inquiry';
     return '';
 }
 
@@ -105,7 +107,8 @@ function generateHeader() {
     const p = getPathInfo();
     const cur = currentPage(p);
     const links = menuLinks(p, cur);
-    const cta = `<a href="${p.applyUrl}"${cur === 'apply' ? ' aria-current="page"' : ''} class="btn btn-primary gnb-cta">강의 신청하기 →</a>`;
+    const apply = `<a href="${p.applyUrl}"${cur === 'apply' ? ' aria-current="page"' : ''} class="btn btn-primary gnb-cta">강의 신청</a>`;
+    const propose = `<a href="${p.inquiryUrl}"${cur === 'inquiry' ? ' aria-current="page"' : ''} class="btn gnb-cta gnb-cta-ghost">제안 요청</a>`;
 
     // 신청 진입점은 CTA 버튼 하나뿐이다. 예전에는 같은 링크를 텍스트 메뉴로도
     // 함께 걸어 헤더에 "강의신청하기"가 두 번 보였다. aria-current 는 버튼이 넘겨받는다.
@@ -115,12 +118,13 @@ function generateHeader() {
     <div class="gnb-inner">
         ${brandMarkup(p.homeUrl)}
         <nav class="gnb-menu" aria-label="주 메뉴">${links}</nav>
-        ${cta}
+        <div class="gnb-actions">${propose}${apply}</div>
         <button type="button" class="gnb-toggle" id="gnb-toggle" aria-expanded="false" aria-controls="gnb-drawer" aria-label="메뉴 열기"><span></span></button>
     </div>
     <nav class="gnb-drawer" id="gnb-drawer" aria-label="모바일 메뉴" hidden>
         ${links}
-        ${cta}
+        ${apply}
+        ${propose}
     </nav>
 </header>`;
 }
@@ -137,6 +141,8 @@ function generateFooter() {
         <a href="${p.aboutUrl}">회사소개</a>
         <a href="${p.programsUrl}">전문강사성장프로그램</a>
         <a href="${p.applyUrl}">강의신청하기</a>
+        <a href="${p.inquiryUrl}">기관 제안 요청</a>
+        <span class="footer-sns" id="footer-sns"></span>
         <!-- '강의코스'(courses.html) · '문의하기'(inquiry.html) 링크를 뺐다.
              전자는 더 이상 운영하지 않는 옛 AI 코스 9개를 노출했고,
              후자는 삭제된 회원가입 시스템으로 유도해 방문자를 막다른 길에 가뒀다.
@@ -177,8 +183,12 @@ function generateFooter() {
 // 하단 고정 신청 바 · 맨 위로 버튼
 function generateExtras() {
     const p = getPathInfo();
-    const noBar = ['apply.html', 'admin.html'].indexOf(p.filename) !== -1 || window.IRUM_NO_MOBILE_CTA === true;
-    return (noBar ? '' : `<div class="mobile-cta"><a href="${p.applyUrl}" class="btn">강의 신청하기 →</a></div>`) +
+    const noBar = ['apply.html', 'admin.html', 'inquiry.html'].indexOf(p.filename) !== -1 || window.IRUM_NO_MOBILE_CTA === true;
+    // 메인에서만 상담 FAB: 값(settings.footer.kakao_url)이 있으면 카카오, 없으면 기관 제안 요청으로 연결(content.js 가 href 교체)
+    const fab = p.isHome
+        ? `<div class="fab" id="fab"><p class="fab-bubble" id="fab-bubble" hidden>기관·학교 교육 도입, 편하게 문의하세요.</p><a class="fab-btn" id="fab-btn" href="${p.inquiryUrl}">교육 상담 ›</a></div>`
+        : '';
+    return (noBar ? '' : `<div class="mobile-cta"><a href="${p.applyUrl}" class="btn">강의 신청하기 →</a></div>`) + fab +
            `<button type="button" class="to-top" id="to-top" aria-label="맨 위로">↑</button>`;
 }
 
@@ -195,9 +205,27 @@ function initShell() {
     if (main && !main.id) main.id = 'main';
     if (main) main.setAttribute('tabindex', '-1');
 
+    const fab = document.getElementById('fab');
+    const bubble = document.getElementById('fab-bubble');
+    let bubbleShown = false;
+    const showBubble = () => {
+        if (!bubble || bubbleShown) return;
+        bubbleShown = true;
+        try { if (sessionStorage.getItem('irum:fab-bubble')) return; sessionStorage.setItem('irum:fab-bubble', '1'); } catch (e) { /* 저장 불가 환경은 매번 표시 */ }
+        setTimeout(() => {
+            bubble.hidden = false;
+            requestAnimationFrame(() => bubble.classList.add('is-on'));
+            setTimeout(() => { bubble.classList.remove('is-on'); setTimeout(() => { bubble.hidden = true; }, 350); }, 6000);
+        }, 3000);
+    };
     const onScroll = () => {
-        gnb.classList.toggle('is-scrolled', window.scrollY > 24);
+        gnb.classList.toggle('is-scrolled', window.scrollY > 40);
         if (toTop) toTop.classList.toggle('is-visible', window.scrollY > 600);
+        if (fab) {
+            const on = window.scrollY > 600;
+            fab.classList.toggle('is-visible', on);
+            if (on) showBubble();
+        }
     };
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
@@ -206,6 +234,7 @@ function initShell() {
     const closeDrawer = () => {
         if (!drawer || drawer.hidden) return;
         drawer.hidden = true;
+        gnb.classList.remove('is-open');
         toggle.setAttribute('aria-expanded', 'false');
         toggle.setAttribute('aria-label', '메뉴 열기');
     };
@@ -213,6 +242,7 @@ function initShell() {
         toggle.addEventListener('click', () => {
             const open = drawer.hidden;
             drawer.hidden = !open;
+            gnb.classList.toggle('is-open', open);
             toggle.setAttribute('aria-expanded', String(open));
             toggle.setAttribute('aria-label', open ? '메뉴 닫기' : '메뉴 열기');
         });
@@ -260,6 +290,7 @@ function loadComponents() {
     const header = document.getElementById('header-container');
     const footer = document.getElementById('footer-container');
     if (header) header.innerHTML = generateHeader();
+    if (getPathInfo().isHome) document.body.classList.add('is-home');
     if (footer) footer.innerHTML = generateFooter();
     if (header) {
         const extras = document.createElement('div');
