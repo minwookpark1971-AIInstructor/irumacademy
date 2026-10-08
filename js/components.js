@@ -66,11 +66,10 @@ function getPathInfo() {
 
 // 메인 섹션 앵커 메뉴 (앵커 모드). 페이지가 window.IRUM_ANCHORS = [{id,label,always}] 로 바꿀 수 있다.
 const ANCHOR_ITEMS = [
-    { id: 'tracks',     label: '과정소개', always: true  },
-    { id: 'curriculum', label: '커리큘럼', always: true  },
-    { id: 'enroll',     label: '수강안내', always: true  },
-    { id: 'instructor', label: '강사',     always: false },
-    { id: 'faq',        label: 'FAQ',      always: false }
+    { id: 'programs',   label: '진행중 과정', always: true  },
+    { id: 'howto',      label: '신청방법',   always: true  },
+    { id: 'instructor', label: '강사',       always: false },
+    { id: 'faq',        label: 'FAQ',        always: false }
 ];
 
 // 브랜드 마크 — "이룸" + 악센트 "아카데미" + 영문 라벨
